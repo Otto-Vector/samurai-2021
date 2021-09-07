@@ -3,17 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {posts} from "./BLL/PostsData";
-import {dialogs, messages} from "./BLL/dialogsData";
+
+import {state} from "./redux/state";
 
 
-const dataBaseToProps = {
-    posts: posts,
-    dialogs: {
-        dialogs: dialogs,
-        messages: messages
-    }
-}
+const dataBaseToProps = state
 
 ReactDOM.render(<App {...dataBaseToProps} />, document.getElementById('root'));
 

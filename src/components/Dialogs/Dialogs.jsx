@@ -8,8 +8,8 @@ import Message from "./Message/Message";
 const Dialogs = (props) => {
 
 
-    let dialogsElements = props.dialogs.map(args => <DialogItem {...args} />)
-    let messagesElements =  props.messages.map(args => <Message {...args}/>)
+    let dialogsElements = props.dialogs.map(args => <DialogItem {...args} key={Math.random().toString()} />)
+    let messagesElements =  props.messages.map(args => <Message {...args} key={Math.random().toString()}/>)
 
     return (
         <div className={s.dialogs}>

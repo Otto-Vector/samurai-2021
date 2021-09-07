@@ -1,8 +1,27 @@
+
 .dialog {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    padding: 5px;
     color: white;
     font-weight: bold;
 }
 
-.dialog .active {
+.profileName {
+    padding: 0 10px;
+    
+}
+
+.active {
     color: gold;
+    background-image: linear-gradient(45deg, #00556600, #00556650, #00556600 );
+}
+
+.image {
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
 }
