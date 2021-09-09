@@ -1,4 +1,4 @@
-import {posts} from "./PostsData.js"
+import {posts} from "./postsData.js"
 import {dialogs, messages} from "./dialogsData"
 import {friends} from "./friendsData";
 

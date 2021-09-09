@@ -1,3 +1,22 @@
+.messageWrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.image {
+    /*flex-shrink: 25px;*/
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
 .message {
+    display: table;
+    padding: 5px;
+    margin: 5px;
     color: whitesmoke;
+    background-color: #517cbd;
+    border-radius: 5px;
 }

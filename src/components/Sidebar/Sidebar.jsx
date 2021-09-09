@@ -4,7 +4,7 @@ import FriendItem from "./FriendItem/FriendItem";
 
 const Sidebar = (props) => {
 
-  let friendItem = props.friends.map((args)=><FriendItem {...args} />)
+  let friendItem = props.friends.map((args)=><FriendItem key={Math.random()} {...args} />)
 
   return <div className={styles.sidebar}>
     <header className={styles.header}>Friends</header>
