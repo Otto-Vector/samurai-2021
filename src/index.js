@@ -1,14 +1,24 @@
-
 import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import {BrowserRouter} from "react-router-dom";
 
-import {rerenderEntireTree} from "./render";
-import {state, addPost} from "./redux/state";
+import {state, subscriber } from "./redux/state";
 
-const dataBaseToProps = state
-const functions = addPost
+export let rerenderEntireTree = (data) =>
+{
+  ReactDOM.render(<BrowserRouter>
+      <App {...data}/>
+    </BrowserRouter>,
+    document.getElementById('root'));
+}
 
+rerenderEntireTree(state);
 
-rerenderEntireTree(dataBaseToProps, functions);
+subscriber(rerenderEntireTree);
+
 
 serviceWorker.unregister();
 

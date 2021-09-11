@@ -6,10 +6,27 @@ import Message from "./Message/Message";
 
 const Dialogs = (props) => {
 
-let zz = (idd) => {
+  let textarea = React.createRef();
+
+  let addMessage = () => {
+    props.functions.addMessage()
+  }
+
+  let changeMessage = () => {
+    let text = textarea.current.value
+    props.functions.changeMessage(text)
+  }
+
+  let onkey = (event) => {
+    if (event.key === "Enter") {
+      addMessage()
+    }
+  }
+
+  let zz = (idd) => {
         for (let {id, imageURL} of props.dialogs)
            if (id===idd) return imageURL
-}
+  }
 
 
   let dialogsElements = props.dialogs.map(args => <DialogItem {...args} key={Math.random().toString()}/>)
@@ -28,8 +45,14 @@ let zz = (idd) => {
           {messagesElements}
         </div>
           <div className={styles.addField}>
-            <textarea className={styles.textarea}></textarea>
-            <button className={styles.button}>Add message</button>
+            <textarea className={styles.textarea}
+                      ref = {textarea}
+                      onInput={changeMessage}
+                      onKeyDown={onkey}
+                      value={props.newMessageText}/>
+            <button className={styles.button}
+                    onClick={addMessage}
+            >Add message</button>
           </div>
       </div>
     </div>

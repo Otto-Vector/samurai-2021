@@ -1,9 +1,42 @@
 .item {
-  color: greenyellow;
+  display: flex;
+  flex-flow: nowrap row;
+  justify-content: flex-start;
+  align-items: center;
+  color: purple;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.message {
+  padding: 0 10px;
 }
 
 .item img {
   width: 50px;
   height: 50px;
   border-radius: 30px;
+}
+
+.likes {
+  font-weight: normal;
+  font-size: .8em;
+  align-self: stretch;
+  display: flex;
+  flex-flow: nowrap row;
+  align-items: flex-end;
+  user-select: none;
+}
+
+
+.likes span {
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background .3s ease-in-out;
+}
+
+.likes span:hover {
+  background-color: #ffffff50;
+  /*background-image: radial-gradient(white, #ffffff00 80% );*/
 }

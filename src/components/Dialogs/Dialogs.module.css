@@ -22,12 +22,14 @@
 }
 
 .messages {
+
     background-color: #55555530;
     padding: 10px;
     border-radius: 5px;
 
     /*height: 500px;*/
     overflow-y: scroll;
+
 }
 
 .addField {

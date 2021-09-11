@@ -25,14 +25,6 @@ let posts = [
   }
 ]
 
-// let addPost = (postMessage) => {
-//     let newPost = {
-//         id: 5,
-//         imageURL: randomFaceImage(),
-//         message: postMessage,
-//         likesCount: 0
-//     }
-//     posts.push(newPost)
-//   rerenderEntireTree()
-// }
-export {posts, randomFaceImage}
+let newPostText = 'something'
+
+export {posts, newPostText, randomFaceImage}

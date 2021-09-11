@@ -6,9 +6,13 @@ const Post = (props) => {
   return (
     <div className={styles.item}>
       <img src={props.imageURL} alt='postImage' />
+      <div className={styles.message}>
         { props.message }
-          <div>
-        <span>like</span> { props.likesCount }
+      </div>
+      <div className={styles.likes}>
+        {/*eslint-disable-next-line*/}
+        <span role="img">&#128156;</span>
+        { props.likesCount }
       </div>
     </div>
   )

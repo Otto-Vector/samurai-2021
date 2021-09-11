@@ -1,6 +1,27 @@
-
 .postsBlock {
+    padding: 10px;
+}
 
+.addPostBlock {
+    display: flex;
+    flex-flow: nowrap row;
+    justify-content: flex-start;
+    justify-items: flex-start;
+    align-items: flex-start;
+}
+
+.textarea {
+    padding: 10px;
+    width: 300px;
+    height: 80px;
+    background: #517cbd85;
+    border-color: #517cbd;
+    border-radius: 5px;
+    resize: none;
+}
+
+.buttonAddPost {
+    margin: 10px;
     padding: 10px;
 }
 
