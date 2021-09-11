@@ -1,3 +1,4 @@
+
 let imageURL = 'https://source.unsplash.com/random/64x64?face'
 
 const randPos = (min=5,max=850) => Math.floor(Math.random() * (max - min + 1)) + min
@@ -24,4 +25,14 @@ let posts = [
   }
 ]
 
-export {posts}
+// let addPost = (postMessage) => {
+//     let newPost = {
+//         id: 5,
+//         imageURL: randomFaceImage(),
+//         message: postMessage,
+//         likesCount: 0
+//     }
+//     posts.push(newPost)
+//   rerenderEntireTree()
+// }
+export {posts, randomFaceImage}

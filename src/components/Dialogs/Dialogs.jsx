@@ -10,12 +10,11 @@ let zz = (idd) => {
         for (let {id, imageURL} of props.dialogs)
            if (id===idd) return imageURL
 }
-console.log(zz(1))
 
 
   let dialogsElements = props.dialogs.map(args => <DialogItem {...args} key={Math.random().toString()}/>)
   let messagesElements = props.messages.map(
-    (args,index) =>
+    (args) =>
     <Message {...args} key={Math.random().toString()} image={zz(args.id)}/>)
 
   return (
