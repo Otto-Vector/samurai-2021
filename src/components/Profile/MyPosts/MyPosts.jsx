@@ -7,12 +7,15 @@ const MyPosts = (props) => {
   let newPostElement = React.createRef();
 
   let addPost = () => {
-    props.functions.addPost()
+    // props.functions.addPost()
+    props.dispatch({ type: 'ADD-POST' })
   }
 
   let onPostChange = () => {
     let text = newPostElement.current.value
-    props.functions.changePostText(text)
+    // props.functions.changePostText(text)
+    let action = { type: 'CHANGE-POST-TEXT', text };
+    props.dispatch(action)
   }
 
   let postsElements = props.posts.map(args => <Post {...args} key={Math.random().toString()}/>)

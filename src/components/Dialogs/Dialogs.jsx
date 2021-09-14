@@ -9,12 +9,15 @@ const Dialogs = (props) => {
   let textarea = React.createRef();
 
   let addMessage = () => {
-    props.functions.addMessage()
+    // props.functions.addMessage()
+    let type = 'ADD-MESSAGE'
+    props.dispatch({type})
   }
 
   let changeMessage = () => {
     let text = textarea.current.value
-    props.functions.changeMessage(text)
+    // props.functions.changeMessage(text)
+    props.dispatch({type: 'CHANGE-MESSAGE', text})
   }
 
   let onkey = (event) => {
