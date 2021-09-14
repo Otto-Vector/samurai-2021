@@ -5,19 +5,19 @@ import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
 
-import {state, subscriber } from "./redux/state";
+import {store} from "./redux/store";
 
 export let rerenderEntireTree = (data) =>
 {
   ReactDOM.render(<BrowserRouter>
-      <App {...data}/>
+      <App {...store.state()} dispatch={store.dispatch}/>
     </BrowserRouter>,
     document.getElementById('root'));
 }
 
-rerenderEntireTree(state);
+rerenderEntireTree(store);
 
-subscriber(rerenderEntireTree);
+store.subscriber(rerenderEntireTree);
 
 
 serviceWorker.unregister();

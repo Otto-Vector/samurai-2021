@@ -9,14 +9,12 @@ const Dialogs = (props) => {
   let textarea = React.createRef();
 
   let addMessage = () => {
-    // props.functions.addMessage()
     let type = 'ADD-MESSAGE'
     props.dispatch({type})
   }
 
   let changeMessage = () => {
     let text = textarea.current.value
-    // props.functions.changeMessage(text)
     props.dispatch({type: 'CHANGE-MESSAGE', text})
   }
 
@@ -50,7 +48,7 @@ const Dialogs = (props) => {
           <div className={styles.addField}>
             <textarea className={styles.textarea}
                       ref = {textarea}
-                      onInput={changeMessage}
+                      onChange={changeMessage}
                       onKeyDown={onkey}
                       value={props.newMessageText}/>
             <button className={styles.button}
