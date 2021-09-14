@@ -1,4 +1,4 @@
-import {posts, randomFaceImage, newPostText} from "./postsData.js"
+import {posts, newPostText} from "./postsData.js"
 import {dialogs, messages} from "./dialogsData"
 import {friends} from "./friendsData";
 
@@ -6,58 +6,67 @@ let rerenderEntireTree = () => {
   console.log('notHotNotSet')
 }
 
-let profileFunctions = {
-  addPost : () => {
-    let newPost = {
-      id: 5,
-      imageURL: randomFaceImage(),
-      message: state.profilePage.newPostText,
-      likesCount: 0
-    }
+let thisProfileFunctions = {
+  addPost () {
+    let newPost = { ...this.posts[0] }
+    newPost.message = this.newPostText
+    newPost.likesCount = 0
 
-    state.profilePage.posts.push(newPost)
-    state.profilePage.newPostText = ''
+    this.posts.push(newPost)
+    this.newPostText = ''
 
     rerenderEntireTree(state)
   },
-  changePostText : (text) => {
-    state.profilePage.newPostText = text
+  changePostText (text) {
+    this.newPostText = text
     rerenderEntireTree(state)
 
   }
 }
 
-let dialogsFunctions = {
-  addMessage : () => {
-    let newMessage ={
-      id : 1,
-      message: state.dialogsPage.newMessageText
-    }
-    state.dialogsPage.messages.unshift(newMessage)
-    state.dialogsPage.newMessageText = ''
+
+let thisDialogsFunctions = {
+  addMessage() {
+    let newMessage ={ ...this.messages[0] }
+    newMessage.message = this.newMessageText
+
+    this.messages.unshift(newMessage)
+    this.newMessageText = ''
     rerenderEntireTree(state)
   },
-  changeMessage : (text) => {
-    state.dialogsPage.newMessageText = text
+  changeMessage (text){
+    this.newMessageText = text
     rerenderEntireTree(state)
   }
 }
+
 const state = {
   profilePage: {
     posts: posts,
     newPostText : newPostText,
-    functions : profileFunctions
+    functions : thisProfileFunctions
   },
   dialogsPage: {
     dialogs: dialogs,
     messages: messages,
     newMessageText : '',
-    functions: dialogsFunctions
+    functions: thisDialogsFunctions
   },
   sidebar: {
     friends: friends
   }
 }
+
+function bindAllfunctions(bind) {
+    for (let key in bind.functions) {
+    if (typeof bind.functions[key] == 'function') {
+      bind.functions[key] = bind.functions[key].bind(bind);
+    }
+  }
+}
+
+bindAllfunctions(state.profilePage)
+bindAllfunctions(state.dialogsPage)
 
 let subscriber = (observer) => {
   rerenderEntireTree = observer
