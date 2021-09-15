@@ -39,7 +39,7 @@ let dialogs = [
 
 let messages = [
     {id: 1, message: 'Hi'},
-    {id: 2, message: 'How is your it-kamasutra?'},
+    {id: 5, message: 'How is your it-kamasutra?(5)'},
     {id: 3, message: 'Yo'},
     {id: 4, message: 'YoMi'},
     {id: 4, message: 'YoG'},
@@ -49,13 +49,8 @@ let messages = [
     {id: 3, message: 'Yo'},
     {id: 4, message: 'YoMi'},
     {id: 4, message: 'YoG'},
-    {id: 6, message: 'YoZh'},
-  {id: 1, message: 'Hi'},
-    {id: 2, message: 'How is your it-kamasutra?'},
-    {id: 3, message: 'Yo'},
-    {id: 4, message: 'YoMi'},
-    {id: 4, message: 'YoG'},
-    {id: 6, message: 'YoZh'},
+    {id: 5, message: 'YoZh'},
+
 ]
 
 export {dialogs, messages}

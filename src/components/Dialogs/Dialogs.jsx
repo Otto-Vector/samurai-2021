@@ -2,28 +2,30 @@ import React from 'react';
 import styles from './Dialogs.module.css';
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
+import {addMessageActionCreator, changeMessageActionCreator} from "../../redux/dialogs-reducer";
 
 
 const Dialogs = (props) => {
 
-  let textarea = React.createRef();
-
   let addMessage = () => {
-    let type = 'ADD-MESSAGE'
-    props.dispatch({type})
+    let action = addMessageActionCreator()
+    props.dispatch(action)
   }
 
-  let changeMessage = () => {
-    let text = textarea.current.value
-    props.dispatch({type: 'CHANGE-MESSAGE', text})
+  let changeMessage = (e) => {
+    let text = e.target.value
+    let action = changeMessageActionCreator(text)
+    props.dispatch(action)
   }
 
+  //считываем alt+Enter(13) для добавления ссобщения
   let onkey = (event) => {
-    if (event.key === "Enter") {
+    if (event.keyCode === 13 && event.altKey) {
       addMessage()
     }
   }
 
+  //хардкодим сопоставление иконок айдишникам
   let zz = (idd) => {
         for (let {id, imageURL} of props.dialogs)
            if (id===idd) return imageURL
@@ -47,7 +49,6 @@ const Dialogs = (props) => {
         </div>
           <div className={styles.addField}>
             <textarea className={styles.textarea}
-                      ref = {textarea}
                       onChange={changeMessage}
                       onKeyDown={onkey}
                       value={props.newMessageText}/>
