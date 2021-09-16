@@ -7,6 +7,8 @@ import {addMessageActionCreator, changeMessageActionCreator} from "../../redux/d
 
 const Dialogs = (props) => {
 
+  let textMessagePlaceholder = 'Enter new message (Alt+Enter to send)'
+
   let addMessage = () => {
     let action = addMessageActionCreator()
     props.dispatch(action)
@@ -49,6 +51,7 @@ const Dialogs = (props) => {
         </div>
           <div className={styles.addField}>
             <textarea className={styles.textarea}
+                      placeholder={textMessagePlaceholder}
                       onChange={changeMessage}
                       onKeyDown={onkey}
                       value={props.newMessageText}/>

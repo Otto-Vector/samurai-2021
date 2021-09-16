@@ -1,15 +1,22 @@
+import {newPostText, posts} from "./postsData";
+
+
 const ADD_POST = 'ADD-POST'
 const CHANGE_POST_TEXT = 'CHANGE-POST-TEXT'
 
-const profileReducer = (state, action) => {
+let initialState = {
+  posts: posts,
+  newPostText: newPostText
+}
+
+const profileReducer = (state = initialState, action) => {
 
   let profileFunctions = {
     addPost () {
-      let newPost = { ...state.posts[0] }
-      newPost.message = state.newPostText
-      newPost.likesCount = 0
-
-      state.posts.push(newPost)
+          let newPost = {...state.posts[0]}
+          newPost.message = state.newPostText
+          newPost.likesCount = 0
+          if (state.newPostText) state.posts.push(newPost)
       state.newPostText = ''
     },
 
