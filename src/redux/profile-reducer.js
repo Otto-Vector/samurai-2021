@@ -1,12 +1,12 @@
-import {newPostText, posts} from "./postsData";
-
+import {newPostText, posts, newPostTextPlaceholder} from "./postsData";
 
 const ADD_POST = 'ADD-POST'
 const CHANGE_POST_TEXT = 'CHANGE-POST-TEXT'
 
 let initialState = {
   posts: posts,
-  newPostText: newPostText
+  newPostText: newPostText,
+  newPostTextPlaceholder: newPostTextPlaceholder
 }
 
 const profileReducer = (state = initialState, action) => {

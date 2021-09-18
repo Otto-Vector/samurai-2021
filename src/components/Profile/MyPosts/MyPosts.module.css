@@ -27,6 +27,6 @@
 
 .posts {
     margin-top: 10px;
-    overflow: hidden;
-    overflow-y: scroll;
+    /*overflow: hidden;*/
+    /*overflow-y: scroll;*/
 }

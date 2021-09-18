@@ -2,29 +2,26 @@ import React from 'react';
 import styles from './Dialogs.module.css';
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {addMessageActionCreator, changeMessageActionCreator} from "../../redux/dialogs-reducer";
 
 
 const Dialogs = (props) => {
 
-  let textMessagePlaceholder = 'Enter new message (Alt+Enter to send)'
+  let textMessagePlaceholder = props.textMessagePlaceholder
+  let newMessageText = props.newMessageText
 
   let addMessage = () => {
-    let action = addMessageActionCreator()
-    props.dispatch(action)
+    props.addMessage()
   }
-
-  let changeMessage = (e) => {
-    let text = e.target.value
-    let action = changeMessageActionCreator(text)
-    props.dispatch(action)
-  }
-
   //считываем alt+Enter(13) для добавления ссобщения
   let onkey = (event) => {
     if (event.keyCode === 13 && event.altKey) {
       addMessage()
     }
+  }
+
+  let changeMessage = (e) => {
+    let text = e.target.value
+    props.changeMessage(text)
   }
 
   //хардкодим сопоставление иконок айдишникам
@@ -36,8 +33,7 @@ const Dialogs = (props) => {
 
   let dialogsElements = props.dialogs.map(args => <DialogItem {...args} key={Math.random().toString()}/>)
   let messagesElements = props.messages.map(
-    (args) =>
-    <Message {...args} key={Math.random().toString()} image={zz(args.id)}/>)
+    args => <Message {...args} key={Math.random().toString()} image={zz(args.id)}/>)
 
   return (
     <div className={styles.dialogs}>
@@ -54,7 +50,7 @@ const Dialogs = (props) => {
                       placeholder={textMessagePlaceholder}
                       onChange={changeMessage}
                       onKeyDown={onkey}
-                      value={props.newMessageText}/>
+                      value={newMessageText}/>
             <button className={styles.button}
                     onClick={addMessage}
             >Add message</button>

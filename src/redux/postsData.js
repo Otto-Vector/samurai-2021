@@ -1,4 +1,3 @@
-
 let imageURL = 'https://source.unsplash.com/random/64x64?face'
 
 const randPos = (min=5,max=850) => Math.floor(Math.random() * (max - min + 1)) + min
@@ -25,6 +24,8 @@ let posts = [
   }
 ]
 
-let newPostText = 'something'
+let newPostText = ''
+let newPostTextPlaceholder = 'add new post here'
 
-export {posts, newPostText, randomFaceImage}
+
+export {posts, newPostText, newPostTextPlaceholder}

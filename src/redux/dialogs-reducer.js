@@ -7,12 +7,13 @@ let initialState = {
       dialogs: dialogs,
       messages: messages,
       newMessageText : '',
+      textMessagePlaceholder : 'Enter new message (Alt+Enter to send)'
     }
 
 
-const dialogReducer = (state = initialState, action) => {
+const dialogsReducer = (state = initialState, action) => {
 
-  let dialogFunctions = {
+  let dialogsFunctions = {
 
     addMessage() {
       let newMessage = {...state.messages[0]}
@@ -29,11 +30,11 @@ const dialogReducer = (state = initialState, action) => {
   switch (action.type) {
 
     case ADD_MESSAGE : {
-      dialogFunctions.addMessage()
+      dialogsFunctions.addMessage()
       break
     }
     case CHANGE_MESSAGE : {
-      dialogFunctions.changeMessage(action.text)
+      dialogsFunctions.changeMessage(action.text)
       break
     }
     default : {
@@ -47,4 +48,4 @@ const dialogReducer = (state = initialState, action) => {
 export const addMessageActionCreator = () => ({type: ADD_MESSAGE})
 export const changeMessageActionCreator = (text) => ({type: CHANGE_MESSAGE, text})
 
-export default dialogReducer;
+export default dialogsReducer;

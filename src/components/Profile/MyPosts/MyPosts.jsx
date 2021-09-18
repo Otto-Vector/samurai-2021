@@ -1,21 +1,19 @@
 import React from 'react';
 import classes from './MyPosts.module.css';
 import Post from './Post/Post';
-import {addPostActionCreator, changePostActionCreator} from "../../../redux/profile-reducer";
 
 
 const MyPosts = (props) => {
+  let newPostText = props.newPostText;
+  let newPostTextPlaceholder = props.newPostTextPlaceholder
 
   let addPost = () => {
-    let action = addPostActionCreator()
-
-    props.dispatch(action)
+    props.addPost()
   }
 
   let onPostChange = (e) => {
     let text = e.target.value
-    let action = changePostActionCreator(text);
-    props.dispatch(action)
+    props.onPostChange(text)
   }
 
   let postsElements = props.posts.map(args => <Post {...args} key={Math.random().toString()}/>)
@@ -27,11 +25,12 @@ const MyPosts = (props) => {
         <div className={classes.addPostBlock}>
           <textarea className={classes.textarea}
                     onChange={onPostChange}
-                    value={props.newPostText}/>
+                    value={newPostText}
+                    placeholder={newPostTextPlaceholder}
+          />
 
           <button className={classes.buttonAddPost}
                   onClick={addPost}>Add post</button>
-
         </div>
       </div>
       <div className={classes.posts}>
