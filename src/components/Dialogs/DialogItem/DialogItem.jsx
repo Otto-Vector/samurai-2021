@@ -9,7 +9,6 @@ const DialogItem = (props) => {
             <img className={styles.image} alt="dialogImage" src={props.imageURL}/>
             <NavLink to={path} className={styles.profileName} activeClassName={styles.active}>{props.name}</NavLink>
         </div>
-
 }
 
 export default DialogItem;

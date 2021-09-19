@@ -4,6 +4,7 @@ import Post from './Post/Post';
 
 
 const MyPosts = (props) => {
+  
   let newPostText = props.newPostText;
   let newPostTextPlaceholder = props.newPostTextPlaceholder
 

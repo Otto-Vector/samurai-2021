@@ -37,9 +37,7 @@ const dialogsReducer = (state = initialState, action) => {
       dialogsFunctions.changeMessage(action.text)
       break
     }
-    default : {
-      return state
-    }
+    default : { return state }
   }
 
   return state

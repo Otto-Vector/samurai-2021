@@ -6,7 +6,8 @@ const FriendItem = (props) => {
   let path = "/profile/" + props.id;
 
   return <div className={styles.friendItem}>
-      <img className={styles.image} alt="dialogImage" src={props.imageURL}/>
+      <img onClick={()=>{props.onClickFriends(props.id)}}
+           className={styles.image} alt="dialogImage" src={props.imageURL}/>
       <NavLink to={path} className={styles.name}>{props.name}</NavLink>
   </div>
 

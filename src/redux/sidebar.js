@@ -22,4 +22,6 @@ let friends = [
   },
 ]
 
-export {friends}
+let header = 'Friends'
+
+export {friends, header}
