@@ -22,9 +22,9 @@ const sidebarReducer = (state = initialState, action) => {
       sidebarFunctions.onClickFriends(action.id)
       break
     }
-    default : { return state }
+    default : { return {...state} }
   }
-  return state
+  return {...state}
 }
 
 export let onClickFriendsActionCreator = id => ({type: ON_CLICK_FRIENDS, id})

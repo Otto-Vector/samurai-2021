@@ -13,31 +13,45 @@ let initialState = {
 
 const dialogsReducer = (state = initialState, action) => {
 
-  let dialogsFunctions = {
+  let stateCopyFunction = {
 
     addMessage() {
-      let newMessage = {...state.messages[0]}
-      newMessage.message = state.newMessageText
-      if (state.newMessageText) state.messages.unshift(newMessage)
-      state.newMessageText = ''
+      let rand = (Math.random() * 10).toFixed(0)
+      let newMessage = {
+        id: rand,
+        message: state.newMessageText || `empty ${rand}`
+      }
+
+      return {
+        ...state,
+        newMessageText: '',
+        messages: [ newMessage, ...state.messages ]
+      }
+
     },
 
     changeMessage(text) {
-      state.newMessageText = text
+      return {
+        ...state,
+        newMessageText: text
+      }
+
     }
   }
+
 
   switch (action.type) {
 
     case ADD_MESSAGE : {
-      dialogsFunctions.addMessage()
-      break
+      return stateCopyFunction.addMessage()
+
     }
     case CHANGE_MESSAGE : {
-      dialogsFunctions.changeMessage(action.text)
-      break
+      return stateCopyFunction.changeMessage( action.text )
     }
-    default : { return state }
+    default : {
+      // return {...state}
+    }
   }
 
   return state

@@ -11,35 +11,48 @@ let initialState = {
 
 const profileReducer = (state = initialState, action) => {
 
-  let profileFunctions = {
-    addPost () {
-          let newPost = {...state.posts[0]}
-          newPost.message = state.newPostText
-          newPost.likesCount = 0
-          if (state.newPostText) state.posts.push(newPost)
-      state.newPostText = ''
-    },
+  let stateCopyFunction = (stateIn) => {
 
-    changePostText (text) {
-      state.newPostText = text
+      let stateCopy = {
+        ...stateIn,
+        posts: [...stateIn.posts]
+      }
+
+    return {
+      addPost() {
+        let newPost = {...stateCopy.posts[0]}
+        newPost.message = stateCopy.newPostText
+        newPost.likesCount = 0
+
+        if (stateCopy.newPostText) stateCopy.posts.push(newPost)
+        stateCopy.newPostText = ''
+
+        return stateCopy
+      },
+
+      changePostText(text) {
+        stateCopy.newPostText = text
+        return stateCopy
+      }
     }
   }
-   switch (action.type) {
-      case ADD_POST : {
-        profileFunctions.addPost()
-        break
-      }
-      case CHANGE_POST_TEXT : {
-        profileFunctions.changePostText(action.text)
-        break
-      }
-     default : { return state }
+
+  switch (action.type) {
+    case ADD_POST : {
+      return stateCopyFunction(state).addPost()
     }
+    case CHANGE_POST_TEXT : {
+      return stateCopyFunction(state).changePostText(action.text)
+    }
+    default : {
+      // return state
+    }
+  }
 
   return state
 }
 
-export const addPostActionCreator = () => ({ type: ADD_POST })
-export const changePostActionCreator = (text) => ({ type: CHANGE_POST_TEXT, text })
+export const addPostActionCreator = () => ({type: ADD_POST})
+export const changePostActionCreator = (text) => ({type: CHANGE_POST_TEXT, text})
 
 export default profileReducer;

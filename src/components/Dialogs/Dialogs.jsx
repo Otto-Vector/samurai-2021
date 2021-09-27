@@ -27,7 +27,7 @@ const Dialogs = (props) => {
   //хардкодим сопоставление иконок айдишникам
   let zz = (idd) => {
         for (let {id, imageURL} of props.dialogs)
-           if (id===idd) return imageURL
+           if (id===+idd) return imageURL
   }
 
 
