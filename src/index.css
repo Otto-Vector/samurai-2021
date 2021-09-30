@@ -17,3 +17,24 @@ a {
   color: unset;
   text-decoration: none;
 }
+
+/*резеты*/
+body, canvas, div, input, button, select, textarea {
+    margin: 0;
+    padding: 0;
+}
+
+select, input {
+     appearance: none;
+}
+
+/*сброс стилей инпутов*/
+input, button, select, textarea {
+  outline: 0;
+  border: none;
+}
+
+::-moz-focus-inner {
+  border: 0;
+  outline: 0;
+}

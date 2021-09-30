@@ -1,9 +1,83 @@
 .users {
-    background: blue;
+    background: bisque;
+    padding: 10px;
+}
+
+.user {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: #517cbd80;
+    padding: 5px;
+}
+
+.logoButtonWrapper {
+    height: 100px;
+    width: 80px;
+    background-color: #517cbd;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    justify-items: center;
+}
+
+.logoWrapper {
+    padding-bottom: 10px;
+    height: 50px;
 }
 
 .image {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+}
+
+.followButton {
+    height: 20px;
+    width: 70px;
+    border-radius: 3px;
+    background-color: aquamarine;
+    font-weight: bold;
+    padding: 3px;
+}
+
+.unfollow {
+    background-color: gray;
+}
+
+.userInfoWrapper {
+    background-color: antiquewhite;
+    border-radius: 15px;
+    padding: 5px 10px;
+    margin-left: 5px;
+    width: 400px;
+    height: 70px;
+    border: 1px gray solid;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.userNameStatusWrapper {
+    display: flex;
+    flex-flow: nowrap column;
+    justify-content: space-between;
+}
+.userFullname {
+    font-weight: bold;
+}
+
+.userStatus {
+
+    /*font-style: italic;*/
+    margin-bottom: 5px;
+}
+
+.locationWrapper {
+    text-align: right;
+    padding-right: 10px;
 }

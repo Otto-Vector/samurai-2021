@@ -9,12 +9,12 @@ let initialState = users
 let usersReducer = (state = initialState, action) => {
 
   let functions = {
-    fullowUser(id) {
+    fullowUser(id, bool = true) {
       return {
         ...state,
         users: state.users.map(u => {
           if (u.id === id) {
-            return {...u, followed: true}
+            return {...u, followed: bool}
           }
           return u
         })
@@ -22,15 +22,7 @@ let usersReducer = (state = initialState, action) => {
     },
 
     unfullowUser(id) {
-      return {
-        ...state,
-        users: state.users.map(u => {
-          if (u.id === id) {
-            return {...u, followed: false}
-          }
-          return u
-        })
-      }
+      return functions.fullowUser(id, false)
     }
   }
 

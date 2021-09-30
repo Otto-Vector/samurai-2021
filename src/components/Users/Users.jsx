@@ -31,29 +31,28 @@ const Users = (props) => {
   }
   return (
     <div className={styles.users}>
-      {props.users.map(u => <div key={u.id}>
-        <span>
-          <div >
+      {props.users.map(u => <div className={styles.user} key={u.id}>
+        <div className={styles.logoButtonWrapper}>
+          <div className={styles.logoWrapper}>
             <img className={styles.image} src={u.imageUrl} alt='userFace'/>
           </div>
           <div>
-
             { u.followed ?
-              <button onClick={()=> {props.unfollow(u.id)}}>Unfollow</button> :
-              <button onClick={()=> {props.follow1(u.id)}}>Follow</button>
+              <button className={styles.followButton+' '+styles.unfollow} onClick={()=> {props.unfollow(u.id)}}>Unfollow</button> :
+              <button className={styles.followButton} onClick={()=> {props.follow(u.id)}}>Follow</button>
             }
           </div>
-        </span>
-        <span>
-          <span>
-            <div>{u.fullName}</div>
-            <div>{u.status}</div>
-          </span>
-          <span>
-            <div>{u.location.country}</div>
+        </div>
+        <div className={styles.userInfoWrapper}>
+          <div className={styles.userNameStatusWrapper}>
+            <div className={styles.userFullname}>{u.fullName}</div>
+            <div className={styles.userStatus}>{u.status}</div>
+          </div>
+          <div className={styles.locationWrapper}>
+            <div>{u.location.country+','}</div>
             <div>{u.location.city}</div>
-          </span>
-        </span>
+          </div>
+        </div>
       </div>)}
     </div>
   )
