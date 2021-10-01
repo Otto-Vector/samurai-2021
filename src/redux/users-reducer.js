@@ -3,6 +3,8 @@ import {users} from "./allUsersData";
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
+const CHANGE_PAGE = 'CHANGE-PAGE'
+const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
 
 let initialState = users
 
@@ -23,6 +25,20 @@ let usersReducer = (state = initialState, action) => {
 
     unfullowUser(id) {
       return functions.fullowUser(id, false)
+    },
+
+    changePage(page) {
+      return {
+        ...state,
+        currentPage: page
+      }
+    },
+
+    setTotalUsersCount(totalUsersCount) {
+      return {
+        ...state,
+        totalUsersCount
+      }
     }
   }
 
@@ -35,8 +51,13 @@ let usersReducer = (state = initialState, action) => {
     case SET_USERS:
       return {
         ...state,
-        users: [ ...state.users, ...action.users ]
+        users: action.users
       }
+    case CHANGE_PAGE:
+      return functions.changePage(action.page)
+    case SET_TOTAL_USERS_COUNT:
+      return functions.setTotalUsersCount(action.totalUsersCount)
+
     default: {
       return state
     }
@@ -48,5 +69,7 @@ let usersReducer = (state = initialState, action) => {
 export const followActionCreator = (userId) => ({type: FOLLOW, userId})
 export const unfollowActionCreator = (userId) => ({type: UNFOLLOW, userId})
 export const setUsersActionCreator = (users) => ({type: SET_USERS, users})
+export const changePageActionCreator = (page) => ({type: CHANGE_PAGE, page})
+export const setTotalUsersCountActionCreator = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount })
 
 export default usersReducer
