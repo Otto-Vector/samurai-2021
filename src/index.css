@@ -13,6 +13,7 @@ code {
     monospace;
 }
 
+
 a {
   color: unset;
   text-decoration: none;
@@ -37,4 +38,8 @@ input, button, select, textarea {
 ::-moz-focus-inner {
   border: 0;
   outline: 0;
+}
+
+button {
+  cursor: pointer;
 }
