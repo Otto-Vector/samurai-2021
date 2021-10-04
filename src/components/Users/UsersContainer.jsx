@@ -45,10 +45,10 @@ class UsersClassContainer extends React.Component {
     totalUsersCount = {this.props.totalUsersCount}
     pageSize = {this.props.pageSize}
     currentPage = {this.props.currentPage}
-    follow={this.props.follow}
-    unfollow={this.props.unfollow}
+    follow = {this.props.follow}
+    unfollow = {this.props.unfollow}
     pageSelect = {this.pageSelect}
-  />}
+  /> }
 }
 
 

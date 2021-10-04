@@ -1,31 +1,19 @@
 import React from "react";
 import styles from "./Users.module.css"
+import Pagination from "./Pagination/Pagination"
 // import {randomFaceImage} from "../../redux/randomFace";
 import userNoImage from '../../assets/images/userNoImage.png'
 
 
 const Users = (props) => {
 
-    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
-    // let pagesCount = Math.ceil(100 / props.pageSize)
-    let pages = []
-    for (let i=1; i<= pagesCount; i++) {
-      pages.push(i)
-    }
-
     return (
     <div className={styles.users}>
-      <div className={styles.pagination}>
-        {
-          pages.map(p => {
-            return <span
-              key = {p*0.3}
-              className={`${styles.page} ${props.currentPage===p && styles.selectedPage}`}
-              onClick={ (e)=>{ props.pageSelect(p) } }
-            >{p}</span>
-        })
-        }
-      </div>
+      <Pagination totalCount = {props.totalUsersCount}
+                  pageSize = {props.pageSize}
+                  currentPage = {props.currentPage}
+                  pageSelect = {props.pageSelect}
+      />
       {props.users.map(u => <div className={styles.user} key={u.id}>
         <div className={styles.logoButtonWrapper}>
           <div className={styles.logoWrapper}>

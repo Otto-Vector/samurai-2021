@@ -1,23 +1,7 @@
 .users {
     background: bisque;
     padding: 10px;
-}
-
-.pagination {
-    margin-bottom: 10px;
-}
-
-.page {
-    cursor: pointer;
-    padding: 0 5px;
-    margin: 5px;
-    background-color: aquamarine;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.selectedPage {
-    background-color: red;
+    width: 1000px;
 }
 
 

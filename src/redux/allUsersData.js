@@ -2,7 +2,7 @@
 
 let users = {
   users : [ ],
-  pageSize: 4,
+  pageSize: 6,
   totalUsersCount: 0,
   currentPage: 1
 }

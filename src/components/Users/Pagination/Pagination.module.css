@@ -1,0 +1,22 @@
+.pagination {
+    margin-bottom: 10px;
+    display: flex;
+    text-align: center;
+    overflow: hidden;
+    overflow-x: scroll;
+    width: 100%;
+}
+
+.page {
+    cursor: pointer;
+    padding: 0 5px;
+    margin: 5px;
+    background-color: aquamarine;
+    border-radius: 3px;
+    border: 1px solid lightblue;
+    /*min-width: 15px;*/
+}
+
+.selectedPage {
+    background-color: red;
+}
