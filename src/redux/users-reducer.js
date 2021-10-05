@@ -1,5 +1,3 @@
-import {users} from "./allUsersData";
-
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
@@ -7,7 +5,14 @@ const CHANGE_PAGE = 'CHANGE-PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
 const TOGGLE_IS_FETCHING = 'TOGGLE-IS-FETCHING'
 
-let initialState = users
+let initialState = {
+  users: [],
+  pageSize: 6,
+  totalUsersCount: 0,
+  currentPage: 1,
+  isFetching: true,
+}
+
 
 let usersReducer = (state = initialState, action) => {
 
@@ -28,7 +33,7 @@ let usersReducer = (state = initialState, action) => {
       return functions.fullowUser(id, false)
     },
 
-    setUsers(users){
+    setUsers(users) {
       return {
         ...state,
         users: users
@@ -83,7 +88,7 @@ export const follow = (userId) => ({type: FOLLOW, userId})
 export const unfollow = (userId) => ({type: UNFOLLOW, userId})
 export const setUsers = (users) => ({type: SET_USERS, users})
 export const changePage = (page) => ({type: CHANGE_PAGE, page})
-export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount })
-export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching })
+export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount})
+export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
 
 export default usersReducer

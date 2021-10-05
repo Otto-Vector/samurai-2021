@@ -1,14 +1,60 @@
-import {dialogs, messages} from "./dialogsData";
+import {randomFaceImage} from "./randomFace";
 
 const ADD_MESSAGE = 'ADD-MESSAGE'
 const CHANGE_MESSAGE = 'CHANGE-MESSAGE'
 
+
 let initialState = {
-      dialogs: dialogs,
-      messages: messages,
-      newMessageText : '',
-      textMessagePlaceholder : 'Enter new message (Alt+Enter to send)'
+  dialogs: [
+    {
+      id: 1,
+      name: 'Dimych',
+      imageURL: randomFaceImage(1),
+    },
+    {
+      id: 2,
+      name: 'Andrew',
+      imageURL: randomFaceImage(2),
+    },
+    {
+      id: 3,
+      name: 'Sveta',
+      imageURL: randomFaceImage(3),
+    },
+    {
+      id: 4,
+      name: 'Sasha',
+      imageURL: randomFaceImage(4),
+    },
+    {
+      id: 5,
+      name: 'Viktor',
+      imageURL: randomFaceImage(5),
+    },
+    {
+      id: 6,
+      name: 'Valera',
+      imageURL: randomFaceImage(6),
     }
+  ],
+  messages: [
+    {id: 1, message: 'Hi'},
+    {id: 5, message: 'How is your it-kamasutra?(5)'},
+    {id: 3, message: 'Yo'},
+    {id: 4, message: 'YoMi'},
+    {id: 4, message: 'YoG'},
+    {id: 6, message: 'YoZh'},
+    {id: 1, message: 'Hi'},
+    {id: 2, message: 'How is your it-kamasutra?'},
+    {id: 3, message: 'Yo'},
+    {id: 4, message: 'YoMi'},
+    {id: 4, message: 'YoG'},
+    {id: 5, message: 'YoZh'},
+
+  ],
+  newMessageText: '',
+  textMessagePlaceholder: 'Enter new message (Alt+Enter to send)'
+}
 
 
 const dialogsReducer = (state = initialState, action) => {
@@ -25,7 +71,7 @@ const dialogsReducer = (state = initialState, action) => {
       return {
         ...state,
         newMessageText: '',
-        messages: [ newMessage, ...state.messages ]
+        messages: [newMessage, ...state.messages]
       }
 
     },
@@ -47,7 +93,7 @@ const dialogsReducer = (state = initialState, action) => {
 
     }
     case CHANGE_MESSAGE : {
-      return stateCopyFunction.changeMessage( action.text )
+      return stateCopyFunction.changeMessage(action.text)
     }
     default : {
       // return {...state}

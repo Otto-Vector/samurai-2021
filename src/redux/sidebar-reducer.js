@@ -1,10 +1,24 @@
-import {friends, header} from "./sidebar";
-
 const ON_CLICK_FRIENDS = "ON-CLICK-FRIENDS"
 
 let initialState = {
-      friends: friends,
-      header: header,
+      friends: [
+        {
+          id: 32,
+          imageURL: randomFaceImage(),
+          name : 'Alex',
+        },
+        {
+          id: 33,
+          imageURL: randomFaceImage(),
+          name : 'Max',
+        },
+        {
+          id: 38,
+          imageURL: randomFaceImage(),
+          name : 'Aton',
+        },
+      ],
+      header: 'Friends',
 }
 
 const sidebarReducer = (state = initialState, action) => {
