@@ -13,7 +13,7 @@ import Preloader from "../common/Preloader/Preloader";
 class UsersClassContainer extends React.Component {
 
   getUsers = (page) => {
-    this.props.toggleFetching(true)
+    this.props.toggleIsFetching(true)
       axios.get(
         `https://social-network.samuraijs.com/api/1.0/users?count=${
           this.props.pageSize}&page=${page}`)
@@ -22,7 +22,7 @@ class UsersClassContainer extends React.Component {
           this.props.setUsers(users)
           if (!this.props.totalUsersCount)
             this.props.setTotalUsersCount(response.data.totalCount)
-          this.props.toggleFetching(false)
+          this.props.toggleIsFetching(false)
         })
   }
 
@@ -43,7 +43,9 @@ class UsersClassContainer extends React.Component {
 
   render () {
     return <>
+
       {this.props.isFetching ? <Preloader /> : null}
+
       <Users users = {this.props.users}
                   totalUsersCount = {this.props.totalUsersCount}
                   pageSize = {this.props.pageSize}

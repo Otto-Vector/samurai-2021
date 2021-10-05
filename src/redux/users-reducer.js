@@ -49,7 +49,7 @@ let usersReducer = (state = initialState, action) => {
       }
     },
 
-    toggleFetching(isFetching) {
+    toggleIsFetching(isFetching) {
       return {
         ...state,
         isFetching
@@ -70,7 +70,7 @@ let usersReducer = (state = initialState, action) => {
     case SET_TOTAL_USERS_COUNT:
       return functions.setTotalUsersCount(action.totalUsersCount)
     case TOGGLE_IS_FETCHING:
-      return functions.toggleFetching(action.isFetching)
+      return functions.toggleIsFetching(action.isFetching)
     default: {
       return state
     }
