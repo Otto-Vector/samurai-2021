@@ -27,6 +27,6 @@ const sidebarReducer = (state = initialState, action) => {
   return {...state}
 }
 
-export let onClickFriendsActionCreator = id => ({type: ON_CLICK_FRIENDS, id})
+export let onClickFriends = id => ({type: ON_CLICK_FRIENDS, id})
 
 export default sidebarReducer;

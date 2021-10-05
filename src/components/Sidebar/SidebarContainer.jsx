@@ -1,6 +1,6 @@
 import Sidebar from "./Sidebar";
 import {connect} from "react-redux";
-import {onClickFriendsActionCreator} from "../../redux/sidebar-reducer";
+import {onClickFriends} from "../../redux/sidebar-reducer";
 
 let mapStateToProps = (state) => {
   return {
@@ -9,15 +9,8 @@ let mapStateToProps = (state) => {
   }
 }
 
-let mapDispatchToProps = (dispatch) => {
-  return {
-    onClickFriends: (id) => {
-      dispatch(onClickFriendsActionCreator(id));
-    },
-
-  }
-}
-
-const SidebarContainer = connect(mapStateToProps,mapDispatchToProps)(Sidebar)
+const SidebarContainer = connect(mapStateToProps,{
+  onClickFriends
+})(Sidebar)
 
 export default SidebarContainer

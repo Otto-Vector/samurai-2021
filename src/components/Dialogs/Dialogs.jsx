@@ -6,28 +6,17 @@ import Message from "./Message/Message";
 
 const Dialogs = (props) => {
 
-  let textMessagePlaceholder = props.textMessagePlaceholder
-  let newMessageText = props.newMessageText
-
-  let addMessage = () => {
-    props.addMessage()
-  }
   //считываем alt+Enter(13) для добавления ссобщения
   let onkey = (event) => {
     if (event.keyCode === 13 && event.altKey) {
-      addMessage()
+      props.addMessage()
     }
-  }
-
-  let changeMessage = (e) => {
-    let text = e.target.value
-    props.changeMessage(text)
   }
 
   //хардкодим сопоставление иконок айдишникам
   let zz = (idd) => {
-        for (let {id, imageURL} of props.dialogs)
-           if (id===+idd) return imageURL
+    for (let {id, imageURL} of props.dialogs)
+      if (id === +idd) return imageURL
   }
 
 
@@ -45,16 +34,21 @@ const Dialogs = (props) => {
         <div className={styles.messages}>
           {messagesElements}
         </div>
-          <div className={styles.addField}>
+        <div className={styles.addField}>
             <textarea className={styles.textarea}
-                      placeholder={textMessagePlaceholder}
-                      onChange={changeMessage}
+                      placeholder={props.textMessagePlaceholder}
                       onKeyDown={onkey}
-                      value={newMessageText}/>
-            <button className={styles.button}
-                    onClick={addMessage}
-            >Add message</button>
-          </div>
+                      onChange={(e) => {
+                        props.changeMessage(e.target.value)
+                      }}
+                      value={props.newMessageText}/>
+          <button className={styles.button}
+                  onClick={() => {
+                    props.addMessage()
+                  }}
+          >Add message
+          </button>
+        </div>
       </div>
     </div>
   )

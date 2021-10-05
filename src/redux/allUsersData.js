@@ -4,7 +4,8 @@ let users = {
   users : [ ],
   pageSize: 6,
   totalUsersCount: 0,
-  currentPage: 1
+  currentPage: 1,
+  isFetching: true,
 }
 
 export {users}

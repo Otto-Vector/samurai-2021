@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Users.module.css"
-import Pagination from "./Pagination/Pagination"
+import Pagination from "../common/Pagination/Pagination"
 // import {randomFaceImage} from "../../redux/randomFace";
 import userNoImage from '../../assets/images/userNoImage.png'
 
