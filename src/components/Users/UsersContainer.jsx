@@ -15,8 +15,7 @@ class UsersClassContainer extends React.Component {
   getUsers = (page) => {
     this.props.toggleIsFetching(true)
       axios.get(
-        `https://social-network.samuraijs.com/api/1.0/users?count=${
-          this.props.pageSize}&page=${page}`)
+        `https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${page}`)
         .then(response => {
           let users = response.data.items
           this.props.setUsers(users)
