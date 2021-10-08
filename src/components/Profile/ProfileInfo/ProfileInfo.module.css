@@ -4,6 +4,7 @@
     background-size: 100%;
     background-position: center center;
     background-repeat: no-repeat;
+    min-height: 250px;
 }
 
 .profileInfo {
@@ -16,6 +17,7 @@
     border-radius: 5px;
     box-shadow: #517cbd 3px 3px 3px;
     margin-right: 50px;
+    width: 300px;
 }
 
 

@@ -2,16 +2,17 @@ import React from 'react';
 import styles from './ProfileInfo.module.css';
 import Preloader from "../../common/Preloader/Preloader";
 import Socials from "../../common/Socials/Socials";
+import userNoImage from '../../../assets/images/userNoImage.png'
 
 const ProfileInfo = (props) => {
   if (!props.profile) {
-    return <Preloader/>
+    return <div className={styles.profilePage}><Preloader/></div>
   }
     return (
         <div className={styles.profilePage}>
             <div className={styles.profileInfo}>
               <div className={styles.left}>
-                <img className={styles.imageWrapper} src={props.profile.photos.large} alt='ProfileIMG'/>
+                <img className={styles.imageWrapper} src={props.profile.photos.large || userNoImage} alt='ProfileIMG'/>
               </div>
               <div>
                 <h2 className={styles.fullName}>{props.profile.fullName}</h2>
