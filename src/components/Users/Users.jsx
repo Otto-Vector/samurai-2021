@@ -3,6 +3,7 @@ import styles from "./Users.module.css"
 import Pagination from "../common/Pagination/Pagination"
 // import {randomFaceImage} from "../../redux/randomFace";
 import userNoImage from '../../assets/images/userNoImage.png'
+import {NavLink} from "react-router-dom";
 
 
 const Users = (props) => {
@@ -16,10 +17,10 @@ const Users = (props) => {
       />
       {props.users.map(u => <div className={styles.user} key={u.id}>
         <div className={styles.logoButtonWrapper}>
-          <div className={styles.logoWrapper}>
+          <NavLink to={"/profile/"+u.id} className={styles.logoWrapper}>
             {/*<img className={styles.image} src={u.photos.small || randomFaceImage(u.id)} alt='userFace'/>*/}
             <img className={styles.image} src={u.photos.small || userNoImage} alt='userFace'/>
-          </div>
+          </NavLink>
           <div>
             {
               u.followed ?

@@ -1,3 +1,45 @@
-.descriptionBlock {
+.profilePage {
     padding: 10px;
+    background-image: url('https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&h=350');
+    background-size: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.profileInfo {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+}
+
+.imageWrapper {
+    border-radius: 5px;
+    box-shadow: #517cbd 3px 3px 3px;
+    margin-right: 50px;
+}
+
+
+.left {
+    /*background-color: rgba(55,55,55,55);*/
+}
+
+.descriptionBlock {
+
+}
+
+.fullName {
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    font-size: 42px;
+    line-height: 44px;
+}
+
+
+.jobAlert {
+    margin-top: 40px;
+}
+
+.jobAlert p {
+    line-height: 60%;
 }

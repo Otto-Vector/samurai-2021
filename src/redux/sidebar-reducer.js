@@ -1,3 +1,5 @@
+import {randomFaceImage} from "./randomFace"
+
 const ON_CLICK_FRIENDS = "ON-CLICK-FRIENDS"
 
 let initialState = {

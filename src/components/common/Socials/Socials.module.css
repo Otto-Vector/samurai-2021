@@ -1,0 +1,11 @@
+.socials {
+    /*background-color: burlywood;*/
+}
+
+.socials img {
+    width: 30px;
+    margin: 0 5px;
+}
+.socials img:hover {
+    transform: scale(1.1);
+}
