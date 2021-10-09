@@ -59,9 +59,10 @@ let initialState = {
 
 const dialogsReducer = (state = initialState, action) => {
 
-  let stateCopyFunction = {
 
-    addMessage() {
+  switch (action.type) {
+
+    case ADD_MESSAGE : {
       let rand = (Math.random() * 10).toFixed(0)
       let newMessage = {
         id: rand,
@@ -73,28 +74,15 @@ const dialogsReducer = (state = initialState, action) => {
         newMessageText: '',
         messages: [newMessage, ...state.messages]
       }
-
-    },
-
-    changeMessage(text) {
-      return {
-        ...state,
-        newMessageText: text
-      }
-
     }
-  }
 
-
-  switch (action.type) {
-
-    case ADD_MESSAGE : {
-      return stateCopyFunction.addMessage()
-
-    }
     case CHANGE_MESSAGE : {
-      return stateCopyFunction.changeMessage(action.text)
+       return {
+        ...state,
+        newMessageText: action.text
+      }
     }
+
     default : {
       // return {...state}
     }
@@ -103,7 +91,7 @@ const dialogsReducer = (state = initialState, action) => {
   return state
 }
 
-export const addMessageActionCreator = () => ({type: ADD_MESSAGE})
-export const changeMessageActionCreator = (text) => ({type: CHANGE_MESSAGE, text})
+export const addMessage = () => ({type: ADD_MESSAGE})
+export const changeMessage = (text) => ({type: CHANGE_MESSAGE, text})
 
 export default dialogsReducer;

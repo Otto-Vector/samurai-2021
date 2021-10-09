@@ -1,9 +1,12 @@
 import React from 'react';
-import s from './Header.module.css';
+import styles from './Header.module.css';
+import logoSamurai from '../../assets/images/LogoSamurai_sm.png'
 
-const Header = () => {
-    return <header className={s.header}>
-        <img src='https://www.freelogodesign.org/Content/img/logo-ex-7.png' alt='headerImage' />
+const Header = (props) => {
+    console.log(props)
+    return <header className={styles.header}>
+        <img alt='logo' src={logoSamurai} />
+        <span className={styles.login}>{props.login || 'no auth'}</span>
     </header>
 }
 
