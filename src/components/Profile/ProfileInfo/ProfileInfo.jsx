@@ -17,7 +17,9 @@ const ProfileInfo = (props) => {
               <div>
                 <h2 className={styles.fullName}>{props.profile.fullName}</h2>
                 <p className={styles.aboutMe}>{props.profile.aboutMe}</p>
-                <Socials {...props.profile.contacts} />
+                <div className={styles.socials}>
+                  <Socials {...props.profile.contacts} />
+                </div>
                 <div className={styles.jobAlert}>
                   <p><strong>Поиск работы:</strong></p>
                   <p>{props.profile.lookingForAJob?'ДА, ищу':'НЕТ, не ищу'}</p>

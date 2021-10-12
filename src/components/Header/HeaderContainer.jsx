@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {setAuthUserData} from "../../redux/auth-reducer";
 import Header from "./Header";
 import * as axios from "axios";
-import Preloader from "../common/Preloader/Preloader";
+
 
 class HeaderContainer extends React.Component {
 

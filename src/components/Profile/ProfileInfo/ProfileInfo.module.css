@@ -1,7 +1,9 @@
 .profilePage {
+    /*display: flex;*/
+    /*flex-flow: nowrap row;*/
     padding: 10px;
     background-image: url('https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&h=350');
-    background-size: 100%;
+    background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     min-height: 250px;
@@ -10,23 +12,30 @@
 .profileInfo {
     display: flex;
     flex-flow: row nowrap;
-    justify-content: flex-start;
+    justify-content: space-around;
 }
 
 .imageWrapper {
     border-radius: 5px;
     box-shadow: #517cbd 3px 3px 3px;
     margin-right: 50px;
-    width: 300px;
+    width: 100%;
+    /*max-width: 300px;*/
 }
 
 
 .left {
+    max-width: 300px;
+    margin-right: 20px;
     /*background-color: rgba(55,55,55,55);*/
 }
 
 .descriptionBlock {
 
+}
+
+.socials {
+    width: 240px;
 }
 
 .fullName {
