@@ -6,36 +6,35 @@ import {
 } from "../../redux/users-reducer";
 import {connect} from "react-redux";
 
-import * as axios from "axios";
 import Preloader from "../common/Preloader/Preloader";
+import {UsersAPI} from "../../api/samurai-api";
 
 
 class UsersClassContainer extends React.Component {
 
   getUsers = (page) => {
     this.props.toggleIsFetching(true)
-      axios.get(
-        `https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${page}`, {
-          withCredentials: true
-        })
+
+    UsersAPI.getUsers(this.props.pageSize,page)
         .then(response => {
-          let users = response.data.items
+          let users = response.items
           this.props.setUsers(users)
+
           if (!this.props.totalUsersCount)
-            this.props.setTotalUsersCount(response.data.totalCount)
+            this.props.setTotalUsersCount(response.totalCount)
+
           this.props.toggleIsFetching(false)
         })
   }
-
 
   componentDidMount() {
     this.getUsers(this.props.currentPage)
   }
 
-  page = 0
-  componentDidUpdate() {
-    console.log("Users updates now : ",this.page++," times")
-  }
+  // page = 0
+  // componentDidUpdate() {
+  //   console.log("Users updates now : ",this.page++," times")
+  // }
 
   pageSelect = (page) => {
     this.props.changePage(page)

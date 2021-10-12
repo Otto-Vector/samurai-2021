@@ -1,7 +1,6 @@
 .users {
     background: bisque;
     padding: 10px;
-    /*width: 1000px;*/
 }
 
 
@@ -45,6 +44,10 @@
     background-color: aquamarine;
     font-weight: bold;
     padding: 3px;
+}
+
+.followButton::first-letter {
+    text-transform: uppercase;
 }
 
 .unfollow {
