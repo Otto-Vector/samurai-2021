@@ -50,6 +50,10 @@
     text-transform: uppercase;
 }
 
+.followButton:disabled {
+    opacity: .4;
+}
+
 .unfollow {
     background-color: gray;
 }
