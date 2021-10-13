@@ -1,21 +1,16 @@
 import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {setProfileState} from "../../redux/profile-reducer";
+import {getProfile} from "../../redux/profile-reducer";
 import {withRouter} from "react-router-dom";
-import {ProfileAPI} from "../../api/samurai-api";
+
 
 class ProfileContainer extends React.Component {
 
-  getProfile = (userId = 11) => {
-        ProfileAPI.getProfile(userId)
-          .then(this.props.setProfileState)
-          // .then(response => { this.props.setProfileState(response)})
-    }
 
   componentDidMount() {
     let userId = this.props.match.params.userId
-    this.getProfile(userId)
+    this.props.getProfile(userId)
   }
 
   render() {return (<Profile {...this.props} />)}
@@ -23,10 +18,11 @@ class ProfileContainer extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    profile: state.profilePage.profile
+    profile: state.profilePage.profile,
+    isFetching: state.profilePage.isFetching
   }
 }
 
 let withUrlDataContainerComponent = withRouter(ProfileContainer);
 
-export default ProfileContainer = connect(mapStateToProps, {setProfileState})(withUrlDataContainerComponent);
+export default ProfileContainer = connect(mapStateToProps, {getProfile})(withUrlDataContainerComponent);

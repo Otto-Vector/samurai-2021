@@ -5,7 +5,7 @@ import Socials from "../../common/Socials/Socials";
 import userNoImage from '../../../assets/images/userNoImage.png'
 
 const ProfileInfo = (props) => {
-  if (!props.profile) {
+  if (props.isFetching) {
     return <div className={styles.profilePage}><Preloader/></div>
   }
     return (

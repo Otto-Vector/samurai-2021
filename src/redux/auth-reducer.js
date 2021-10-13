@@ -1,6 +1,6 @@
+import {AuthAPI} from "../api/samurai-api";
 
 const SET_AUTH = 'SET-AUTH'
-
 
 let initialState = {
     data: {
@@ -34,4 +34,14 @@ const authReducer = (state = initialState, action) => {
 
 export const setAuthUserData = (data) => ({type: SET_AUTH, data})
 
+ export const getAuth = () => {
+   return (dispatch) => {
+     AuthAPI.getAuth()
+       .then(response => {
+         if (response.resultCode === 0) {
+           dispatch(setAuthUserData(response.data))
+         }
+       })
+   }
+ }
 export default authReducer;

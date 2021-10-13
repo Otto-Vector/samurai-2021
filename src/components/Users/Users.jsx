@@ -3,22 +3,9 @@ import styles from "./Users.module.css"
 import Pagination from "../common/Pagination/Pagination"
 import userNoImage from '../../assets/images/userNoImage.png'
 import {NavLink} from "react-router-dom";
-import {FollowAPI} from "../../api/samurai-api";
 
 
 const Users = (props) => {
-
-    // console.log(props.isFetchingById)
-  let todo = (follow, id) => {
-    props.isFetchingToggleId(true, id)
-    FollowAPI[follow](id)
-      .then(response => {
-        if (response.resultCode === 0) {
-          props[follow](id)
-        }
-        props.isFetchingToggleId(false, id)
-      })
-  }
 
   return (
     <div className={styles.users}>
@@ -33,10 +20,9 @@ const Users = (props) => {
             <img className={styles.image} src={u.photos.small || userNoImage} alt='userFace'/>
           </NavLink>
           <div>
-            <button disabled={props.isFetchingById.some(id=> id===u.id)} className={styles.followButton + ' ' + styles[u.followed ? 'unfollow' : 'follow']}
-                    onClick={() => {
-                      todo(u.followed ? 'unfollow' : 'follow', u.id)
-                    }}
+            <button disabled={props.isFetchingById.some(id=> id===u.id)}
+                    className={styles.followButton + ' ' + styles[u.followed ? 'unfollow' : 'follow']}
+                    onClick={() => {props.follow(u.followed , u.id)}}
             >{u.followed ? 'unfollow' : 'follow'}</button>
           </div>
         </div>

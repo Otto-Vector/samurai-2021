@@ -1,34 +1,17 @@
 import React from "react";
 import Users from "./Users";
 import {
-  changePage, follow, isFetchingToggleId, setTotalUsersCount,
-  setUsers, toggleIsFetching, unfollow
+  changePage, follow, getUsers, setUsers,
 } from "../../redux/users-reducer";
 import {connect} from "react-redux";
 
 import Preloader from "../common/Preloader/Preloader";
-import {UsersAPI} from "../../api/samurai-api";
 
 
 class UsersClassContainer extends React.Component {
 
-  getUsers = (page) => {
-    this.props.toggleIsFetching(true)
-
-    UsersAPI.getUsers(this.props.pageSize,page)
-        .then(response => {
-          let users = response.items
-          this.props.setUsers(users)
-
-          if (!this.props.totalUsersCount)
-            this.props.setTotalUsersCount(response.totalCount)
-
-          this.props.toggleIsFetching(false)
-        })
-  }
-
   componentDidMount() {
-    this.getUsers(this.props.currentPage)
+    this.props.getUsers(this.props.pageSize, this.props.currentPage)
   }
 
   // page = 0
@@ -38,7 +21,7 @@ class UsersClassContainer extends React.Component {
 
   pageSelect = (page) => {
     this.props.changePage(page)
-    this.getUsers(page)
+    this.props.getUsers(this.props.pageSize,page)
   }
 
   render () {
@@ -51,9 +34,7 @@ class UsersClassContainer extends React.Component {
                   pageSize = {this.props.pageSize}
                   currentPage = {this.props.currentPage}
                   follow = {this.props.follow}
-                  unfollow = {this.props.unfollow}
                   pageSelect = {this.pageSelect}
-                  isFetchingToggleId = {this.props.isFetchingToggleId}
                   isFetchingById = {this.props.isFetchingById}
       />
     </>
@@ -76,12 +57,9 @@ let mapStateToProps = (state) => {
 
 const UsersContainer = connect( mapStateToProps, {
     follow,
-    unfollow,
     setUsers,
     changePage,
-    setTotalUsersCount,
-    toggleIsFetching,
-    isFetchingToggleId
+    getUsers
   })(UsersClassContainer)
 
 export default UsersContainer;

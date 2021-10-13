@@ -1,8 +1,10 @@
 import {randomFaceImage} from "./randomFace";
+import {ProfileAPI} from "../api/samurai-api";
 
 const ADD_POST = 'ADD-POST'
 const CHANGE_POST_TEXT = 'CHANGE-POST-TEXT'
 const SET_PROFILE_STATE = 'SET-PROFILE-STATE'
+const TOGGLE_FETCHING = 'TOGGLE-FETCHING'
 
 let initialState = {
   posts: [
@@ -26,8 +28,9 @@ let initialState = {
     }
   ],
   newPostText: '',
-  newPostTextPlaceholder: 'add new post here',
+  newPostTextPlaceholder: 'add new pos-t here',
   profile: null,
+  isFetching: true
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -58,6 +61,12 @@ const profileReducer = (state = initialState, action) => {
         profile: action.profile
       }
     }
+    case TOGGLE_FETCHING : {
+      return {
+        ...state,
+        isFetching: action.isFetching
+      }
+    }
     default : {
       return state
     }
@@ -69,5 +78,18 @@ const profileReducer = (state = initialState, action) => {
 export const addPost = (id = 5) => ({type: ADD_POST, id})
 export const changePost = (newPostText) => ({type: CHANGE_POST_TEXT, newPostText})
 export const setProfileState = (profile) => ({type: SET_PROFILE_STATE, profile})
+export const toggleIsFetchingProfile = (isFetching) => ({type: TOGGLE_FETCHING, isFetching})
+
+
+export const getProfile = (userId = 11) => {
+  return (dispatch) => {
+    dispatch(toggleIsFetchingProfile(true))
+        ProfileAPI.getProfile(userId)
+          .then(response => {
+            dispatch(setProfileState(response))
+            dispatch(toggleIsFetchingProfile(false))
+          })
+    }
+}
 
 export default profileReducer;

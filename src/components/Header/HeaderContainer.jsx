@@ -1,24 +1,14 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {setAuthUserData} from "../../redux/auth-reducer";
+import {getAuth} from "../../redux/auth-reducer";
 import Header from "./Header";
-import {AuthAPI} from "../../api/samurai-api";
 
 
 class HeaderContainer extends React.Component {
 
-  getAuth = () => {
-    AuthAPI.getAuth()
-      .then(response => {
-        if (response.resultCode === 0) {
-          let data = response.data
-          this.props.setAuthUserData(data)
-        }
-      })
-  }
 
   componentDidMount() {
-    this.getAuth()
+    this.props.getAuth()
   }
 
   render() {
@@ -34,6 +24,5 @@ let mapStateToProps = (state) => {
 }
 
 
-export default HeaderContainer = connect(mapStateToProps,
-  {setAuthUserData})(HeaderContainer)
+export default HeaderContainer = connect(mapStateToProps,{getAuth})(HeaderContainer)
 

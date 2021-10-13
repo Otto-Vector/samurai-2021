@@ -1,3 +1,5 @@
+import {UsersAPI} from "../api/samurai-api";
+
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
@@ -10,7 +12,7 @@ let initialState = {
   users: [],
   pageSize: 6,
   totalUsersCount: 0,
-  currentPage: 1,
+  currentPage: 100,
   isFetching: true,
   isFetchingById: [6]
 }
@@ -97,12 +99,53 @@ let usersReducer = (state = initialState, action) => {
   // return state
 }
 
-export const follow = (userId) => ({type: FOLLOW, userId})
-export const unfollow = (userId) => ({type: UNFOLLOW, userId})
+export const followSuccess = (userId) => ({type: FOLLOW, userId})
+export const unfollowSuccess = (userId) => ({type: UNFOLLOW, userId})
 export const setUsers = (users) => ({type: SET_USERS, users})
 export const changePage = (page) => ({type: CHANGE_PAGE, page})
 export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount})
 export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
 export const isFetchingToggleId = (isFetching, userId) => ({type: TOGGLE_IS_FETCHING_BY_ID, isFetching, userId})
+
+export const getUsers = (pageSize, page) => {
+  return (dispatch) => {
+    dispatch(toggleIsFetching(true))
+
+    UsersAPI.getUsers(pageSize, page)
+      .then(response => {
+        dispatch(setUsers(response.items))
+
+        dispatch(setTotalUsersCount(response.totalCount))
+
+        dispatch(toggleIsFetching(false))
+      })
+  }
+}
+
+export const follow = (isFollow, userId) => {
+  if (!isFollow)
+    return (dispatch) => {
+      dispatch(isFetchingToggleId(true, userId))
+      UsersAPI.follow(userId)
+        .then(response => {
+          if (response.resultCode === 0) {
+            dispatch(followSuccess(userId))
+          }
+          dispatch(isFetchingToggleId(false, userId))
+        })
+    }
+  else
+    return (dispatch) => {
+      dispatch(isFetchingToggleId(true, userId))
+      UsersAPI.unfollow(userId)
+        .then(response => {
+          if (response.resultCode === 0) {
+            dispatch(unfollowSuccess(userId))
+          }
+          dispatch(isFetchingToggleId(false, userId))
+        })
+    }
+}
+
 
 export default usersReducer
