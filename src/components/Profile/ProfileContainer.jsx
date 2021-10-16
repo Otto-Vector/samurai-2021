@@ -7,9 +7,8 @@ import {withRouter} from "react-router-dom";
 
 class ProfileContainer extends React.Component {
 
-
   componentDidMount() {
-    let userId = this.props.match.params.userId
+    let userId = this.props.match.params.userId || this.props.authUser || undefined
     this.props.getProfile(userId)
   }
 
@@ -19,7 +18,8 @@ class ProfileContainer extends React.Component {
 let mapStateToProps = (state) => {
   return {
     profile: state.profilePage.profile,
-    isFetching: state.profilePage.isFetching
+    isFetching: state.profilePage.isFetching,
+    authUser: state.auth.data.id
   }
 }
 

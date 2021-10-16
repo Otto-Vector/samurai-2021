@@ -6,7 +6,6 @@ import Header from "./Header";
 
 class HeaderContainer extends React.Component {
 
-
   componentDidMount() {
     this.props.getAuth()
   }
@@ -20,6 +19,7 @@ class HeaderContainer extends React.Component {
 let mapStateToProps = (state) => {
   return {
     data: state.auth.data
+
   }
 }
 
