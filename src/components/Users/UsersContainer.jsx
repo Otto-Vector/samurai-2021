@@ -4,12 +4,13 @@ import {
   changePage, follow, getUsers, setUsers,
 } from "../../redux/users-reducer";
 import {connect} from "react-redux";
+import {compose} from "redux";
 
 import Preloader from "../common/Preloader/Preloader";
 import withAuthRedirect from "../hoc/withAuthRedirect";
 
 
-class UsersClassContainer extends React.Component {
+class UsersContainer extends React.Component {
 
   componentDidMount() {
     this.props.getUsers(this.props.pageSize, this.props.currentPage)
@@ -22,21 +23,21 @@ class UsersClassContainer extends React.Component {
 
   pageSelect = (page) => {
     this.props.changePage(page)
-    this.props.getUsers(this.props.pageSize,page)
+    this.props.getUsers(this.props.pageSize, page)
   }
 
-  render () {
+  render() {
     return <>
 
-      {this.props.isFetching ? <Preloader /> : null}
+      {this.props.isFetching ? <Preloader/> : null}
 
-      <Users users = {this.props.users}
-                  totalUsersCount = {this.props.totalUsersCount}
-                  pageSize = {this.props.pageSize}
-                  currentPage = {this.props.currentPage}
-                  follow = {this.props.follow}
-                  pageSelect = {this.pageSelect}
-                  isFetchingById = {this.props.isFetchingById}
+      <Users users={this.props.users}
+             totalUsersCount={this.props.totalUsersCount}
+             pageSize={this.props.pageSize}
+             currentPage={this.props.currentPage}
+             follow={this.props.follow}
+             pageSelect={this.pageSelect}
+             isFetchingById={this.props.isFetchingById}
       />
     </>
   }
@@ -56,11 +57,20 @@ let mapStateToProps = (state) => {
 }
 
 
-const UsersContainer = withAuthRedirect(connect( mapStateToProps, {
+// const UsersContainer = withAuthRedirect(connect( mapStateToProps, {
+//     follow,
+//     setUsers,
+//     changePage,
+//     getUsers
+//   })(UsersClassContainer))
+
+export default compose(
+  connect(mapStateToProps, {
     follow,
     setUsers,
     changePage,
     getUsers
-  })(UsersClassContainer))
+  }),
+  withAuthRedirect
+)(UsersContainer)
 
-export default UsersContainer;

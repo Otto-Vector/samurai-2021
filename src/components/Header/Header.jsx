@@ -4,7 +4,6 @@ import logoSamurai from '../../assets/images/LogoSamurai_sm.png'
 import {NavLink} from "react-router-dom";
 
 const Header = (props) => {
-  console.log(props.isAuth)
   return <header className={styles.header}>
     <img alt='logo' src={logoSamurai}/>
     {

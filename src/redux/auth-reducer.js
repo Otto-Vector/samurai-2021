@@ -1,6 +1,7 @@
 import {AuthAPI} from "../api/samurai-api";
 
 const SET_AUTH = 'SET-AUTH'
+const IS_FETCHING_SWICH_TO = 'IS-FETCHING-SWICH-TO'
 
 let initialState = {
     data: {
@@ -8,7 +9,7 @@ let initialState = {
       email: null,
       login: null
     },
-  isFetching: false,
+  isFetching: true,
   isAuth: false,
 }
 
@@ -24,6 +25,12 @@ const authReducer = (state = initialState, action) => {
         isAuth: true
       }
     }
+      case IS_FETCHING_SWICH_TO : {
+      return {
+        ...state,
+        isFetching: action.isFetching
+      }
+    }
     default : {
       // return {...state}
     }
@@ -33,13 +40,16 @@ const authReducer = (state = initialState, action) => {
 }
 
 export const setAuthUserData = (data) => ({type: SET_AUTH, data})
+export const isFetchingSwichTo = (isFetching) => ({type: IS_FETCHING_SWICH_TO, isFetching})
 
  export const getAuth = () => {
    return (dispatch) => {
+     dispatch(isFetchingSwichTo(true))
      AuthAPI.getAuth()
        .then(response => {
          if (response.resultCode === 0) {
            dispatch(setAuthUserData(response.data))
+           dispatch(isFetchingSwichTo(false))
          }
        })
    }
