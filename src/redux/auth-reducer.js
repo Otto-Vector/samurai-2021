@@ -9,7 +9,7 @@ let initialState = {
       login: null
     },
   isFetching: false,
-  isAuth: false
+  isAuth: false,
 }
 
 
