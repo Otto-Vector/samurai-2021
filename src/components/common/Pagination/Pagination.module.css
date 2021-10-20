@@ -4,7 +4,7 @@
     text-align: center;
     overflow: hidden;
     overflow-x: scroll;
-    width: 600px;
+    width: 400px;
 }
 
 .page {
@@ -14,7 +14,6 @@
     background-color: aquamarine;
     border-radius: 3px;
     border: 1px solid lightblue;
-    /*min-width: 15px;*/
 }
 
 .selectedPage {

@@ -1,3 +1,27 @@
 .pStatus {
-    background-color: gray;
+    padding: 5px 10px;
+    margin: 5px 0;
+    max-height: 40px;
+    border-radius: 6px;
+    background-color: rgba(125,125,125,.5);
+    font-size: 80%;
+}
+
+.pStatusText {
+    font-weight: 700;
+    color: blue;
+}
+
+
+.pStatusTextInput {
+    padding: 2px;
+    width: 100%;
+    height: 100%;
+    background: #517cbd85;
+    border-color: #517cbd;
+    resize: none;
+}
+
+.pStatusTextInput::placeholder {
+    color: lightblue;
 }

@@ -3,6 +3,28 @@
     padding: 10px;
 }
 
+.manipulationContainer {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.searchFriendsButton {
+    height: 25px;
+    /*width: 80px;*/
+    border-radius: 4px;
+    background-color: goldenrod;
+    font-weight: bold;
+    padding: 3px 5px;
+    box-shadow: 1px 1px 3px #517cbd;
+}
+
+.searchFriendsButtonPassive {
+    background-color: gray;
+}
 
 .user {
     display: flex;
