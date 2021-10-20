@@ -1,10 +1,12 @@
 import {randomFaceImage} from "./randomFace";
-import {ProfileAPI} from "../api/samurai-api";
+import {ProfileAPI, StatusAPI} from "../api/samurai-api";
 
 const ADD_POST = 'ADD-POST'
 const CHANGE_POST_TEXT = 'CHANGE-POST-TEXT'
 const SET_PROFILE_STATE = 'SET-PROFILE-STATE'
+const SET_STATUS_PROFILE = 'SET-STATUS-PROFILE'
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING'
+const TOGGLE_STATUS_FETCHING = 'TOGGLE-STATUS-FETCHING'
 
 let initialState = {
   posts: [
@@ -30,6 +32,8 @@ let initialState = {
   newPostText: '',
   newPostTextPlaceholder: 'add new pos-t here',
   profile: null,
+  profileStatusText: undefined,
+  profileStatusFetching: true,
   isFetching: true
 }
 
@@ -45,7 +49,7 @@ const profileReducer = (state = initialState, action) => {
       }
       return {
         ...state,
-        posts: [ newPost, ...state.posts ],
+        posts: [newPost, ...state.posts],
         newPostText: ''
       }
     }
@@ -59,6 +63,18 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         profile: action.profile
+      }
+    }
+    case  SET_STATUS_PROFILE : {
+      return {
+        ...state,
+        profileStatusText: action.profileStatusText
+      }
+    }
+    case TOGGLE_STATUS_FETCHING : {
+      return {
+        ...state,
+        profileStatusFetching: action.profileStatusFetching
       }
     }
     case TOGGLE_FETCHING : {
@@ -78,18 +94,35 @@ const profileReducer = (state = initialState, action) => {
 export const addPost = (id = 5) => ({type: ADD_POST, id})
 export const changePost = (newPostText) => ({type: CHANGE_POST_TEXT, newPostText})
 export const setProfileState = (profile) => ({type: SET_PROFILE_STATE, profile})
+export const setStatusProfile = (profileStatusText) => ({type: SET_STATUS_PROFILE, profileStatusText})
+export const toggleStatusProfileFetching = (profileStatusFetching) => ({
+  type: TOGGLE_STATUS_FETCHING,
+  profileStatusFetching
+})
 export const toggleIsFetchingProfile = (isFetching) => ({type: TOGGLE_FETCHING, isFetching})
 
+let defaultUserId = 11
 
-export const getProfile = (userId = 11) => {
+export const getProfile = (userId = defaultUserId) => {
   return (dispatch) => {
     dispatch(toggleIsFetchingProfile(true))
-        ProfileAPI.getProfile(userId)
-          .then(response => {
-            dispatch(setProfileState(response))
-            dispatch(toggleIsFetchingProfile(false))
-          })
-    }
+    ProfileAPI.getProfile(userId)
+      .then(response => {
+        dispatch(setProfileState(response))
+        dispatch(toggleIsFetchingProfile(false))
+      })
+  }
+}
+
+export const getStatus = (userId = defaultUserId) => {
+  return (dispatch) => {
+    StatusAPI.getStatus(userId)
+      .then(response => {
+        dispatch(toggleStatusProfileFetching(true))
+        dispatch(setStatusProfile(response))
+        dispatch(toggleStatusProfileFetching(false))
+      })
+  }
 }
 
 export default profileReducer;

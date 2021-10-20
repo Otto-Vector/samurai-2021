@@ -16,8 +16,8 @@ instance.interceptors.response.use(function (response) {
 
 export const UsersAPI = {
 
-  getUsers (pageSize=2, page=1) {
-    return instance.get(`users?count=${pageSize}&page=${page}`)
+  getUsers (pageSize=2, page=1, friend=null) {
+    return instance.get(`users?count=${pageSize}&page=${page}&friend=${friend}`)
       // .then(response => response.data)
     },
 
@@ -34,7 +34,7 @@ export const UsersAPI = {
 }
 
 export const ProfileAPI = {
-  getProfile (userId = 11) {
+  getProfile (userId) {
     return instance.get(`profile/${userId}`)
       // .then(response => response.data)
   }
@@ -44,5 +44,11 @@ export const AuthAPI = {
   getAuth() {
     return instance.get(`auth/me`)
       // .then(({data}) => data)
+  }
+}
+
+export const StatusAPI = {
+  getStatus(userId) {
+    return instance.get(`profile/status/${userId}`)
   }
 }
