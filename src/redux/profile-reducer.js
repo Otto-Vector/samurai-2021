@@ -7,6 +7,7 @@ const SET_PROFILE_STATE = 'SET-PROFILE-STATE'
 const SET_STATUS_PROFILE = 'SET-STATUS-PROFILE'
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING'
 const TOGGLE_STATUS_FETCHING = 'TOGGLE-STATUS-FETCHING'
+const SET_IS_AUTH_PROFILE = 'SET-IS-AUTH-PROFILE'
 
 let initialState = {
   posts: [
@@ -34,7 +35,8 @@ let initialState = {
   profile: null,
   profileStatusText: '',
   profileStatusFetching: true,
-  isFetching: true
+  isFetching: true,
+  isAuthProfile: false
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -83,6 +85,13 @@ const profileReducer = (state = initialState, action) => {
         isFetching: action.isFetching
       }
     }
+    case SET_IS_AUTH_PROFILE : {
+      console.log(action.isAuthProfile);
+      return {
+        ...state,
+        isAuthProfile: action.isAuthProfile
+      }
+    }
     default : {
       return state
     }
@@ -95,6 +104,7 @@ export const addPost = (id = 5) => ({type: ADD_POST, id})
 export const changePost = (newPostText) => ({type: CHANGE_POST_TEXT, newPostText})
 export const setProfileState = (profile) => ({type: SET_PROFILE_STATE, profile})
 export const setStatusProfile = (profileStatusText) => ({type: SET_STATUS_PROFILE, profileStatusText})
+export const setIsAuthProfile = (isAuthProfile) => ({type: SET_IS_AUTH_PROFILE, isAuthProfile})
 export const toggleStatusProfileFetching = (profileStatusFetching) => ({
   type: TOGGLE_STATUS_FETCHING,
   profileStatusFetching
