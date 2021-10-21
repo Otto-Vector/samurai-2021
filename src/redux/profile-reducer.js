@@ -1,5 +1,5 @@
 import {randomFaceImage} from "./randomFace";
-import {ProfileAPI, StatusAPI} from "../api/samurai-api";
+import {profileAPI} from "../api/samurai-api";
 
 const ADD_POST = 'ADD-POST'
 const CHANGE_POST_TEXT = 'CHANGE-POST-TEXT'
@@ -32,7 +32,7 @@ let initialState = {
   newPostText: '',
   newPostTextPlaceholder: 'add new pos-t here',
   profile: null,
-  profileStatusText: undefined,
+  profileStatusText: '',
   profileStatusFetching: true,
   isFetching: true
 }
@@ -106,7 +106,7 @@ let defaultUserId = 11
 export const getProfile = (userId = defaultUserId) => {
   return (dispatch) => {
     dispatch(toggleIsFetchingProfile(true))
-    ProfileAPI.getProfile(userId)
+    profileAPI.getProfile(userId)
       .then(response => {
         dispatch(setProfileState(response))
         dispatch(toggleIsFetchingProfile(false))
@@ -116,7 +116,7 @@ export const getProfile = (userId = defaultUserId) => {
 
 export const getStatus = (userId = defaultUserId) => {
   return (dispatch) => {
-    StatusAPI.getStatus(userId)
+    profileAPI.getStatus(userId)
       .then(response => {
         dispatch(toggleStatusProfileFetching(true))
         dispatch(setStatusProfile(response))
@@ -125,4 +125,14 @@ export const getStatus = (userId = defaultUserId) => {
   }
 }
 
+export const updateStatus = (status) => {
+  return (dispatch) => {
+    profileAPI.setStatus(status)
+      .then( responce => {
+        if (responce.resultCode ===0 ) {
+          dispatch(setStatusProfile(status))
+        }
+      })
+  }
+}
 export default profileReducer;

@@ -23,8 +23,8 @@ class UsersContainer extends React.Component {
 
   friendsFilerOn = ()=> {
     this.props.changePage(1)
-    this.props.friendsOnlyToggle()
     let isFriendsFilter = this.props.isFriendsFilter ? null : true
+    this.props.friendsOnlyToggle(isFriendsFilter)
     this.props.getUsers(this.props.pageSize, 1, isFriendsFilter)
 
   }

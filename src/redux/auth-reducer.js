@@ -1,4 +1,4 @@
-import {AuthAPI} from "../api/samurai-api";
+import {authAPI} from "../api/samurai-api";
 
 const SET_AUTH = 'SET-AUTH'
 const IS_FETCHING_SWICH_TO = 'IS-FETCHING-SWICH-TO'
@@ -45,7 +45,7 @@ export const isFetchingSwichTo = (isFetching) => ({type: IS_FETCHING_SWICH_TO, i
  export const getAuth = () => {
    return (dispatch) => {
      dispatch(isFetchingSwichTo(true))
-     AuthAPI.getAuth()
+     authAPI.getAuth()
        .then(response => {
          if (response.resultCode === 0) {
            dispatch(setAuthUserData(response.data))

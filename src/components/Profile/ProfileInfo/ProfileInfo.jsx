@@ -21,7 +21,8 @@ const ProfileInfo = (props) => {
 
                 { props.profileStatusFetching
                   ? <Preloader/>
-                  : <ProfileStatus profileStatusText = {props.profileStatusText}/>
+                  : <ProfileStatus profileStatusText = {props.profileStatusText}
+                                   updateStatus={props.updateStatus}/>
                 }
 
                 <p className={styles.aboutMe}>{props.profile.aboutMe}</p>

@@ -11,7 +11,7 @@ const TOGGLE_FRIENDS_ONLY = 'TOGGLE-FRIENDS-ONLY'
 
 let initialState = {
   users: [],
-  pageSize: 6,
+  pageSize: 5,
   totalUsersCount: 0,
   currentPage: 1,
   isFriendsFilter: null,
@@ -75,9 +75,7 @@ let usersReducer = (state = initialState, action) => {
           : state.isFetchingById.filter(id => userId !== id)
       }
     },
-    friendsOnlyToggle() {
-      let isFriendsFilter = state.isFriendsFilter ? null : true
-      console.log(isFriendsFilter)
+    friendsOnlyToggle(isFriendsFilter) {
       return {
         ...state,
         isFriendsFilter
@@ -102,7 +100,7 @@ let usersReducer = (state = initialState, action) => {
     case TOGGLE_IS_FETCHING_BY_ID:
       return functions.isFetchingToggleId(action.isFetching, action.userId)
     case TOGGLE_FRIENDS_ONLY:
-      return functions.friendsOnlyToggle()
+      return functions.friendsOnlyToggle(action.isFriendsFilter)
     default: {
       return state
     }
@@ -118,7 +116,7 @@ export const changePage = (page) => ({type: CHANGE_PAGE, page})
 export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount})
 export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
 export const isFetchingToggleId = (isFetching, userId) => ({type: TOGGLE_IS_FETCHING_BY_ID, isFetching, userId})
-export const friendsOnlyToggle = () => ({type: TOGGLE_FRIENDS_ONLY})
+export const friendsOnlyToggle = (isFriendsFilter) => ({type: TOGGLE_FRIENDS_ONLY, isFriendsFilter})
 
 export const getUsers = (pageSize, page, isFriendsFilter= null) => {
   return (dispatch) => {

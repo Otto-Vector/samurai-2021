@@ -14,6 +14,7 @@
     background-color: aquamarine;
     border-radius: 3px;
     border: 1px solid lightblue;
+    user-select: none;
 }
 
 .selectedPage {

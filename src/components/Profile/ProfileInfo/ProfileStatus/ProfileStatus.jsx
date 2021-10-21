@@ -5,7 +5,7 @@ class ProfileStatus extends React.Component {
 
   state = {
     editMode: false,
-    localText: this.props.profileStatusText || '',
+    localStatusText: this.props.profileStatusText || '',
     placeholder: 'введите статус'
   }
 
@@ -19,11 +19,12 @@ class ProfileStatus extends React.Component {
     this.setState({
       editMode: false
     })
+    this.props.updateStatus(this.state.localStatusText)
   }
 
-  onStatusInput = (edited) => {
+  onStatusInput = (e) => {
     this.setState({
-      localText: edited
+      localStatusText: e.currentTarget.value
     })
   }
 
@@ -32,7 +33,7 @@ class ProfileStatus extends React.Component {
 
       { !this.state.editMode &&
         <div className={styles.pStatusText}onDoubleClick={this.editModeOn}>
-          <span >{this.state.localText || 'no status'}</span>
+          <span >{this.props.profileStatusText || 'no status'}</span>
         </div>
       }
       { this.state.editMode &&
@@ -40,8 +41,8 @@ class ProfileStatus extends React.Component {
           <textarea className={styles.pStatusTextInput}
             placeholder={this.state.placeholder}
                     autoFocus={true}
-                    value={this.state.localText}
-                    onChange={e => {this.onStatusInput(e.target.value)}}
+                    value={this.state.localStatusText}
+                    onChange={this.onStatusInput}
                     onKeyDown={e => { if (e.key === 'Enter') this.editModeOff()}}
                     onBlur={this.editModeOff}
           />
