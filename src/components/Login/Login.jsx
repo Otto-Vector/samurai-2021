@@ -9,14 +9,14 @@ const LoginForm = (props) => {
   <Form
     onSubmit={props.onSubmit}
     initialValues={{
-      loginName: '',
+      email: '',
       password: '',
       rememberMe: true,
     }}
     render={
       ({handleSubmit, pristine, form, submitting, values}) => (
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className={styles.input}>
             <Field name={'email'}
                    placeholder={'Email'}
                    component={Input}
@@ -24,22 +24,26 @@ const LoginForm = (props) => {
                    validate={composeValidators(required)}
             />
           </div>
-          <div>
+          <div className={styles.input}>
             <Field name={'password'}
                    component={Input}
                    type={'password'}
                    placeholder={'Password'}
+                   validate={composeValidators(required)}
             />
           </div>
           <div>
-            <label>
-              <Field name={'remeberMe'} component={"checkbox"} />
+            <label className={styles.checkbox}>
+              <Field name={'rememberMe'}
+                     component={'input'}
+                     type={'checkbox'}
+              />
               Remember me
             </label>
           </div>
-          <button type={'submit'}>Done</button>
+          <button className={styles.button} type={'submit'}>Done</button>
           <button type={'button'}
-                      className={styles.resetButton}
+                      className={styles.button}
                       disabled={pristine || submitting}
                       onClick={form.reset}>X
               </button>

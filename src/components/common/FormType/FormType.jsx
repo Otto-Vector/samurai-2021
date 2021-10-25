@@ -3,10 +3,10 @@ import styles from "./FormType.module.css"
 
 const FormType = (Formtype) => ({input, meta, placeholder}) => {
   let boolError = (meta.error && meta.touched)
-  return (<div className={styles.wrapper}>
+  return (<div className={styles.wrapper+ ' ' + (boolError && styles.error)}>
                   <Formtype
                     {...input}
-                    className={styles.textarea + ' ' + (boolError && styles.error)}
+                    className={styles.textarea}
                     placeholder={placeholder}
                   />
                     {boolError && <span className={styles.span}>{meta.error}</span>}
