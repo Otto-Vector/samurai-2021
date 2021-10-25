@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './login.module.css'
 import {Field, Form} from "react-final-form";
 import {composeValidators, required} from "../../utils/validators";
-import {TextArea} from "../common/TextArea/TextArea";
+import {Input} from "../common/FormType/FormType";
 
 const LoginForm = (props) => {
   return (
@@ -17,15 +17,19 @@ const LoginForm = (props) => {
       ({handleSubmit, pristine, form, submitting, values}) => (
         <form onSubmit={handleSubmit}>
           <div>
-            <Field name={'loginName'}
-                   component={'input'}
-                   placeholder={'Login'}
-                   component={TextArea}
+            <Field name={'email'}
+                   placeholder={'Email'}
+                   component={Input}
+                   type={'email'}
                    validate={composeValidators(required)}
             />
           </div>
           <div>
-            <Field name={'password'} component={'input'} placeholder={'Password'}/>
+            <Field name={'password'}
+                   component={Input}
+                   type={'password'}
+                   placeholder={'Password'}
+            />
           </div>
           <div>
             <label>

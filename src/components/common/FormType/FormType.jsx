@@ -1,14 +1,11 @@
 import React from "react";
-import styles from "./TextArea.module.css"
+import styles from "./FormType.module.css"
 
-export const TextArea = ({input, meta, placeholder, type}) => {
-
+const FormType = (Formtype) => ({input, meta, placeholder}) => {
   let boolError = (meta.error && meta.touched)
-
   return (<div className={styles.wrapper}>
-                  <input
+                  <Formtype
                     {...input}
-                    type = {type}
                     className={styles.textarea + ' ' + (boolError && styles.error)}
                     placeholder={placeholder}
                   />
@@ -16,3 +13,6 @@ export const TextArea = ({input, meta, placeholder, type}) => {
                   </div>
                 )
 }
+
+export const TextArea = FormType('textarea')
+export const Input = FormType('input')

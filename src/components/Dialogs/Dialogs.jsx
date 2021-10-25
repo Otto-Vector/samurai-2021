@@ -4,7 +4,7 @@ import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {Form, Field} from 'react-final-form'
 import {composeValidators, required} from "../../utils/validators";
-import {TextArea} from "../common/TextArea/TextArea";
+import {TextArea} from "../common/FormType/FormType";
 
 
 const MessageTextForm = (props) => {
@@ -23,7 +23,6 @@ const MessageTextForm = (props) => {
                 <Field name={'message'}
                        validate={composeValidators(required)}
                        placeholder={props.textMessagePlaceholder}
-                       type={'text'}
                        component={TextArea}
                 />
               </div>

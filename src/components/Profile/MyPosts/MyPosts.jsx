@@ -2,8 +2,8 @@ import React from 'react';
 import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 import {Field, Form} from "react-final-form";
+import {TextArea} from "../../common/FormType/FormType";
 import {composeValidators, required} from "../../../utils/validators";
-import {TextArea} from "../../common/TextArea/TextArea";
 
 
 const AddPostForm = (props) => {
@@ -23,9 +23,8 @@ const AddPostForm = (props) => {
                  name={'newPostText'}
                  placeholder={props.newPostTextPlaceholder}
                  validate={composeValidators(required)}
-                 type={'textarea'}
                  component={TextArea}
-            // #toDo: TextArea to component
+            // #toDo: FormType to component
           />
           </div>
 
