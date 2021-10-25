@@ -1,8 +1,7 @@
-import {randomFaceImage} from "./randomFace";
+import {randomFaceImage} from "../api/randomFace";
 import {profileAPI} from "../api/samurai-api";
 
 const ADD_POST = 'ADD-POST'
-const CHANGE_POST_TEXT = 'CHANGE-POST-TEXT'
 const SET_PROFILE_STATE = 'SET-PROFILE-STATE'
 const SET_STATUS_PROFILE = 'SET-STATUS-PROFILE'
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING'
@@ -30,7 +29,6 @@ let initialState = {
       likesCount: 9
     }
   ],
-  newPostText: '',
   newPostTextPlaceholder: 'add new pos-t here',
   profile: null,
   profileStatusText: '',
@@ -46,21 +44,15 @@ const profileReducer = (state = initialState, action) => {
       let newPost = {
         id: action.id,
         imageURL: randomFaceImage(action.id),
-        message: state.newPostText || 'empty',
+        message: action.newPostText || 'empty',
         likesCount: 0
       }
       return {
         ...state,
         posts: [newPost, ...state.posts],
-        newPostText: ''
       }
     }
-    case CHANGE_POST_TEXT : {
-      return {
-        ...state,
-        newPostText: action.newPostText
-      }
-    }
+
     case SET_PROFILE_STATE : {
       return {
         ...state,
@@ -86,7 +78,6 @@ const profileReducer = (state = initialState, action) => {
       }
     }
     case SET_IS_AUTH_PROFILE : {
-      console.log(action.isAuthProfile);
       return {
         ...state,
         isAuthProfile: action.isAuthProfile
@@ -100,8 +91,9 @@ const profileReducer = (state = initialState, action) => {
   // return state
 }
 
-export const addPost = (id = 5) => ({type: ADD_POST, id})
-export const changePost = (newPostText) => ({type: CHANGE_POST_TEXT, newPostText})
+let defaultUserId = 11
+
+export const addPost = (id = defaultUserId, newPostText) => ({type: ADD_POST, id, newPostText})
 export const setProfileState = (profile) => ({type: SET_PROFILE_STATE, profile})
 export const setStatusProfile = (profileStatusText) => ({type: SET_STATUS_PROFILE, profileStatusText})
 export const setIsAuthProfile = (isAuthProfile) => ({type: SET_IS_AUTH_PROFILE, isAuthProfile})
@@ -111,7 +103,6 @@ export const toggleStatusProfileFetching = (profileStatusFetching) => ({
 })
 export const toggleIsFetchingProfile = (isFetching) => ({type: TOGGLE_FETCHING, isFetching})
 
-let defaultUserId = 11
 
 export const getProfile = (userId = defaultUserId) => {
   return (dispatch) => {

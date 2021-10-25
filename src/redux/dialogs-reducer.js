@@ -1,7 +1,5 @@
-import {randomFaceImage} from "./randomFace";
-
+import {randomFaceImage} from "../api/randomFace";
 const ADD_MESSAGE = 'ADD-MESSAGE'
-const CHANGE_MESSAGE = 'CHANGE-MESSAGE'
 
 
 let initialState = {
@@ -9,32 +7,32 @@ let initialState = {
     {
       id: 1,
       name: 'Dimych',
-      imageURL: randomFaceImage(1),
+      imageURL: randomFaceImage,
     },
     {
       id: 2,
       name: 'Andrew',
-      imageURL: randomFaceImage(2),
+      imageURL: randomFaceImage,
     },
     {
       id: 3,
       name: 'Sveta',
-      imageURL: randomFaceImage(3),
+      imageURL: randomFaceImage,
     },
     {
       id: 4,
       name: 'Sasha',
-      imageURL: randomFaceImage(4),
+      imageURL: randomFaceImage,
     },
     {
       id: 5,
       name: 'Viktor',
-      imageURL: randomFaceImage(5),
+      imageURL: randomFaceImage,
     },
     {
       id: 6,
       name: 'Valera',
-      imageURL: randomFaceImage(6),
+      imageURL: randomFaceImage,
     }
   ],
   messages: [
@@ -52,7 +50,6 @@ let initialState = {
     {id: 5, message: 'YoZh'},
 
   ],
-  newMessageText: '',
   textMessagePlaceholder: 'Enter new message (Alt+Enter to send)'
 }
 
@@ -66,20 +63,12 @@ const dialogsReducer = (state = initialState, action) => {
       let rand = (Math.random() * 10).toFixed(0)
       let newMessage = {
         id: rand,
-        message: state.newMessageText || `empty ${rand}`
+        message: action.newMessageText || `empty ${rand}`
       }
 
       return {
         ...state,
-        newMessageText: '',
         messages: [newMessage, ...state.messages]
-      }
-    }
-
-    case CHANGE_MESSAGE : {
-       return {
-        ...state,
-        newMessageText: action.text
       }
     }
 
@@ -91,7 +80,6 @@ const dialogsReducer = (state = initialState, action) => {
   return state
 }
 
-export const addMessage = () => ({type: ADD_MESSAGE})
-export const changeMessage = (text) => ({type: CHANGE_MESSAGE, text})
+export const addMessage = (newMessageText) => ({type: ADD_MESSAGE, newMessageText})
 
 export default dialogsReducer;

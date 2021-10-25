@@ -23,6 +23,9 @@
 .textarea::placeholder {
     color: lightblue;
 }
+.error {
+    border: 1px solid crimson;
+}
 
 .buttonAddPost {
     margin: 10px;

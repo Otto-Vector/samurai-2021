@@ -1,31 +1,63 @@
 import React from 'react';
-import classes from './MyPosts.module.css';
+import styles from './MyPosts.module.css';
 import Post from './Post/Post';
+import {Field, Form} from "react-final-form";
+import {composeValidators, required} from "../../../utils/validators";
+import {TextArea} from "../../common/TextArea/TextArea";
+
+
+const AddPostForm = (props) => {
+  return (
+    <Form
+       onSubmit={props.onSubmit}
+        initialValues={{
+          newPostText: ''
+        }}
+        render=
+          {({handleSubmit, pristine, form, submitting, values}) => (
+        <form onSubmit={handleSubmit}
+              className={styles.addPostBlock}
+        >
+          <div className={styles.textarea}>
+          <Field
+                 name={'newPostText'}
+                 placeholder={props.newPostTextPlaceholder}
+                 validate={composeValidators(required)}
+                 type={'textarea'}
+                 component={TextArea}
+            // #toDo: TextArea to component
+          />
+          </div>
+
+          <button type={'button'}
+                      className={styles.resetButton}
+                      disabled={pristine || submitting}
+                      onClick={form.reset}>X
+              </button>
+          <button type={'submit'}
+                  className={styles.buttonAddPost}
+          >Add post</button>
+        </form>
+      )}
+    >
+    </Form>
+  )
+}
 
 
 const MyPosts = (props) => {
 
   let postsElements = props.posts.map(args => <Post {...args} key={Math.random().toString()}/>)
 
-  return (
-    <div className={classes.postsBlock}>
-      <h3>My posts</h3>
-      <div>
-        <div className={classes.addPostBlock}>
-          <textarea className={classes.textarea}
-                    onChange={e => {
-                      props.changePost(e.target.value)
-                    }}
-                    value={props.newPostText}
-                    placeholder={props.newPostTextPlaceholder}
-          />
+  let onSubmit = (formData) => {
+    props.addPost(33,formData.newPostText)
+  }
 
-          <button className={classes.buttonAddPost}
-                  onClick={props.addPost}>Add post
-          </button>
-        </div>
-      </div>
-      <div className={classes.posts}>
+  return (
+    <div className={styles.postsBlock}>
+      <h3>My posts</h3>
+        <AddPostForm onSubmit={onSubmit} newPostTextPlaceholder={props.newPostTextPlaceholder}/>
+      <div className={styles.posts}>
         {postsElements}
       </div>
     </div>

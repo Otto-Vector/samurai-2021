@@ -1,4 +1,4 @@
-import {randomFaceImage} from "./randomFace"
+import {randomFaceImage} from "../api/randomFace"
 
 const ON_CLICK_FRIENDS = "ON-CLICK-FRIENDS"
 

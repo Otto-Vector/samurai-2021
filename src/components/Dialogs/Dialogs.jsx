@@ -2,16 +2,63 @@ import React from 'react';
 import styles from './Dialogs.module.css';
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
+import {Form, Field} from 'react-final-form'
+import {composeValidators, required} from "../../utils/validators";
+import {TextArea} from "../common/TextArea/TextArea";
 
+
+const MessageTextForm = (props) => {
+
+  return (
+    <div className={styles.addField}>
+      <Form
+        onSubmit={props.onSubmit}
+        initialValues={{
+          message: ''
+        }}
+        render=
+          {({handleSubmit, pristine, form, submitting, values}) => (
+            <form className={styles.addField} onSubmit={handleSubmit}>
+              <div className={styles.textarea}>
+                <Field name={'message'}
+                       validate={composeValidators(required)}
+                       placeholder={props.textMessagePlaceholder}
+                       type={'text'}
+                       component={TextArea}
+                />
+              </div>
+              <div className={styles.buttonsWrapper}>
+                <button type={'submit'}
+                        className={styles.button}>Add message
+                </button>
+                <button type={'button'}
+                        className={styles.resetButton}
+                        disabled={pristine || submitting}
+                        onClick={form.reset}>X
+                </button>
+              </div>
+            </form>
+          )}
+      />
+    </div>
+  )
+}
+
+// const MessageTextReduxForm = reduxForm({form: 'messageText'})(MessageTextForm)
 
 const Dialogs = (props) => {
 
-  //считываем alt+Enter(13) для добавления ссобщения
-  let onkey = (event) => {
-    if (event.keyCode === 13 && event.altKey) {
-      props.addMessage()
-    }
+  let onSubmit = (formData) => {
+    props.addMessage(formData.message)
+    // props.reset('messageText')
   }
+
+  // //считываем alt+Enter(13) для добавления ссобщения
+  // let onkey = (event) => {
+  //   if (event.keyCode === 13 && event.altKey) {
+  //     props.addMessage()
+  //   }
+  // }
 
   //хардкодим сопоставление иконок айдишникам
   let zz = (idd) => {
@@ -34,21 +81,7 @@ const Dialogs = (props) => {
         <div className={styles.messages}>
           {messagesElements}
         </div>
-        <div className={styles.addField}>
-            <textarea className={styles.textarea}
-                      placeholder={props.textMessagePlaceholder}
-                      onKeyDown={onkey}
-                      onChange={(e) => {
-                        props.changeMessage(e.target.value)
-                      }}
-                      value={props.newMessageText}/>
-          <button className={styles.button}
-                  onClick={() => {
-                    props.addMessage()
-                  }}
-          >Add message
-          </button>
-        </div>
+        <MessageTextForm onSubmit={onSubmit} textMessagePlaceholder={props.textMessagePlaceholder}/>
       </div>
     </div>
   )

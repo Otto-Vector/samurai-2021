@@ -1,6 +1,21 @@
 import React from 'react';
 import styles from './ProfileStatus.module.css'
 
+
+const StatusChangeForm = (props) => {
+  return <div >
+          <textarea className={styles.pStatusTextInput}
+                    placeholder={props.placeholder}
+                    autoFocus={true}
+                    value={props.value}
+                    onChange={props.onChange}
+                    onKeyDown={props.onKeyDown}
+                    onBlur={props.onBlur}
+          />
+  </div>;
+}
+
+
 class ProfileStatus extends React.Component {
 
   state = {
@@ -39,18 +54,13 @@ class ProfileStatus extends React.Component {
       </div>
       }
       {this.state.editMode &&
-      <div>
-          <textarea className={styles.pStatusTextInput}
-                    placeholder={this.state.placeholder}
-                    autoFocus={true}
-                    value={this.state.localStatusText}
-                    onChange={this.onStatusInput}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter') this.disableEditMode()
-                    }}
-                    onBlur={this.disableEditMode}
-          />
-      </div>
+      <StatusChangeForm placeholder={this.state.placeholder}
+                        value={this.state.localStatusText}
+                        onChange={this.onStatusInput}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') this.disableEditMode()
+                        }}
+                        onBlur={this.disableEditMode}/>
       }
     </div>
   }

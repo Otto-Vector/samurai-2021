@@ -1,11 +1,13 @@
 import React from 'react';
 import styles from './Post.module.css';
+import noImage from "../../../../assets/images/userNoImage.png"
 
 const Post = (props) => {
 
   return (
     <div className={styles.item}>
-      <img src={props.imageURL} alt='postImage' />
+      {/*<img src={props.imageURL} alt='postImage' />*/}
+      <img src={noImage} alt='postImage' />
       <div className={styles.message}>
         { props.message }
       </div>
