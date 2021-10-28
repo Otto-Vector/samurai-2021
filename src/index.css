@@ -25,9 +25,10 @@ body, canvas, div, input, button, select, textarea {
     padding: 0;
 }
 
-select, input {
-     appearance: none;
-}
+/*из-за этого не видно чекбокс*/
+/*select, input {*/
+/*     appearance: none;*/
+/*}*/
 
 /*сброс стилей инпутов*/
 input, button, select, textarea {

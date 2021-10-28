@@ -4,6 +4,7 @@
     justify-content: space-between;
     grid-area: h;
     background-color: lemonchiffon;
+    padding: 5px;
 }
 
 .header img {
@@ -14,5 +15,12 @@
     margin: 5px 15px;
     font-size: 20px;
     color: red;
+    text-align: right;
+}
+
+.logoutButton {
+    padding: 3px;
+    border-radius: 3px;
+
 }
 
