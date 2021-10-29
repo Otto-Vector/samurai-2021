@@ -29,7 +29,7 @@ let initialState = {
       likesCount: 9
     }
   ],
-  newPostTextPlaceholder: 'add new pos-t here',
+  newPostTextPlaceholder: 'add new post here',
   profile: null,
   profileStatusText: '',
   profileStatusFetching: true,
@@ -94,46 +94,41 @@ const profileReducer = (state = initialState, action) => {
 let defaultUserId = 11
 
 export const addPost = (id = defaultUserId, newPostText) => ({type: ADD_POST, id, newPostText})
-export const setProfileState = (profile) => ({type: SET_PROFILE_STATE, profile})
-export const setStatusProfile = (profileStatusText) => ({type: SET_STATUS_PROFILE, profileStatusText})
-export const setIsAuthProfile = (isAuthProfile) => ({type: SET_IS_AUTH_PROFILE, isAuthProfile})
-export const toggleStatusProfileFetching = (profileStatusFetching) => ({
+export const setProfileState = profile => ({type: SET_PROFILE_STATE, profile})
+export const setStatusProfile = profileStatusText => ({type: SET_STATUS_PROFILE, profileStatusText})
+export const setIsAuthProfile = isAuthProfile => ({type: SET_IS_AUTH_PROFILE, isAuthProfile})
+export const toggleStatusProfileFetching = profileStatusFetching => ({
   type: TOGGLE_STATUS_FETCHING,
   profileStatusFetching
 })
-export const toggleIsFetchingProfile = (isFetching) => ({type: TOGGLE_FETCHING, isFetching})
+export const toggleIsFetchingProfile = isFetching => ({type: TOGGLE_FETCHING, isFetching})
 
 
-export const getProfile = (userId = defaultUserId) => {
-  return (dispatch) => {
-    dispatch(toggleIsFetchingProfile(true))
-    profileAPI.getProfile(userId)
-      .then(response => {
-        dispatch(setProfileState(response))
-        dispatch(toggleIsFetchingProfile(false))
-      })
-  }
+export const getProfile = (userId = defaultUserId) => dispatch => {
+  dispatch(toggleIsFetchingProfile(true))
+  profileAPI.getProfile(userId)
+    .then(response => {
+      dispatch(setProfileState(response))
+      dispatch(toggleIsFetchingProfile(false))
+    })
 }
 
-export const getStatus = (userId = defaultUserId) => {
-  return (dispatch) => {
-    profileAPI.getStatus(userId)
-      .then(response => {
-        dispatch(toggleStatusProfileFetching(true))
-        dispatch(setStatusProfile(response))
-        dispatch(toggleStatusProfileFetching(false))
-      })
-  }
+export const getStatus = (userId = defaultUserId) => dispatch => {
+  profileAPI.getStatus(userId)
+    .then(response => {
+      dispatch(toggleStatusProfileFetching(true))
+      dispatch(setStatusProfile(response))
+      dispatch(toggleStatusProfileFetching(false))
+    })
 }
 
-export const updateStatus = (status) => {
-  return (dispatch) => {
-    profileAPI.setStatus(status)
-      .then( responce => {
-        if (responce.resultCode ===0 ) {
-          dispatch(setStatusProfile(status))
-        }
-      })
-  }
+export const updateStatus = status => dispatch => {
+  profileAPI.setStatus(status)
+    .then(responce => {
+      if (responce.resultCode === 0) {
+        dispatch(setStatusProfile(status))
+      }
+    })
 }
+
 export default profileReducer;

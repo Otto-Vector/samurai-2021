@@ -57,10 +57,9 @@ export const setAuthUserData = (userId, email, login, isAuth) => ({type: SET_AUT
 export const isFetchingSwichTo = (isFetching) => ({type: IS_FETCHING_SWICH_TO, isFetching})
 export const onErrorAuth = (messages) => ({type: ON_ERROR_AUTH, messages})
 
-export const getAuth = () => {
-  return dispatch => {
+export const getAuth = () => dispatch => {
     dispatch(isFetchingSwichTo(true))
-    authAPI.getAuth()
+    return authAPI.getAuth()
       .then(response => {
         if (response.resultCode === 0) {
           let {id, login, email} = response.data
@@ -68,28 +67,21 @@ export const getAuth = () => {
           dispatch(isFetchingSwichTo(false))
         }
       })
-  }
 }
 
-// export const loginIn = (loginData) => {
-export const loginIn = (loginData) => {
-
-  return dispatch => {
+export const loginIn = loginData => dispatch => {
     authAPI.loginIn(loginData)
       .then(response => {
         if (response.resultCode === 0) {
           dispatch(getAuth())
-          // dispatch(onErrorAuth(response.messages))
           dispatch(onErrorAuth(null))
         } else {
           dispatch(onErrorAuth(response.messages))
         }
       })
-  }
 }
 
-export const loginOut = () => {
-  return dispatch => {
+export const loginOut = () => dispatch => {
     authAPI.loginOut()
       .then(response => {
         if (response.resultCode === 0) {
@@ -99,7 +91,6 @@ export const loginOut = () => {
           dispatch(onErrorAuth(response.messages))
         }
       })
-  }
 }
 
 export default authReducer;

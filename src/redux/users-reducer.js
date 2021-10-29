@@ -118,8 +118,8 @@ export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFe
 export const isFetchingToggleId = (isFetching, userId) => ({type: TOGGLE_IS_FETCHING_BY_ID, isFetching, userId})
 export const friendsOnlyToggle = (isFriendsFilter) => ({type: TOGGLE_FRIENDS_ONLY, isFriendsFilter})
 
-export const getUsers = (pageSize, page, isFriendsFilter= null) => {
-  return (dispatch) => {
+export const getUsers = (pageSize, page, isFriendsFilter= null) => dispatch => {
+
     dispatch(toggleIsFetching(true))
 
     UsersAPI.getUsers(pageSize, page, isFriendsFilter)
@@ -130,7 +130,6 @@ export const getUsers = (pageSize, page, isFriendsFilter= null) => {
 
         dispatch(toggleIsFetching(false))
       })
-  }
 }
 
 export const follow = (isFollow, userId) => {

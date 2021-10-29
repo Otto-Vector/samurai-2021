@@ -10,11 +10,15 @@ class HeaderContainer extends React.Component {
     this.props.getAuth()
   }
 
+  loginOut = () => {
+    this.props.loginOut()
+  }
+
   render() {
     return <Header login={this.props.data.login}
                    id ={this.props.data.id}
                    isAuth ={this.props.isAuth}
-                   loginOut ={this.props.loginOut}
+                   loginOut ={this.loginOut}
     />
 
   }

@@ -1,30 +1,54 @@
 import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
-import {Route} from "react-router-dom";
+import {Route, withRouter} from "react-router-dom";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LoginContainer from "./components/Login/LoginContainer";
+import {connect} from "react-redux";
+import {initialazedAll} from "./redux/app-reducer";
+import Preloader from "./components/common/Preloader/Preloader";
+import {compose} from "redux";
 
-const App = (props) => {
-  return (
+class AppClass extends React.Component {
+
+  componentDidMount() {
+    this.props.initialazedAll()
+  }
+
+
+  render() {
+    if (!this.props.initialazed) return <Preloader/>
+
+    return (
       <div className='app-wrapper'>
         <HeaderContainer/>
-        <Navbar />
+        <Navbar/>
         <div className='app-wrapper-content'>
 
-          <Route path='/dialogs' render={() => <DialogsContainer />}/>
+          <Route path='/dialogs' render={() => <DialogsContainer/>}/>
           <Route path='/profile/:userId?'
-                 render={() => <ProfileContainer />}/>
-          <Route path='/users'   render={() => <UsersContainer/>}/>
-          <Route path='/login'   render={() => <LoginContainer/>}/>
-          {/*<Route path='/dialogs' render={() => <Dialogs {...state.dialogsPage} dispatch = {props.state.dispatch} />}/>*/}
-          {/*<Route path='/profile' render={() => <Profile {...state.profilePage} dispatch = {props.state.dispatch}/>}/>*/}
+                 render={() => <ProfileContainer/>}/>
+          <Route path='/users' render={() => <UsersContainer/>}/>
+          <Route path='/login' render={() => <LoginContainer/>}/>
         </div>
       </div>
     )
+  }
 }
+
+let mapStateToProps = (state) => {
+  return {
+    initialazed: state.app.initialazed
+  }
+}
+
+let App = compose(
+  withRouter,
+  connect(mapStateToProps, {initialazedAll})
+)(AppClass)
+
 
 export default App;
