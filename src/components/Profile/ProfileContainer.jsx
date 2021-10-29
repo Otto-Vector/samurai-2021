@@ -12,13 +12,11 @@ class ProfileContainer extends React.Component {
 
 
   componentDidMount() {
-    // let userId = undefined
     let userId = this.props.match.params.userId || this.props.authUser || undefined
-    let bool = (+userId === +this.props.authUser)
-    this.props.setIsAuthProfile(bool)
+    let isAuthProfile = (+userId === +this.props.authUser)
+    this.props.setIsAuthProfile(isAuthProfile)
     this.props.getProfile(userId)
     this.props.getStatus(userId)
-    // debugger
   }
 
   componentDidUpdate() {
@@ -49,6 +47,6 @@ export default compose(
     setStatusProfile,
     setIsAuthProfile,
   }),
-  withAuthRedirect,
+  // withAuthRedirect,
   withRouter
 )(ProfileContainer)

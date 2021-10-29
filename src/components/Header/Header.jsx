@@ -21,7 +21,7 @@ const Header = (props) => {
             </div>
         </span>)
         :
-        <NavLink to={"/login"} className={styles.login}>{'/login'}</NavLink>
+        <NavLink activeClassName={styles.loginButton} to={"/login"} className={styles.login}>{'login'}</NavLink>
     }
   </header>
 }

@@ -84,7 +84,6 @@ export const loginIn = (loginData) => {
         } else {
           dispatch(onErrorAuth(response.messages))
         }
-        return response
       })
   }
 }
