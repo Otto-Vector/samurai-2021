@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './ProfileStatus.module.css'
 
 
-const StatusChangeForm = (props) => {
+const StatusChangeForm = props => {
   return <div >
           <textarea className={styles.pStatusTextInput}
                     placeholder={props.placeholder}
