@@ -1,4 +1,5 @@
 import {getAuth} from "./auth-reducer";
+import {getFriends} from "./sidebar-reducer";
 
 const SET_INITIALAZED = 'SET_INITIALAZED'
 
@@ -33,9 +34,14 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 export const initialazedAll = () => {
   return dispatch => {
     let promise = dispatch(getAuth())
-    let promise2 = sleep(1500)
+    let promise2 = sleep(100)
+    let friends = dispatch(getFriends())
 
-    Promise.all([promise, promise2])
+    Promise.all([
+        promise,
+        promise2,
+        friends
+      ])
       .then(() => {
         dispatch(setInitialazedSuccess())
       })

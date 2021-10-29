@@ -10,7 +10,8 @@ let mapStateToProps = (state) => {
 }
 
 const SidebarContainer = connect(mapStateToProps,{
-  onClickFriends
+  onClickFriends,
+  // getFriends
 })(Sidebar)
 
 export default SidebarContainer

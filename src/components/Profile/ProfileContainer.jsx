@@ -5,10 +5,11 @@ import {withRouter} from "react-router-dom";
 
 import Profile from "./Profile";
 import {getProfile, getStatus, setIsAuthProfile, setStatusProfile, updateStatus} from "../../redux/profile-reducer";
-import withAuthRedirect from "../hoc/withAuthRedirect";
+// import withAuthRedirect from "../hoc/withAuthRedirect";
 
 
 class ProfileContainer extends React.Component {
+
 
 
   componentDidMount() {
@@ -20,6 +21,7 @@ class ProfileContainer extends React.Component {
   }
 
   componentDidUpdate() {
+
   }
 
   render() {

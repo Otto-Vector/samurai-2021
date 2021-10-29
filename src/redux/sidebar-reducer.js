@@ -1,26 +1,12 @@
-import {randomFaceImage} from "../api/randomFace"
+// import {randomFaceImage} from "../api/randomFace"
+import {UsersAPI} from "../api/samurai-api";
 
 const ON_CLICK_FRIENDS = "ON-CLICK-FRIENDS"
+const ADD_FRIENDS = "ADD_FRIENDS"
 
 let initialState = {
-      friends: [
-        {
-          id: 32,
-          imageURL: randomFaceImage(),
-          name : 'Alex',
-        },
-        {
-          id: 33,
-          imageURL: randomFaceImage(),
-          name : 'Max',
-        },
-        {
-          id: 38,
-          imageURL: randomFaceImage(),
-          name : 'Aton',
-        },
-      ],
-      header: 'Friends',
+  friends: [],
+  header: 'Friends',
 }
 
 const sidebarReducer = (state = initialState, action) => {
@@ -38,13 +24,33 @@ const sidebarReducer = (state = initialState, action) => {
       sidebarFunctions.onClickFriends(action.id)
       break
     }
-    default : { return {...state} }
+    case ADD_FRIENDS : {
+      return {
+        ...state,
+        friends: action.friends
+      }
+    }
+    default : {
+      return {...state}
+    }
   }
   return {...state}
 }
 
-export let onClickFriends = id => ({type: ON_CLICK_FRIENDS, id})
+export const onClickFriends = id => ({type: ON_CLICK_FRIENDS, id})
+const addFriends = friends => ({type: ADD_FRIENDS, friends})
+let randMinMax = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
-
+export const getFriends = () => dispatch => {
+  return UsersAPI.getUsers(100, 1, true)
+    .then( response => {
+      let maxUsers = response.items.length - 1
+      let friends = []
+      for (let i = 0; i < (maxUsers < 3 ? maxUsers : 3); i++) {
+        friends = [...friends, response.items[randMinMax(0, maxUsers)]]
+      }
+      dispatch(addFriends(friends))
+    })
+}
 
 export default sidebarReducer;
