@@ -1,17 +1,17 @@
 import Sidebar from "./Sidebar";
 import {connect} from "react-redux";
-import {onClickFriends} from "../../redux/sidebar-reducer";
+import {getResponseFriends} from "../../redux/friends-reducer";
+import {getFriendsHeader, getThreeFriendsRe} from "../../reselect/friends-selectors";
 
 let mapStateToProps = (state) => {
   return {
-    friends: state.sidebar.friends,
-    header: state.sidebar.header
+    friends: getThreeFriendsRe(state),
+    header: getFriendsHeader(state),
   }
 }
 
 const SidebarContainer = connect(mapStateToProps,{
-  onClickFriends,
-  // getFriends
+  getResponseFriends,
 })(Sidebar)
 
 export default SidebarContainer

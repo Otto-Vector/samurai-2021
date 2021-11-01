@@ -8,11 +8,11 @@ const FriendItem = props => {
   return <div className={styles.friendItem}>
     <NavLink to={path}>
       <img
-        // onClick={()=>{props.onClickFriends(props.id)}}
            className={styles.image}
-           alt={"friend " + props.id}
+           alt={'friendImg'}
+           title={props.name}
            src={props.photos.small || noImage}/>
-      <div className={styles.name}>{props.name}</div>
+      {/*<div className={styles.name}>{props.name}</div>*/}
     </NavLink>
   </div>
 

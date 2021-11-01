@@ -6,15 +6,17 @@ const Sidebar = (props) => {
 
   let header = props.header
 
-  let onClickFriends = (id) => {
-    props.onClickFriends(id)
+  let refreshFriends = () => {
+    props.getResponseFriends()
   }
 
-  let friendItem = props.friends.map((args)=><FriendItem key={Math.random()} {...args}
-                                                         onClickFriends={onClickFriends}/>)
+  let friendItem = props.friends.map( args => <FriendItem key={Math.random()} {...args} />)
 
   return <div className={styles.sidebar}>
-    <header className={styles.header}>{header}</header>
+    <div className={styles.headerWrapper}>
+      <header className={styles.header}>{header}</header>
+      <button className={styles.refreshButton} onClick={refreshFriends}>Refresh</button>
+    </div>
     <div className={styles.friendItems}>
       {friendItem}
     </div>

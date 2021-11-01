@@ -3,11 +3,27 @@
   width: 250px;
 }
 
+.headerWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  justify-items: center;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
 .header {
   color: whitesmoke;
   font-weight: bold;
   font-size: 30px;
-  padding-bottom: 15px;
+
+}
+
+.refreshButton {
+  padding: 5px;
+  background-color: gray;
+  border-radius: 3px;
+  color: gold;
 }
 
 .friendItems {
