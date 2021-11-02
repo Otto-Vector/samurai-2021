@@ -9,20 +9,17 @@ const getFriends = (state) => {
   return state.sidebar.friends
 }
 
-export const getThreeFriends = (state) => {
-  console.log("обращение к селектору другов")
-  let friends = getFriends(state)
-  let maxUsers = friends.length - 1
-  let maxDiffArray = randArrayDiffInt(maxUsers)
-  let diffArray = maxDiffArray(Math.min(maxUsers,6))
-
-  return diffArray.map(el => friends[el])
+export const getFriendsIsFetching = (state) => {
+  return state.sidebar.isFetching
 }
 
+const getFriendsToShow = (state) => {
+  return state.sidebar.friendsToShow
+}
 
-export const getThreeFriendsRe = createSelector( getFriends, (friends)=> {
+export const getThreeFriendsRe = createSelector( getFriends, getFriendsToShow, (friends, toShow)=> {
   let maxUsers = friends.length - 1
-  let diffArray = randArrayDiffInt(maxUsers)(Math.min(maxUsers,6))
+  let diffArray = randArrayDiffInt(maxUsers)(Math.min(maxUsers,toShow))
 
   return diffArray.map(el => friends[el])
 })

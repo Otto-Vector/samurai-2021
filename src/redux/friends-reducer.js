@@ -1,12 +1,14 @@
-// import {randomFaceImage} from "../api/randomFace"
 import {UsersAPI} from "../api/samurai-api";
 
 const REFRESH_FRIENDS = "REFRESH-FRIENDS"
 const ADD_FRIENDS = "ADD_FRIENDS"
+const FRIENDS_IS_FETCHING = "FRIENDS-IS-FETCHING"
 
 let initialState = {
   friends: [],
   header: 'Friends',
+  friendsToShow: 7,
+  isFetching: true
 }
 
 const friendsReducer = (state = initialState, action) => {
@@ -27,6 +29,13 @@ const friendsReducer = (state = initialState, action) => {
         friends: action.friends
       }
     }
+
+    case  FRIENDS_IS_FETCHING : {
+      return {
+        ...state,
+        isFetching: action.isFetching
+      }
+    }
     default : {
       return {...state}
     }
@@ -36,11 +45,14 @@ const friendsReducer = (state = initialState, action) => {
 
 export const refreshFriends = () => ({type: REFRESH_FRIENDS})
 const addFriends = friends => ({type: ADD_FRIENDS, friends})
+const friendsResponseIsFetching = isFetching => ({type: FRIENDS_IS_FETCHING, isFetching})
 
 export const getResponseFriends = () => dispatch => {
+  friendsResponseIsFetching(true)
   return UsersAPI.getUsers(100, 1, true)
     .then( response => {
       dispatch(addFriends(response.items))
+      friendsResponseIsFetching(false)
     })
 }
 
