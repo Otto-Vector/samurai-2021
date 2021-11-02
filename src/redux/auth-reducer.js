@@ -11,7 +11,7 @@ let initialState = {
     email: null,
     login: null
   },
-  isFetching: true,
+  isFetching: false,
   isAuth: false,
   errorMessages: null,
   authURL: 'https://social-network.samuraijs.com',
@@ -64,8 +64,8 @@ export const getAuth = () => dispatch => {
         if (response.resultCode === 0) {
           let {id, login, email} = response.data
           dispatch(setAuthUserData(id, email, login, true))
-          dispatch(isFetchingSwichTo(false))
         }
+          dispatch(isFetchingSwichTo(false))
       })
 }
 
