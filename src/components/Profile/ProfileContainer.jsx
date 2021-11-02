@@ -10,8 +10,6 @@ import {getProfile, getStatus, setIsAuthProfile, setStatusProfile, updateStatus}
 
 class ProfileContainer extends React.Component {
 
-
-
   componentDidMount() {
     let userId = this.props.match.params.userId || this.props.authUser || undefined
     let isAuthProfile = (+userId === +this.props.authUser)
@@ -34,6 +32,7 @@ let mapStateToProps = (state) => {
     profile: state.profilePage.profile,
     profileStatusText: state.profilePage.profileStatusText,
     profileStatusFetching: state.profilePage.profileStatusFetching,
+    profileStatusPlaceholder: state.profilePage.profileStatusPlaceholder,
     isFetching: state.profilePage.isFetching,
     authUser: state.auth.data.id,
     isAuth: state.auth.isAuth,

@@ -16,7 +16,7 @@ const StatusChangeForm = props => {
 }
 
 
-class ProfileStatus extends React.Component {
+class ProfileStatusClass extends React.Component {
 
   state = {
     editMode: false,
@@ -66,4 +66,4 @@ class ProfileStatus extends React.Component {
   }
 }
 
-export default ProfileStatus
+export default ProfileStatusClass

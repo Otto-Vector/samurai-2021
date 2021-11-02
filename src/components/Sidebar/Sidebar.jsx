@@ -5,8 +5,6 @@ import Preloader from "../common/Preloader/Preloader";
 
 const Sidebar = (props) => {
 
-  let header = props.header
-
   let refreshFriends = () => {
     props.getResponseFriends()
   }
@@ -17,7 +15,7 @@ const Sidebar = (props) => {
 
   return <div className={styles.sidebar}>
     <div className={styles.headerWrapper}>
-      <header className={styles.header}>{header}</header>
+      <header className={styles.header}>{props.header}</header>
       <button className={styles.refreshButton} onClick={refreshFriends}>Refresh</button>
     </div>
     <div className={styles.friendItems}>

@@ -3,7 +3,8 @@ import styles from './ProfileInfo.module.css';
 import Preloader from "../../common/Preloader/Preloader";
 import Socials from "../../common/Socials/Socials";
 import userNoImage from '../../../assets/images/userNoImage.png'
-import ProfileStatus from "./ProfileStatus/ProfileStatus";
+// import ProfileStatusClass from "./ProfileStatus/ProfileStatusClass";
+import ProfileStatusFunc from "./ProfileStatus/ProfileStatusFunc";
 
 const ProfileInfo = props => {
   // console.log(props)
@@ -21,9 +22,9 @@ const ProfileInfo = props => {
 
                 { props.profileStatusFetching
                   ? <Preloader/>
-                  : <ProfileStatus profileStatusText = {props.profileStatusText}
-                                   updateStatus={props.updateStatus}
-                                   isAuthProfile={props.isAuthProfile}
+                  : <ProfileStatusFunc profileStatusText = {props.profileStatusText}
+                                        updateStatus={props.updateStatus}
+                                        isAuthProfile={props.isAuthProfile}
                   />
                 }
 

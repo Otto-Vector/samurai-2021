@@ -33,6 +33,7 @@ let initialState = {
   profile: null,
   profileStatusText: '',
   profileStatusFetching: true,
+  profileStatusPlaceholder: 'введите статус',
   isFetching: true,
   isAuthProfile: false
 }

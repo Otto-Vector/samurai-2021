@@ -7,7 +7,7 @@ const FRIENDS_IS_FETCHING = "FRIENDS-IS-FETCHING"
 let initialState = {
   friends: [],
   header: 'Friends',
-  friendsToShow: 7,
+  friendsToShow: 20,
   isFetching: true
 }
 
@@ -48,11 +48,12 @@ const addFriends = friends => ({type: ADD_FRIENDS, friends})
 const friendsResponseIsFetching = isFetching => ({type: FRIENDS_IS_FETCHING, isFetching})
 
 export const getResponseFriends = () => dispatch => {
-  friendsResponseIsFetching(true)
+  dispatch(friendsResponseIsFetching(true))
+
   return UsersAPI.getUsers(100, 1, true)
     .then( response => {
       dispatch(addFriends(response.items))
-      friendsResponseIsFetching(false)
+      dispatch(friendsResponseIsFetching(false))
     })
 }
 
