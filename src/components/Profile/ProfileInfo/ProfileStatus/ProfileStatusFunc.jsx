@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styles from './ProfileStatus.module.css'
+import Preloader from "../../../common/Preloader/Preloader";
 
 
 const StatusChangeForm = props => {
@@ -34,6 +35,8 @@ const ProfileStatusFunc = props => {
   const onStatusInput = (e) => {
    setStatus(e.currentTarget.value)
   }
+
+  if (props.profileStatusFetching) return <Preloader/>
 
     return <div className={styles.pStatus}>
 

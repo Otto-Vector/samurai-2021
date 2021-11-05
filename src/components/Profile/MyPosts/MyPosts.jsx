@@ -24,7 +24,6 @@ const AddPostForm = (props) => {
                  placeholder={props.newPostTextPlaceholder}
                  validate={composeValidators(required)}
                  component={TextArea}
-            // #toDo: FormType to component
           />
           </div>
 
@@ -44,7 +43,8 @@ const AddPostForm = (props) => {
 }
 
 
-const MyPosts = (props) => {
+const MyPosts = React.memo(props => {
+
 
   let postsElements = props.posts.map(args => <Post {...args} key={Math.random().toString()}/>)
 
@@ -61,6 +61,6 @@ const MyPosts = (props) => {
       </div>
     </div>
   )
-}
+})
 
 export default MyPosts;

@@ -3,11 +3,11 @@ import styles from './ProfileInfo.module.css';
 import Preloader from "../../common/Preloader/Preloader";
 import Socials from "../../common/Socials/Socials";
 import userNoImage from '../../../assets/images/userNoImage.png'
-// import ProfileStatusClass from "./ProfileStatus/ProfileStatusClass";
-import ProfileStatusFunc from "./ProfileStatus/ProfileStatusFunc";
+
+import {ProfileStatusContainer} from "./ProfileStatus/ProfileStatusContainer";
 
 const ProfileInfo = props => {
-  // console.log(props)
+  console.log("ProfileInfo RENDER NOW")
   if (props.isFetching) {
     return <div className={styles.profilePage}><Preloader/></div>
   }
@@ -19,15 +19,7 @@ const ProfileInfo = props => {
               </div>
               <div>
                 <h2 className={styles.fullName}>{props.profile.fullName}</h2>
-
-                { props.profileStatusFetching
-                  ? <Preloader/>
-                  : <ProfileStatusFunc profileStatusText = {props.profileStatusText}
-                                        updateStatus={props.updateStatus}
-                                        isAuthProfile={props.isAuthProfile}
-                  />
-                }
-
+                <ProfileStatusContainer />
                 <p className={styles.aboutMe}>{props.profile.aboutMe}</p>
                 <div className={styles.socials}>
                   <Socials {...props.profile.contacts} />
