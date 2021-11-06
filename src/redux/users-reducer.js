@@ -1,7 +1,6 @@
 import {UsersAPI} from "../api/samurai-api";
 
-const FOLLOW = 'FOLLOW'
-const UNFOLLOW = 'UNFOLLOW'
+const FOLLOW_TOGGLE = 'FOLLOW-TOGGLE'
 const SET_USERS = 'SET-USERS'
 const CHANGE_PAGE = 'CHANGE-PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
@@ -22,85 +21,57 @@ let initialState = {
 
 let usersReducer = (state = initialState, action) => {
 
-  let functions = {
-    fullowUser(id, bool = true) {
+  switch (action.type) {
+    case FOLLOW_TOGGLE: {
       return {
         ...state,
         users: state.users.map(u => {
-          if (u.id === id) {
-            return {...u, followed: bool}
+          if (u.id === action.userId) {
+            return {...u, followed: action.isFollow}
           }
           return u
         })
       }
-    },
-
-    unfullowUser(id) {
-      return functions.fullowUser(id, false)
-    },
-
-    setUsers(users) {
+    }
+    case SET_USERS: {
       return {
         ...state,
-        users
-      }
-    },
-
-    changePage(currentPage) {
-      return {
-        ...state,
-        currentPage
-      }
-    },
-
-    setTotalUsersCount(totalUsersCount) {
-      return {
-        ...state,
-        totalUsersCount
-      }
-    },
-
-    toggleIsFetching(isFetching) {
-      return {
-        ...state,
-        isFetching
-      }
-    },
-
-    isFetchingToggleId(isFetching, userId) {
-      return {
-        ...state,
-        isFetchingById: isFetching
-          ? [...state.isFetchingById, userId]
-          : state.isFetchingById.filter(id => userId !== id)
-      }
-    },
-    friendsOnlyToggle(isFriendsFilter) {
-      return {
-        ...state,
-        isFriendsFilter
+        users: action.users
       }
     }
-  }
+    case CHANGE_PAGE: {
+      return {
+        ...state,
+        currentPage: action.page
+      }
+    }
+    case SET_TOTAL_USERS_COUNT: {
+      return {
+        ...state,
+        totalUsersCount: action.totalUsersCount
+      }
+    }
+    case TOGGLE_IS_FETCHING: {
+      return {
+        ...state,
+        isFetching: action.isFetching
+      }
+    }
+    case TOGGLE_IS_FETCHING_BY_ID: {
+      return {
+        ...state,
+        isFetchingById: action.isFetching
+          ? [...state.isFetchingById, action.userId]
+          : state.isFetchingById.filter(id => action.userId !== id)
+      }
+    }
+    case TOGGLE_FRIENDS_ONLY: {
+      return {
+        ...state,
+        isFriendsFilter: action.isFriendsFilter
+      }
+    }
 
-
-  switch (action.type) {
-    case FOLLOW:
-      return functions.fullowUser(action.userId)
-    case UNFOLLOW:
-      return functions.unfullowUser(action.userId)
-    case SET_USERS:
-      return functions.setUsers(action.users)
-    case CHANGE_PAGE:
-      return functions.changePage(action.page)
-    case SET_TOTAL_USERS_COUNT:
-      return functions.setTotalUsersCount(action.totalUsersCount)
-    case TOGGLE_IS_FETCHING:
-      return functions.toggleIsFetching(action.isFetching)
-    case TOGGLE_IS_FETCHING_BY_ID:
-      return functions.isFetchingToggleId(action.isFetching, action.userId)
-    case TOGGLE_FRIENDS_ONLY:
-      return functions.friendsOnlyToggle(action.isFriendsFilter)
     default: {
       return state
     }
@@ -109,8 +80,7 @@ let usersReducer = (state = initialState, action) => {
   // return state
 }
 
-export const followSuccess = (userId) => ({type: FOLLOW, userId})
-export const unfollowSuccess = (userId) => ({type: UNFOLLOW, userId})
+export const followSuccessToggle = (userId, isFollow) => ({type: FOLLOW_TOGGLE, userId, isFollow})
 export const setUsers = (users) => ({type: SET_USERS, users})
 export const changePage = (page) => ({type: CHANGE_PAGE, page})
 export const setTotalUsersCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, totalUsersCount})
@@ -118,44 +88,38 @@ export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFe
 export const isFetchingToggleId = (isFetching, userId) => ({type: TOGGLE_IS_FETCHING_BY_ID, isFetching, userId})
 export const friendsOnlyToggle = (isFriendsFilter) => ({type: TOGGLE_FRIENDS_ONLY, isFriendsFilter})
 
-export const getUsers = (pageSize, page, isFriendsFilter= null) => dispatch => {
+
+export const getUsers = (pageSize, page, isFriendsFilter = null) =>
+  async dispatch => {
 
     dispatch(toggleIsFetching(true))
 
-    UsersAPI.getUsers(pageSize, page, isFriendsFilter)
-      .then(response => {
-        dispatch(setUsers(response.items))
+    let response = await UsersAPI.getUsers(pageSize, page, isFriendsFilter)
 
-        dispatch(setTotalUsersCount(response.totalCount))
+    dispatch(setUsers(response.items))
 
-        dispatch(toggleIsFetching(false))
-      })
-}
+    dispatch(setTotalUsersCount(response.totalCount))
 
-export const follow = (isFollow, userId) => {
-  if (!isFollow)
-    return (dispatch) => {
-      dispatch(isFetchingToggleId(true, userId))
-      UsersAPI.follow(userId)
-        .then(response => {
-          if (response.resultCode === 0) {
-            dispatch(followSuccess(userId))
-          }
-          dispatch(isFetchingToggleId(false, userId))
-        })
+    dispatch(toggleIsFetching(false))
+  }
+
+
+export const follow = (isFollow, userId) =>
+  async dispatch => {
+    dispatch(isFetchingToggleId(true, userId))
+
+    let todo = !isFollow ? 'follow' : 'unfollow'
+
+    let response = await UsersAPI[todo](userId)
+
+    if (response.resultCode === 0) {
+      dispatch(followSuccessToggle(userId, !isFollow))
     }
-  else
-    return (dispatch) => {
-      dispatch(isFetchingToggleId(true, userId))
-      UsersAPI.unfollow(userId)
-        .then(response => {
-          if (response.resultCode === 0) {
-            dispatch(unfollowSuccess(userId))
-          }
-          dispatch(isFetchingToggleId(false, userId))
-        })
-    }
-}
+
+    dispatch(isFetchingToggleId(false, userId))
+
+  }
+
 
 
 export default usersReducer

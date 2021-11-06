@@ -3,7 +3,6 @@ import {getResponseFriends} from "./friends-reducer";
 
 const SET_INITIALAZED = 'SET_INITIALAZED'
 
-
 let initialState = {
   initialazed: false
 }

@@ -8,9 +8,10 @@ import {FORM_ERROR} from "final-form";
 
 const LoginForm = props => {
 
-  let onSubmit = formData => {
+  let onSubmit = async formData => {
+    let error = await props.onSubmit(formData)
     return {
-      [FORM_ERROR]: props.onSubmit(formData) || null
+      [FORM_ERROR]: error || null
     }
   }
 

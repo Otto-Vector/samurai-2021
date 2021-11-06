@@ -3,15 +3,15 @@ import styles from './sidebar.module.css';
 import FriendItem from "./FriendItem/FriendItem";
 import Preloader from "../common/Preloader/Preloader";
 
-const Sidebar = (props) => {
+const Sidebar = props => {
 
   let refreshFriends = () => {
     props.getResponseFriends()
   }
 
-  let friendItem = props.friends.map( args => <FriendItem key={Math.random()} {...args} />)
-
   if (props.isFetching) return <Preloader />
+
+  let friendItem = props.friends.map( args => <FriendItem key={args.id} {...args} />)
 
   return <div className={styles.sidebar}>
     <div className={styles.headerWrapper}>

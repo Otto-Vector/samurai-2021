@@ -3,10 +3,10 @@ import {connect} from "react-redux";
 import {getResponseFriends} from "../../redux/friends-reducer";
 import {getFriendsHeader, getFriendsIsFetching, getThreeFriendsRe} from "../../reselect/friends-selectors";
 import {compose} from "redux";
-// import withAuthNotShown from "../hoc/withAuthNotShown";
-import withAuthRedirect from "../hoc/withAuthRedirect";
+// import withAuthRedirect from "../hoc/withAuthRedirect";
+import withAuthNotShown from "../hoc/withAuthNotShown";
 
-let mapStateToProps = (state) => {
+let mapStateToProps = state => {
   return {
     friends: getThreeFriendsRe(state),
     header: getFriendsHeader(state),
@@ -17,7 +17,7 @@ let mapStateToProps = (state) => {
 
 const SidebarContainer = compose(
   connect(mapStateToProps,{ getResponseFriends }),
-  withAuthRedirect,
+  withAuthNotShown,
 )(Sidebar)
 
 export default SidebarContainer

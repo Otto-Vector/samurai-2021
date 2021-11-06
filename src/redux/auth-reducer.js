@@ -53,44 +53,50 @@ const authReducer = (state = initialState, action) => {
   return state
 }
 
-export const setAuthUserData = (userId, email, login, isAuth) => ({type: SET_AUTH, payload: {userId, email, login, isAuth}})
+export const setAuthUserData = (userId, email, login, isAuth) => ({
+  type: SET_AUTH,
+  payload: {userId, email, login, isAuth}
+})
 export const isFetchingSwichTo = (isFetching) => ({type: IS_FETCHING_SWICH_TO, isFetching})
 export const onErrorAuth = (messages) => ({type: ON_ERROR_AUTH, messages})
 
-export const getAuth = () => dispatch => {
+export const getAuth = () =>
+  async dispatch => {
     dispatch(isFetchingSwichTo(true))
-    return authAPI.getAuth()
-      .then(response => {
-        if (response.resultCode === 0) {
-          let {id, login, email} = response.data
-          dispatch(setAuthUserData(id, email, login, true))
-        }
-          dispatch(isFetchingSwichTo(false))
-      })
-}
+    let response = await authAPI.getAuth()
 
-export const loginIn = loginData => dispatch => {
-    authAPI.loginIn(loginData)
-      .then(response => {
-        if (response.resultCode === 0) {
-          dispatch(getAuth())
-          dispatch(onErrorAuth(null))
-        } else {
-          dispatch(onErrorAuth(response.messages))
-        }
-      })
-}
+    if (response.resultCode === 0) {
+      let {id, login, email} = response.data
+      dispatch(setAuthUserData(id, email, login, true))
+    }
+    dispatch(isFetchingSwichTo(false))
 
-export const loginOut = () => dispatch => {
-    authAPI.loginOut()
-      .then(response => {
-        if (response.resultCode === 0) {
-          dispatch(onErrorAuth(null))
-          dispatch(setAuthUserData(null, null, null, false))
-        } else {
-          dispatch(onErrorAuth(response.messages))
-        }
-      })
-}
+  }
+
+export const loginIn = loginData =>
+  async dispatch => {
+    let response = await authAPI.loginIn(loginData)
+
+    if (response.resultCode === 0) {
+      dispatch(getAuth())
+      dispatch(onErrorAuth(null))
+    } else {
+      dispatch(onErrorAuth(response.messages))
+    }
+
+  }
+
+export const loginOut = () =>
+  async dispatch => {
+    let response = await authAPI.loginOut()
+
+    if (response.resultCode === 0) {
+      dispatch(onErrorAuth(null))
+      dispatch(setAuthUserData(null, null, null, false))
+    } else {
+      dispatch(onErrorAuth(response.messages))
+    }
+
+  }
 
 export default authReducer;

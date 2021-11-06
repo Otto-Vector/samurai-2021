@@ -7,7 +7,7 @@ import userNoImage from '../../../assets/images/userNoImage.png'
 import {ProfileStatusContainer} from "./ProfileStatus/ProfileStatusContainer";
 
 const ProfileInfo = props => {
-  console.log("ProfileInfo RENDER NOW")
+  // console.log("ProfileInfo RENDER NOW")
   if (props.isFetching) {
     return <div className={styles.profilePage}><Preloader/></div>
   }

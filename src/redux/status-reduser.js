@@ -42,22 +42,21 @@ export const toggleStatusProfileFetching = profileStatusFetching => ({
 })
 
 
-export const getStatus = (userId) => dispatch => {
-      dispatch(toggleStatusProfileFetching(true))
-  profileAPI.getStatus(userId)
-    .then(response => {
-      dispatch(setStatusProfile(response))
-      dispatch(toggleStatusProfileFetching(false))
-    })
-}
+export const getStatus = (userId = 11) =>
+  async dispatch => {
+    dispatch(toggleStatusProfileFetching(true))
+    let response = await profileAPI.getStatus(userId)
+    dispatch(setStatusProfile(response))
+    dispatch(toggleStatusProfileFetching(false))
+  }
 
-export const updateStatus = status => dispatch => {
-  profileAPI.setStatus(status)
-    .then(responce => {
-      if (responce.resultCode === 0) {
-        dispatch(setStatusProfile(status))
-      }
-    })
-}
+export const updateStatus = status =>
+  async dispatch => {
+    let response = await profileAPI.setStatus(status)
+
+    if (response.resultCode === 0) {
+      dispatch(setStatusProfile(status))
+    }
+  }
 
 export default statusReducer;

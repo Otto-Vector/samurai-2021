@@ -3,16 +3,17 @@ import styles from './friendItem.module.css';
 import {NavLink} from "react-router-dom";
 import noImage from '../../../assets/images/userNoImage.png'
 
-const FriendItem = props => {
-  let path = "/profile/" + props.id;
+const FriendItem = ({id, name, photos}) => {
+  let path = "/profile/" + id;
   return <div className={styles.friendItem}>
     <NavLink to={path}>
       <img
            className={styles.image}
            alt={'friendImg'}
-           title={props.name}
-           src={props.photos.small || noImage}/>
-      {/*<div className={styles.name}>{props.name}</div>*/}
+           title={name}
+           src={photos.small || noImage}
+      />
+      {/*<div className={styles.name}>{name}</div>*/}
     </NavLink>
   </div>
 

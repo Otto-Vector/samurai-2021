@@ -84,13 +84,12 @@ export const setIsAuthProfile = isAuthProfile => ({type: SET_IS_AUTH_PROFILE, is
 export const toggleIsFetchingProfile = isFetching => ({type: TOGGLE_FETCHING, isFetching})
 
 
-export const getProfile = (userId = defaultUserId) => dispatch => {
-  dispatch(toggleIsFetchingProfile(true))
-  profileAPI.getProfile(userId)
-    .then(response => {
-      dispatch(setProfileState(response))
-      dispatch(toggleIsFetchingProfile(false))
-    })
-}
+export const getProfile = (userId = defaultUserId) =>
+  async dispatch => {
+    dispatch(toggleIsFetchingProfile(true))
+    let response = await profileAPI.getProfile(userId)
+    dispatch(setProfileState(response))
+    dispatch(toggleIsFetchingProfile(false))
+  }
 
 export default profileReducer;
