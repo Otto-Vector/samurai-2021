@@ -4,7 +4,7 @@ const instance = axios.create({
   withCredentials: true,
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
   headers: {
-    "API-KEY" : "2c7ffcd4-043c-4906-ad30-376abef26209"
+    "API-KEY": "2c7ffcd4-043c-4906-ad30-376abef26209"
   }
 })
 
@@ -16,22 +16,22 @@ instance.interceptors.response.use(function (response) {
 
 export const UsersAPI = {
 
-  getUsers (pageSize=2, page=1, friend) {
+  getUsers(pageSize = 2, page = 1, friend) {
     return instance.get(`users?count=${pageSize}&page=${page}&friend=${friend}`)
-    },
+  },
 
-  unfollow (id) {
+  unfollow(id) {
     return instance.delete(`follow/${id}`)
   },
 
-  follow (id) {
+  follow(id) {
     return instance.post(`follow/${id}`)
   }
 
 }
 
 export const profileAPI = {
-  getProfile (userId) {
+  getProfile(userId) {
     return instance.get(`profile/${userId}`)
   },
 
@@ -41,7 +41,13 @@ export const profileAPI = {
 
   setStatus(status) {
     return instance.put(`profile/status/`, {status})
-  }
+  },
+
+  setPhoto(userPhoto) {
+    let formData = new FormData();
+    formData.append("image", userPhoto);
+    return instance.put(`profile/photo`, formData)
+  },
 
 }
 
@@ -50,7 +56,7 @@ export const authAPI = {
     return instance.get(`auth/me`)
   },
   loginIn(loginData) {
-    return instance.post(`auth/login`,{...loginData})
+    return instance.post(`auth/login`, {...loginData})
   },
   loginOut() {
     return instance.delete(`auth/login`)

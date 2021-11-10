@@ -5,6 +5,7 @@ const ADD_POST = 'ADD-POST'
 const SET_PROFILE_STATE = 'SET-PROFILE-STATE'
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING'
 const SET_IS_AUTH_PROFILE = 'SET-IS-AUTH-PROFILE'
+const SET_PHOTO_SUCCESS = 'SET_PHOTO_SUCCESS'
 
 let initialState = {
   posts: [
@@ -68,6 +69,14 @@ const profileReducer = (state = initialState, action) => {
         isAuthProfile: action.isAuthProfile
       }
     }
+    case SET_PHOTO_SUCCESS : {
+      return {
+        ...state,
+        profile: {...state.profile, photos: action.photos}
+      }
+    }
+
+
     default : {
       return state
     }
@@ -82,7 +91,7 @@ export const addPost = (id = defaultUserId, newPostText) => ({type: ADD_POST, id
 export const setProfileState = profile => ({type: SET_PROFILE_STATE, profile})
 export const setIsAuthProfile = isAuthProfile => ({type: SET_IS_AUTH_PROFILE, isAuthProfile})
 export const toggleIsFetchingProfile = isFetching => ({type: TOGGLE_FETCHING, isFetching})
-
+export const setPhotoSuccess = photos => ({type:SET_PHOTO_SUCCESS, photos})
 
 export const getProfile = (userId = defaultUserId) =>
   async dispatch => {
@@ -91,5 +100,13 @@ export const getProfile = (userId = defaultUserId) =>
     dispatch(setProfileState(response))
     dispatch(toggleIsFetchingProfile(false))
   }
+
+export const setPhoto = userPhoto =>
+async dispatch => {
+  let response = await profileAPI.setPhoto(userPhoto)
+  if (response.resultCode === 0) {
+    dispatch(setPhotoSuccess(response.data.photos))
+  }
+}
 
 export default profileReducer;
