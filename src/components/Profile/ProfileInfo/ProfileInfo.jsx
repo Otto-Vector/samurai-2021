@@ -30,12 +30,18 @@ const ProfileInfo = props => {
           <ProfileStatusContainer/>
           <p className={styles.aboutMe}>{props.profile.aboutMe}</p>
           <div className={styles.socials}>
-            <Socials {...props.profile.contacts} />
+            {/*<Socials {...props.profile.contacts} />*/}
+            <Socials contacts = {props.profile.contacts} />
           </div>
           <div className={styles.jobAlert}>
             <p><strong>Поиск работы:</strong></p>
-            <p>{props.profile.lookingForAJob ? 'ДА, ищу' : 'НЕТ, не ищу'}</p>
-            <p>{props.profile.lookingForAJobDescription}</p>
+            {!props.profile.lookingForAJob ? <p>НЕТ, не ищу</p> :
+            <div>
+              <p>ДА, ищу</p>
+              <strong><p>Skills:</p></strong>
+              <p>{props.profile.lookingForAJobDescription}</p>
+            </div>
+            }
           </div>
         </div>
       </div>

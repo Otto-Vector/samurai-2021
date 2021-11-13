@@ -20,22 +20,21 @@ class ProfileContainer extends React.Component {
   }
 
   componentDidMount() {
-    // this.unlisten = this.props.history.listen( location =>  {
-    //             console.log('route changes to : ', location);
-    //             // this.props.history.push(location.pathname);
-    //             console.log('userId is : ', this.props.match.params.userId);
-    //        });
+    //подгружаем профайл при монтировке
     this.updateProfile()
+    //при изменении данных в поле адреса - жёсткий перезапуск :)
+    this.unlisten = this.props.history.listen( () =>  { this.forceUpdate() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    //обновляем при изменении
     if (this.props.match.params.userId !== prevProps.match.params.userId) {
       this.updateProfile()
     }
   }
 
   componentWillUnmount() {
-    // this.unlisten()
+    this.unlisten()
   }
 
   render() {
