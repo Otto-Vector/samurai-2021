@@ -6,7 +6,6 @@ const SET_PROFILE_STATE = 'SET-PROFILE-STATE'
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING'
 const SET_IS_AUTH_PROFILE = 'SET-IS-AUTH-PROFILE'
 const SET_PHOTO_SUCCESS = 'SET_PHOTO_SUCCESS'
-const ON_ERROR_PROFILE_DATA = 'ON_ERROR_PROFILE_DATA'
 
 let initialState = {
   posts: [
@@ -33,7 +32,6 @@ let initialState = {
   profile: null,
   isFetching: true,
   isAuthProfile: false,
-  errorMessage: null,
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -80,13 +78,6 @@ const profileReducer = (state = initialState, action) => {
       }
     }
 
-    case ON_ERROR_PROFILE_DATA : {
-      return {
-        ...state,
-        errorMessage: action.messages
-      }
-    }
-
 
     default : {
       return state
@@ -103,7 +94,6 @@ export const setProfileState = profile => ({type: SET_PROFILE_STATE, profile})
 export const setIsAuthProfile = isAuthProfile => ({type: SET_IS_AUTH_PROFILE, isAuthProfile})
 export const toggleIsFetchingProfile = isFetching => ({type: TOGGLE_FETCHING, isFetching})
 export const setPhotoSuccess = photos => ({type:SET_PHOTO_SUCCESS, photos})
-export const onErrorProfileData = messages => ({type:ON_ERROR_PROFILE_DATA, messages})
 
 export const getProfile = (userId = defaultUserId) =>
   async dispatch => {
@@ -126,9 +116,9 @@ export const setProfileData = data =>
   let response = await profileAPI.setData(data)
   if (response.resultCode === 0) {
     dispatch(getProfile(data.userId))
-    dispatch(onErrorProfileData(null))
+    return null
   } else {
-    dispatch(onErrorProfileData(response.messages))
+    return response.messages
   }
 
   }

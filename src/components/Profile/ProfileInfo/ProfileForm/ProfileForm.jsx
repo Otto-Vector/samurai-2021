@@ -9,8 +9,7 @@ import {socialsImageSource} from "../../../common/Socials/SocialsImageSource";
 
 const ProfileForm = (props) => {
 
-  let {aboutMe, lookingForAJob, lookingForAJobDescription, fullName, contacts} = props.profile
-  let {github, vk, facebook, instagram, twitter, website, youtube, mainLink} = contacts
+  let {contacts} = props.initialValues
 
 
   let onSubmit = async formData => {
@@ -21,22 +20,7 @@ const ProfileForm = (props) => {
   return (
     <Form
       onSubmit={onSubmit}
-      initialValues={{
-        fullName,
-        aboutMe,
-        lookingForAJob,
-        lookingForAJobDescription,
-        contacts: {
-          github,
-          vk,
-          facebook,
-          instagram,
-          twitter,
-          website,
-          youtube,
-          mainLink
-        }
-      }}
+      initialValues={props.initialValues}
       render={
         ({submitError, handleSubmit, pristine, form, submitting, values}) => (
           <form onSubmit={handleSubmit}>
@@ -51,7 +35,7 @@ const ProfileForm = (props) => {
               <Field name={'aboutMe'}
                      component={Input}
                      placeholder={'aboutMe'}
-                     validate={composeValidators(required)}
+                     // validate={composeValidators(required)}
               />
             </div>
             <div>

@@ -7,9 +7,9 @@ import LoginForm from "./LoginForm";
 const Login = props => {
 
   let onSubmit = async formData => {
-    await props.loginIn(formData)
+    const errorMessages = await props.loginIn(formData)
     //возвращает ошибку в форму из стейта
-    return props.errorMessages || null
+    return errorMessages || null
   }
 
   if (props.isAuth) return <Redirect to={"profile"} />

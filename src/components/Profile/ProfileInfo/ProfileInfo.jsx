@@ -1,37 +1,9 @@
 import React, {useState} from 'react';
 import styles from './ProfileInfo.module.css';
-import Preloader from "../../common/Preloader/Preloader";
-import Socials from "../../common/Socials/Socials";
-import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 import userNoImage from '../../../assets/images/userNoImage.png'
+import Preloader from "../../common/Preloader/Preloader";
 import ProfileForm from "./ProfileForm/ProfileForm";
-
-
-const ProfileData = ({isAuthProfile,activateEditMode,profile}) => {
-
-  return <div>
-    <h2 className={styles.fullName}>{profile.fullName}</h2>
-    <ProfileStatusContainer/>
-    <p className={styles.aboutMe}>{profile.aboutMe}</p>
-    <div className={styles.socials}>
-      <Socials contacts={profile.contacts}/>
-    </div>
-    <div className={styles.jobAlert}>
-      <p><strong>Поиск работы:</strong></p>
-      {!profile.lookingForAJob ? <p>НЕТ, не ищу</p> :
-        <div>
-          <p>ДА, ищу</p>
-          <strong><p>Skills:</p></strong>
-          <p>{profile.lookingForAJobDescription}</p>
-        </div>
-      }
-    </div>
-    <div className={styles.editButtonWrapper}>
-      {isAuthProfile && <button className={styles.editButton} onClick={activateEditMode}>Edit</button>}
-    </div>
-  </div>
-}
-
+import ProfileData from "./ProfileData";
 
 
 const ProfileInfo = (props) => {
@@ -39,14 +11,13 @@ const ProfileInfo = (props) => {
   let [editMode, setEditMode] = useState(false)
 
   let onSubmit = async formData => {
-    let userId = props.profile.userId
-    let send = {...formData, userId}
-    console.log(send)
-    await props.setProfileData({...formData, userId})
+
+    let errorMessage = await props.setProfileData(formData)
+
     //если ошибок не прилетело возвращает нормальное отображение
-    if (!props.errorMessage) setEditMode(false)
+    if (!errorMessage) setEditMode(false)
     //возвращает ошибку в форму из стейта
-    return props.errorMessage || null
+    return errorMessage || null
   }
 
   const sendFile = e => {
@@ -65,7 +36,8 @@ const ProfileInfo = (props) => {
         </div>
         {editMode
           ? <ProfileForm onSubmit={onSubmit}
-                         profile={props.profile}/>
+                         initialValues={props.profile}
+          />
           : <ProfileData activateEditMode={() => {setEditMode(true) }}
                          profile={props.profile}
                          isAuthProfile={props.isAuthProfile}
