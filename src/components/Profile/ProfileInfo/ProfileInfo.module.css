@@ -54,3 +54,17 @@
 .jobAlert p {
     line-height: 60%;
 }
+
+.editButtonWrapper {
+    text-align: right;
+}
+
+.editButton {
+    padding: 5px;
+    margin: 5px;
+    background-color: lightblue;
+    border: 0.5px solid blue;
+    border-radius: 5px;
+    align-self: flex-end;
+    justify-self: flex-end;
+}

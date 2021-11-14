@@ -14,6 +14,7 @@ const Socials = ({contacts}) => {
               <img alt={key} title={key} src={image}/>
             </a>
           }
+          return null
         })
       }
     </div>

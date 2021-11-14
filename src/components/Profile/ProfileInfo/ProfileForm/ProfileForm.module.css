@@ -1,0 +1,42 @@
+.input {
+    margin: 15px 0;
+    width: 250px;
+    background-color: whitesmoke;
+    border-radius: 3px;
+    box-shadow: 1px 2px 3px gray;
+}
+
+.checkbox:checked {
+    background-color: indianred;
+}
+
+.button {
+    padding: 5px;
+    margin: 5px;
+}
+
+.onError {
+    font-weight: bold;
+    color: red;
+}
+
+.header {
+    display: inline;
+}
+
+.socialInput{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin: 10px 0;
+    width: 250px;
+    background-color: whitesmoke;
+    border-radius: 3px;
+    box-shadow: 1px 2px 3px gray;
+}
+
+.socialImage {
+    /*width: 50px;*/
+    height: 20px;
+    padding-left: 5px;
+}

@@ -4,7 +4,7 @@ import {compose} from "redux";
 import {withRouter} from "react-router-dom";
 
 import Profile from "./Profile";
-import {getProfile, setIsAuthProfile, setPhoto} from "../../redux/profile-reducer";
+import {getProfile, setIsAuthProfile, setPhoto, setProfileData} from "../../redux/profile-reducer";
 import {getStatus} from "../../redux/status-reduser";
 // import withAuthRedirect from "../hoc/withAuthRedirect";
 
@@ -46,11 +46,12 @@ class ProfileContainer extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
+    isAuth: state.auth.isAuth,
+    authUser: state.auth.data.id,
     profile: state.profilePage.profile,
     isFetching: state.profilePage.isFetching,
-    authUser: state.auth.data.id,
-    isAuth: state.auth.isAuth,
-    isAuthProfile: state.profilePage.isAuthProfile
+    isAuthProfile: state.profilePage.isAuthProfile,
+    errorMessage: state.profilePage.errorMessage,
   }
 }
 
@@ -60,6 +61,7 @@ export default compose(
     setIsAuthProfile,
     getStatus,
     setPhoto,
+    setProfileData
   }),
   // withAuthRedirect,
   withRouter

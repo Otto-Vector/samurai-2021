@@ -11,7 +11,10 @@ let mapStateToProps = state => {
   }
 }
 
-export const ProfileStatusContainer = connect(mapStateToProps, {
+const ProfileStatusContainer = connect(mapStateToProps, {
   getStatus,
   updateStatus
 })(ProfileStatusFunc)
+
+
+export default ProfileStatusContainer

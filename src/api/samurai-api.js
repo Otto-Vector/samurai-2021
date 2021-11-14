@@ -40,14 +40,20 @@ export const profileAPI = {
   },
 
   setStatus(status) {
-    return instance.put(`profile/status/`, {status})
+    return instance.put(`profile/status`, {status})
   },
-
+  //загрузка фото
   setPhoto(userPhoto) {
     let formData = new FormData();
     formData.append("image", userPhoto);
     return instance.put(`profile/photo`, formData)
   },
+
+  setData(data) {
+    // userId, lookingForAJob, lookingForAJobDescription, fullName,
+    // contacts: { github, vk, facebook, instagram, twitter, website, youtube, mainLink}
+    return instance.put(`profile`, data)
+  }
 
 }
 

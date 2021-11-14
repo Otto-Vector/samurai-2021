@@ -6,6 +6,7 @@ const SET_PROFILE_STATE = 'SET-PROFILE-STATE'
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING'
 const SET_IS_AUTH_PROFILE = 'SET-IS-AUTH-PROFILE'
 const SET_PHOTO_SUCCESS = 'SET_PHOTO_SUCCESS'
+const ON_ERROR_PROFILE_DATA = 'ON_ERROR_PROFILE_DATA'
 
 let initialState = {
   posts: [
@@ -31,7 +32,8 @@ let initialState = {
   newPostTextPlaceholder: 'add new post here',
   profile: null,
   isFetching: true,
-  isAuthProfile: false
+  isAuthProfile: false,
+  errorMessage: null,
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -63,16 +65,25 @@ const profileReducer = (state = initialState, action) => {
         isFetching: action.isFetching
       }
     }
+
     case SET_IS_AUTH_PROFILE : {
       return {
         ...state,
         isAuthProfile: action.isAuthProfile
       }
     }
+
     case SET_PHOTO_SUCCESS : {
       return {
         ...state,
-        profile: {...state.profile, photos: action.photos}
+        profile: { ...state.profile, photos: action.photos }
+      }
+    }
+
+    case ON_ERROR_PROFILE_DATA : {
+      return {
+        ...state,
+        errorMessage: action.messages
       }
     }
 
@@ -92,6 +103,7 @@ export const setProfileState = profile => ({type: SET_PROFILE_STATE, profile})
 export const setIsAuthProfile = isAuthProfile => ({type: SET_IS_AUTH_PROFILE, isAuthProfile})
 export const toggleIsFetchingProfile = isFetching => ({type: TOGGLE_FETCHING, isFetching})
 export const setPhotoSuccess = photos => ({type:SET_PHOTO_SUCCESS, photos})
+export const onErrorProfileData = messages => ({type:ON_ERROR_PROFILE_DATA, messages})
 
 export const getProfile = (userId = defaultUserId) =>
   async dispatch => {
@@ -108,5 +120,17 @@ async dispatch => {
     dispatch(setPhotoSuccess(response.data.photos))
   }
 }
+
+export const setProfileData = data =>
+  async dispatch => {
+  let response = await profileAPI.setData(data)
+  if (response.resultCode === 0) {
+    dispatch(getProfile(data.userId))
+    dispatch(onErrorProfileData(null))
+  } else {
+    dispatch(onErrorProfileData(response.messages))
+  }
+
+  }
 
 export default profileReducer;
