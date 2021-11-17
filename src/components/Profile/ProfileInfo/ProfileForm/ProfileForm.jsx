@@ -13,8 +13,10 @@ const ProfileForm = (props) => {
 
 
   let onSubmit = async formData => {
-    let error = await props.onSubmit(formData)
-    return {[FORM_ERROR]: error || null}
+    // let error = await props.onSubmit(formData)
+
+    // return {[FORM_ERROR]: error || null}
+    return {fullName: "error || null"}
   }
 
   return (
@@ -27,6 +29,7 @@ const ProfileForm = (props) => {
             <div className={styles.input}>
               <Field name={'fullName'}
                      placeholder={'fullName'}
+                     form={form}
                      component={Input}
                      validate={composeValidators(required)}
               />
@@ -35,8 +38,8 @@ const ProfileForm = (props) => {
               <Field name={'aboutMe'}
                      component={Input}
                      placeholder={'aboutMe'}
-                     // validate={composeValidators(required)}
-              />
+                     form={form}
+                     validate={composeValidators(required)} />
             </div>
             <div>
               <label className={styles.checkbox}>
@@ -51,6 +54,7 @@ const ProfileForm = (props) => {
               <Field name={'lookingForAJobDescription'}
                      component={TextArea}
                      placeholder={'lookingForAJobDescription'}
+                     form={form}
                      validate={composeValidators(required)}
               />
             </div>
@@ -61,15 +65,14 @@ const ProfileForm = (props) => {
                    alt={key} title={key}
                    src={socialsImageSource[key][contacts[key] ? 'filled' : 'empty']}/>
               }
-              <Field name={`contacts.${key}`} component={Input} placeholder={key}/>
+              <Field name={`contacts.${key}`} component={Input} placeholder={key} form={form}/>
             </div>)
             }
 
             <button className={styles.button} type={'submit'}>Done</button>
             <button type={'button'}
                     className={styles.button}
-                    disabled={pristine || submitting}
-                    onClick={form.reset}>X
+                    onClick={props.onCancel}>Cancel
             </button>
             {submitError && <span className={styles.onError}>{submitError}</span>}
           </form>

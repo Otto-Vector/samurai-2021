@@ -16,6 +16,7 @@ const ProfileInfo = (props) => {
 
     //если ошибок не прилетело возвращает нормальное отображение
     if (!errorMessage) setEditMode(false)
+
     //возвращает ошибку в форму из стейта
     return errorMessage || null
   }
@@ -37,6 +38,7 @@ const ProfileInfo = (props) => {
         {editMode
           ? <ProfileForm onSubmit={onSubmit}
                          initialValues={props.profile}
+                         onCancel={()=>{setEditMode(false)}}
           />
           : <ProfileData activateEditMode={() => {setEditMode(true) }}
                          profile={props.profile}
