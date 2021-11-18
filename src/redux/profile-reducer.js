@@ -6,6 +6,8 @@ const SET_PROFILE_STATE = 'SET-PROFILE-STATE'
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING'
 const SET_IS_AUTH_PROFILE = 'SET-IS-AUTH-PROFILE'
 const SET_PHOTO_SUCCESS = 'SET_PHOTO_SUCCESS'
+const SET_STATUS = 'SET-STATUS-PROFILE'
+const TOGGLE_STATUS_FETCHING = 'TOGGLE-STATUS-FETCHING'
 
 let initialState = {
   posts: [
@@ -32,6 +34,9 @@ let initialState = {
   profile: null,
   isFetching: true,
   isAuthProfile: false,
+  profileStatusText: null,
+  profileStatusFetching: true,
+  profileStatusPlaceholder: 'input status here'
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -77,6 +82,18 @@ const profileReducer = (state = initialState, action) => {
         profile: { ...state.profile, photos: action.photos }
       }
     }
+    case  SET_STATUS : {
+      return {
+        ...state,
+        profileStatusText: action.profileStatusText
+      }
+    }
+    case TOGGLE_STATUS_FETCHING : {
+      return {
+        ...state,
+        profileStatusFetching: action.profileStatusFetching
+      }
+    }
 
 
     default : {
@@ -87,7 +104,7 @@ const profileReducer = (state = initialState, action) => {
   // return state
 }
 
-let defaultUserId = 11
+let defaultUserId = 20116
 
 export const addPost = (id = defaultUserId, newPostText) => ({type: ADD_POST, id, newPostText})
 export const setProfileState = profile => ({type: SET_PROFILE_STATE, profile})
@@ -95,13 +112,25 @@ export const setIsAuthProfile = isAuthProfile => ({type: SET_IS_AUTH_PROFILE, is
 export const toggleIsFetchingProfile = isFetching => ({type: TOGGLE_FETCHING, isFetching})
 export const setPhotoSuccess = photos => ({type:SET_PHOTO_SUCCESS, photos})
 
+export const setStatusProfile = profileStatusText => ({type: SET_STATUS, profileStatusText})
+export const toggleStatusProfileFetching = profileStatusFetching => ({
+  type: TOGGLE_STATUS_FETCHING,
+  profileStatusFetching
+})
+
 export const getProfile = (userId = defaultUserId) =>
   async dispatch => {
+  try {
     dispatch(toggleIsFetchingProfile(true))
     let response = await profileAPI.getProfile(userId)
     dispatch(setProfileState(response))
-    dispatch(toggleIsFetchingProfile(false))
+  } catch (error) {
+    // console.error(error)
+    let response = await profileAPI.getProfile(defaultUserId)
+    dispatch(setProfileState(response))
   }
+    dispatch(toggleIsFetchingProfile(false))
+}
 
 export const setPhoto = userPhoto =>
 async dispatch => {
@@ -121,6 +150,30 @@ export const setProfileData = data =>
     return response.messages
   }
 
+  }
+
+
+export const getStatus = (userId = defaultUserId) =>
+  async dispatch => {
+  dispatch(toggleStatusProfileFetching(true))
+   try {
+    let response = await profileAPI.getStatus(userId)
+    dispatch(setStatusProfile(response))
+    } catch (error) {
+    // console.error(error)
+    let response = await profileAPI.getStatus(defaultUserId)
+    dispatch(setStatusProfile(response))
+  }
+    dispatch(toggleStatusProfileFetching(false))
+  }
+
+export const updateStatus = status =>
+  async dispatch => {
+    let response = await profileAPI.setStatus(status)
+
+    if (response.resultCode === 0) {
+      dispatch(setStatusProfile(status))
+    }
   }
 
 export default profileReducer;

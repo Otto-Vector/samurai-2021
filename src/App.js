@@ -1,16 +1,20 @@
 import React, {Suspense} from 'react';
 import './App.css';
-import Navbar from './components/Navbar/Navbar';
+import store from "./redux/redux-store";
 import {
-  // Redirect,
-  // Switch,
+  BrowserRouter,
+  Redirect,
+  Switch,
   Route,
-  withRouter
+  withRouter,
 } from "react-router-dom";
-import {connect} from "react-redux";
+import {
+  connect,
+  Provider
+} from "react-redux";
 import {initialazedAll} from "./redux/app-reducer";
 import {compose} from "redux";
-import {Example} from "./components/Example/Example";
+import Navbar from './components/Navbar/Navbar';
 
 import Preloader from "./components/common/Preloader/Preloader";
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -26,7 +30,6 @@ class AppClass extends React.Component {
     this.props.initialazedAll()
   }
 
-
   render() {
     if (!this.props.initialazed) return <Preloader/>
 
@@ -35,32 +38,42 @@ class AppClass extends React.Component {
         <HeaderContainer/>
         <Navbar/>
         <div className='app-wrapper-content'>
-          {/*<Switch>*/}
+          <Switch>
           <Suspense fallback={<Preloader/>}>
+            <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
             <Route path='/dialogs' render={() => <DialogsContainer/>}/>
-              <Route path='/profile/:userId?' onChange={(e)=>{console.log('changed ',e)}}
-                     render={() => <ProfileContainer/>}/>
-              <Route path='/users' render={() => <UsersContainer/>}/>
-              <Route path='/login' render={() => <LoginContainer/>}/>
-              <Route path='/example' render={() => <Example/>}/>
+            <Route path='/profile/:userId?' render={() => <ProfileContainer/>}/>
+            <Route path='/users' render={() => <UsersContainer/>}/>
+            <Route path='/login' render={() => <LoginContainer/>}/>
+            <Route path='*' render={() => <h1>This site NOT FOUND. Try another address</h1>}/>
           </Suspense>
-            {/*</Switch>*/}
+          </Switch>
         </div>
       </div>
-  )
-  }
-  }
 
-  let mapStateToProps = (state) => {
-    return {
+    )
+  }
+}
+
+let mapStateToProps = (state) => {
+  return {
     initialazed: state.app.initialazed
   }
-  }
+}
 
-  let App = compose(
+let App = compose(
   withRouter,
   connect(mapStateToProps, {initialazedAll})
-  )(AppClass)
+)(AppClass)
 
 
-  export default App;
+export const AppContainer = props => {
+  return <BrowserRouter>
+    <Provider store={store}>
+      <App/>
+    </Provider>
+  </BrowserRouter>
+}
+
+
+export default App;

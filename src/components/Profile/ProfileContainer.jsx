@@ -4,16 +4,16 @@ import {compose} from "redux";
 import {withRouter} from "react-router-dom";
 
 import Profile from "./Profile";
-import {getProfile, setIsAuthProfile, setPhoto, setProfileData} from "../../redux/profile-reducer";
-import {getStatus} from "../../redux/status-reduser";
-// import withAuthRedirect from "../hoc/withAuthRedirect";
+import {getProfile, setIsAuthProfile, setPhoto, setProfileData, getStatus} from "../../redux/profile-reducer";
 
 
 class ProfileContainer extends React.Component {
 
   updateProfile() {
-    let userId = this.props.match.params.userId || this.props.authUser || undefined
+    let idFromRouter = this.props.match.params.userId
+    let userId = idFromRouter || this.props.authUser || undefined
     let isAuthProfile = (+userId === +this.props.authUser)
+
     this.props.setIsAuthProfile(isAuthProfile)
     this.props.getProfile(userId)
     this.props.getStatus(userId)

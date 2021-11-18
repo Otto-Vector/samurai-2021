@@ -7,11 +7,9 @@ import friendsReducer from "./friends-reducer";
 import usersReducer from "./users-reducer";
 import authReducer from "./auth-reducer";
 import appReducer from "./app-reducer";
-import statusReducer from "./status-reduser";
 
 let reducers = combineReducers({
   profilePage : profileReducer,
-  profileStatus: statusReducer,
   dialogsPage : dialogsReducer,
   sidebar: friendsReducer,
   usersPage : usersReducer,
