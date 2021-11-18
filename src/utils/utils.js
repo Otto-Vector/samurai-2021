@@ -20,18 +20,19 @@ export const errorParser = errorStringArray => {
   // ]
 
   //убираем первую заглавную букву из названий будущих полей переменных
-  let unCapitalize = string => string.charAt(0).toLowerCase() + string.slice(1)
+  const unCapitalize = string => string.charAt(0).toLowerCase() + string.slice(1)
+  //удаление последнего символа
+  const deleteLastChar = string => string.slice(0,-1)
 
   //запускаем редюсер по массиву и возвращаем объект в result
   return errorStringArray.reduce((result, value) => {
     //разделяем строку на сообщение (до скобки) и переменную (после)
-    let [errorMessage, variablesField] = value.split(' (')
-    //удаляем последнюю скобку
-    variablesField = variablesField.split(')')[0]
+    //удаляем последнюю скобку и последний пробел
+    const [errorMessage, variablesField] = value.split('(').map(deleteLastChar)
     //если в строке есть стрелочка, то создаём вложенный объект
     if (variablesField.includes('->')) {
-      let [firstLevel, secondLevel] = variablesField.split('->')
-      firstLevel = unCapitalize(firstLevel); secondLevel = unCapitalize(secondLevel);
+      //создаём две переменные в которые передаём строки без первой заглавной
+      const [firstLevel, secondLevel] = variablesField.split('->').map(unCapitalize)
       return {...result,
         [firstLevel]: {
           ...result[firstLevel],
@@ -41,9 +42,7 @@ export const errorParser = errorStringArray => {
     }
     //иначе просто наименование поля и ошибка
     return {...result, [unCapitalize(variablesField)]: errorMessage}
-  },
-    {}//инициируем пустой объект, как первое значение
-  )
+  },{})
 
   // возвращаются в таком формате
   // return {
@@ -54,6 +53,5 @@ export const errorParser = errorStringArray => {
   //     vk: 'Invalid url format'
   //   }
   // }
-
 }
 
