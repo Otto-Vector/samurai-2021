@@ -22,6 +22,7 @@ const LoginForm = props => {
       email: '',
       password: '',
       rememberMe: true,
+      captcha: null
     }}
     render={
       ({ submitError, handleSubmit, pristine, form, submitting, values}) => (
@@ -51,6 +52,19 @@ const LoginForm = props => {
               Remember me
             </label>
           </div>
+
+          {props.captchaUrl && <div className={styles.forCaptcha}>
+            <img alt={'captcha'} title={'captcha'} src={props.captchaUrl}/>
+            <div className={styles.input}>
+             <Field name={'captcha'}
+                   component={Input}
+                   type={'text'}
+                   placeholder={'input captcha from image before'}
+                   validate={composeValidators(required)}
+             />
+            </div>
+          </div>
+          }
           <button className={styles.button} type={'submit'}>Done</button>
           <button type={'button'}
                       className={styles.button}

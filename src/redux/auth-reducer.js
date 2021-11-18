@@ -1,8 +1,8 @@
-import {authAPI} from "../api/samurai-api";
+import {authAPI, securityAPI} from "../api/samurai-api";
 
 const SET_AUTH = 'SET-AUTH'
 const IS_FETCHING_SWICH_TO = 'IS-FETCHING-SWICH-TO'
-
+const CAPTCHA_URL_SUCCESS = 'CAPTCHA_URL_SUCCESS'
 
 let initialState = {
   data: {
@@ -13,6 +13,7 @@ let initialState = {
   isFetching: false,
   isAuth: false,
   authURL: 'https://social-network.samuraijs.com',
+  captchaUrl: null,
 }
 
 
@@ -23,12 +24,8 @@ const authReducer = (state = initialState, action) => {
     case SET_AUTH : {
       return {
         ...state,
-        data: {
-          id: action.payload.userId,
-          email: action.payload.email,
-          login: action.payload.login
-        },
-        isAuth: action.payload.isAuth
+        data: {...action.payload},
+        isAuth: action.isAuth
       }
     }
     case IS_FETCHING_SWICH_TO : {
@@ -37,7 +34,12 @@ const authReducer = (state = initialState, action) => {
         isFetching: action.isFetching
       }
     }
-
+    case CAPTCHA_URL_SUCCESS : {
+      return {
+        ...state,
+        captchaUrl: action.captchaUrl
+      }
+    }
     default : {
       // return {...state}
     }
@@ -46,11 +48,13 @@ const authReducer = (state = initialState, action) => {
   return state
 }
 
-export const setAuthUserData = (userId, email, login, isAuth) => ({
+export const setAuthUserData = (id, email, login, isAuth) => ({
   type: SET_AUTH,
-  payload: {userId, email, login, isAuth}
+  payload: {id, email, login},
+  isAuth
 })
-export const isFetchingSwichTo = (isFetching) => ({type: IS_FETCHING_SWICH_TO, isFetching})
+export const isFetchingSwichTo = isFetching => ({type: IS_FETCHING_SWICH_TO, isFetching})
+const captchaUrlSuccess = captchaUrl => ({type: CAPTCHA_URL_SUCCESS, captchaUrl})
 
 export const getAuth = () =>
   async dispatch => {
@@ -67,15 +71,17 @@ export const getAuth = () =>
 
 export const loginIn = loginData =>
   async dispatch => {
-    let response = await authAPI.loginIn(loginData)
+    const response = await authAPI.loginIn(loginData)
 
     if (response.resultCode === 0) {
       dispatch(getAuth())
       return null
-    } else {
-      return response.messages
+    } else if (response.resultCode === 10) {
+      //десятый код запрашивает капчу и мы забираем её у сервера
+      const response = await securityAPI.getCaptchaUrl()
+      dispatch(captchaUrlSuccess(response.url))
     }
-
+      return response.messages
   }
 
 export const loginOut = () =>

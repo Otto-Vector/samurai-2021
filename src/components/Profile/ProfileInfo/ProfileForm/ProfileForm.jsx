@@ -5,18 +5,16 @@ import {Input, TextArea} from "../../../common/FormType/FormType";
 import {Field, Form} from "react-final-form";
 import {composeValidators, required} from "../../../../utils/validators";
 import {FORM_ERROR} from "final-form";
+import {errorParser} from "../../../../utils/utils";
 import {socialsImageSource} from "../../../common/Socials/SocialsImageSource";
 
-const ProfileForm = (props) => {
+const ProfileForm = props => {
 
   let {contacts} = props.initialValues
 
-
   let onSubmit = async formData => {
-    // let error = await props.onSubmit(formData)
-
-    // return {[FORM_ERROR]: error || null}
-    return {fullName: "error || null"}
+    let error = await props.onSubmit(formData)
+    return error ? errorParser(error) : {[FORM_ERROR]: null}
   }
 
   return (
@@ -24,12 +22,12 @@ const ProfileForm = (props) => {
       onSubmit={onSubmit}
       initialValues={props.initialValues}
       render={
-        ({submitError, handleSubmit, pristine, form, submitting, values}) => (
+        ({submitError, handleSubmit, form}) => (
           <form onSubmit={handleSubmit}>
             <div className={styles.input}>
               <Field name={'fullName'}
                      placeholder={'fullName'}
-                     form={form}
+                     resetFieldBy={form}
                      component={Input}
                      validate={composeValidators(required)}
               />
@@ -38,8 +36,9 @@ const ProfileForm = (props) => {
               <Field name={'aboutMe'}
                      component={Input}
                      placeholder={'aboutMe'}
-                     form={form}
-                     validate={composeValidators(required)} />
+                     resetFieldBy={form}
+                // validate={composeValidators(required)}
+              />
             </div>
             <div>
               <label className={styles.checkbox}>
@@ -54,7 +53,7 @@ const ProfileForm = (props) => {
               <Field name={'lookingForAJobDescription'}
                      component={TextArea}
                      placeholder={'lookingForAJobDescription'}
-                     form={form}
+                     resetFieldBy={form}
                      validate={composeValidators(required)}
               />
             </div>
@@ -65,7 +64,7 @@ const ProfileForm = (props) => {
                    alt={key} title={key}
                    src={socialsImageSource[key][contacts[key] ? 'filled' : 'empty']}/>
               }
-              <Field name={`contacts.${key}`} component={Input} placeholder={key} form={form}/>
+              <Field name={`contacts.${key}`} component={Input} placeholder={key} resetFieldBy={form}/>
             </div>)
             }
 

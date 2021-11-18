@@ -14,7 +14,8 @@ let mapStateToProps = (state) => {
   return {
     isAuth: state.auth.isAuth,
     authURL: state.auth.authURL,
-    errorMessages: state.auth.errorMessages
+    // errorMessages: state.auth.errorMessages,
+    captchaUrl: state.auth.captchaUrl,
   }
 }
 
