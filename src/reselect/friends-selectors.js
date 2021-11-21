@@ -9,7 +9,7 @@ const getFriendsToShow = state => state.sidebar.friendsToShow
 
 export const getAnyFriendsReselect = createSelector(getFriends, getFriendsToShow, (friends, friendsToShow) => {
   let maxFriends = friends.length
-  let toShow = Math.min(maxUsers, friendsToShow)
+  let toShow = Math.min(maxFriends, friendsToShow)
 
   return randomDifferentIntegersArrayCreator(maxFriends)(toShow).map(index => friends[index])
 })

@@ -1,5 +1,5 @@
 // возвращает случайное целое число в заданном диапазоне
-const randMinMax = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+// const randMinMax = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
 // возвращает массив из необходимого числа элементов needArraySize
 // рандомных /НЕ ОДИНАКОВЫХ/ целых чисел (from 0 to realArraySize)
