@@ -1,13 +1,20 @@
+// возвращает случайное целое число в заданном диапазоне
 const randMinMax = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
-export const randomDifferentIntegersArrayCreator = (max = 0) => (size = 0) => {
-  size = Math.min(max + 1, size)
-  let Rand = () => randMinMax(0, max)
-  let array = [], next
+// возвращает массив из необходимого числа элементов needArraySize
+// рандомных /НЕ ОДИНАКОВЫХ/ целых чисел (from 0 to realArraySize)
+// к которому можно потом "замапится" для перемешивания значений искомого массива, например:
+// randomDifferentIntegersArrayCreator(array.length)(from 1 to array.length).map(el=>array[el])
+export const randomDifferentIntegersArrayCreator = (realArraySize = 0) =>
+  (needArraySize = realArraySize) => {
+  let usefulArraySize = Math.min(realArraySize, needArraySize)
+  let rand = () => Math.floor(Math.random() * realArraySize)
+  let arrayOfNumbers = [], nextNumber
   do {
-    next = Rand()
-  } while (array.includes(next) || array.push(next) < size)
-  return array
+    nextNumber = rand()
+  } while (arrayOfNumbers.includes(nextNumber) || arrayOfNumbers.push(nextNumber) < usefulArraySize)
+
+  return arrayOfNumbers
 }
 
 export const errorParser = errorStringArray => {
@@ -20,7 +27,7 @@ export const errorParser = errorStringArray => {
   // ]
 
   //убираем первую заглавную букву из названий будущих полей переменных
-  const unCapitalize = string => string.charAt(0).toLowerCase() + string.slice(1)
+  const unCapitalizeFirstChar = string => string.charAt(0).toLowerCase() + string.slice(1)
   //удаление последнего символа
   const deleteLastChar = string => string.slice(0,-1)
 
@@ -32,7 +39,7 @@ export const errorParser = errorStringArray => {
     //если в строке есть стрелочка, то создаём вложенный объект
     if (variablesField.includes('->')) {
       //создаём две переменные в которые передаём строки без первой заглавной
-      const [firstLevel, secondLevel] = variablesField.split('->').map(unCapitalize)
+      const [firstLevel, secondLevel] = variablesField.split('->').map(unCapitalizeFirstChar)
       return {...result,
         [firstLevel]: {
           ...result[firstLevel],
@@ -41,8 +48,9 @@ export const errorParser = errorStringArray => {
       }
     }
     //иначе просто наименование поля и ошибка
-    return {...result, [unCapitalize(variablesField)]: errorMessage}
-  },{})
+    return {...result, [unCapitalizeFirstChar(variablesField)]: errorMessage}
+  },{} //объявление пустого объекта, как инициализация первого значения result
+  )
 
   // возвращаются в таком формате
   // return {
