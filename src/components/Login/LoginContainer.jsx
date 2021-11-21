@@ -2,6 +2,7 @@ import React from 'react';
 import Login from "./Login";
 import {connect} from "react-redux";
 import {loginIn} from "../../redux/auth-reducer";
+import {getAuthURL, getCaptchaUrl, getIsAuthUser} from "../../reselect/auth-reselectors";
 
 class LoginContainer extends React.Component{
 
@@ -10,12 +11,11 @@ class LoginContainer extends React.Component{
   }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = state => {
   return {
-    isAuth: state.auth.isAuth,
-    authURL: state.auth.authURL,
-    // errorMessages: state.auth.errorMessages,
-    captchaUrl: state.auth.captchaUrl,
+    isAuth: getIsAuthUser(state),
+    authURL: getAuthURL(state),
+    captchaUrl: getCaptchaUrl(state),
   }
 }
 

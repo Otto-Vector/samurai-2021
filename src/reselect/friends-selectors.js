@@ -1,25 +1,15 @@
 import {randomDifferentIntegersArrayCreator} from "../utils/utils";
 import {createSelector} from "reselect";
 
-export const getFriendsHeader = (state) => {
-  return state.sidebar.header
-}
+export const getFriendsHeader = state => state.sidebar.header
+export const getFriendsIsFetching = state => state.sidebar.isFetching
 
-const getFriends = (state) => {
-  return state.sidebar.friends
-}
+const getFriends = state => state.sidebar.friends
+const getFriendsToShow = state => state.sidebar.friendsToShow
 
-export const getFriendsIsFetching = (state) => {
-  return state.sidebar.isFetching
-}
-
-const getFriendsToShow = (state) => {
-  return state.sidebar.friendsToShow
-}
-
-export const getThreeFriendsRe = createSelector( getFriends, getFriendsToShow, (friends, toShow)=> {
+export const getAnyFriendsReselect = createSelector( getFriends, getFriendsToShow, (friends, friendsToShow) => {
   let maxUsers = friends.length - 1
-  let diffArray = randomDifferentIntegersArrayCreator(maxUsers)(Math.min(maxUsers,toShow))
+  let diffArray = randomDifferentIntegersArrayCreator(maxUsers)(Math.min(maxUsers,friendsToShow))
 
-  return diffArray.map(el => friends[el])
+  return diffArray.map(index => friends[index])
 })

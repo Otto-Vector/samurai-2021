@@ -2,12 +2,12 @@
 import {addPost} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
+import {getNewPostTextPlaceholder, getPosts} from "../../../reselect/profile-selectors";
 
-let mapStateToProps = (state) => {
+let mapStateToProps = state => {
   return {
-    posts: state.profilePage.posts,
-    newPostText: state.profilePage.newPostText,
-    newPostTextPlaceholder : state.profilePage.newPostTextPlaceholder
+    posts: getPosts(state),
+    newPostTextPlaceholder : getNewPostTextPlaceholder(state)
   }
 }
 

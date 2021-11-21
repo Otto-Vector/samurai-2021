@@ -2,7 +2,7 @@
   "name": "react-way-of-samurai",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/Otto-Vector/samurai-2021",
+  "homepage": "",
   "dependencies": {
     "axios": "^0.22.0",
     "final-form": "^4.20.4",

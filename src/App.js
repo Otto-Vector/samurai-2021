@@ -38,16 +38,16 @@ class AppClass extends React.Component {
         <HeaderContainer/>
         <Navbar/>
         <div className='app-wrapper-content'>
-          <Switch>
           <Suspense fallback={<Preloader/>}>
+          <Switch>
             <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
             <Route path='/dialogs' render={() => <DialogsContainer/>}/>
             <Route path='/profile/:userId?' render={() => <ProfileContainer/>}/>
             <Route path='/users' render={() => <UsersContainer/>}/>
             <Route path='/login' render={() => <LoginContainer/>}/>
-            <Route path='*' render={() => <h1>This site NOT FOUND. Try another address</h1>}/>
-          </Suspense>
+            <Route render={() => <h1>This site NOT FOUND. Try another address</h1>}/>
           </Switch>
+          </Suspense>
         </div>
       </div>
 

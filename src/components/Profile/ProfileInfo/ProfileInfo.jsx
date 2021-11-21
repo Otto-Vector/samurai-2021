@@ -6,7 +6,7 @@ import ProfileForm from "./ProfileForm/ProfileForm";
 import ProfileData from "./ProfileData";
 
 
-const ProfileInfo = (props) => {
+const ProfileInfo = React.memo(props => {
 
   let [editMode, setEditMode] = useState(false)
 
@@ -49,5 +49,5 @@ const ProfileInfo = (props) => {
     </div>
   )
 }
-
+)
 export default ProfileInfo;

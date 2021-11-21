@@ -32,7 +32,7 @@ const ProfileStatusFunc = props => {
     props.updateStatus(status)
   }
 
-  const onStatusInput = (e) => {
+  const onStatusInput = e => {
    setStatus(e.currentTarget.value)
   }
 

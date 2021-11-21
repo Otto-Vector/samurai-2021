@@ -6,7 +6,7 @@ import {TextArea} from "../../common/FormType/FormType";
 import {composeValidators, required} from "../../../utils/validators";
 
 
-const AddPostForm = (props) => {
+const AddPostForm = props => {
   return (
     <Form
        onSubmit={props.onSubmit}
@@ -45,10 +45,9 @@ const AddPostForm = (props) => {
 
 const MyPosts = React.memo(props => {
 
-
   let postsElements = props.posts.map(args => <Post {...args} key={Math.random().toString()}/>)
 
-  let onSubmit = (formData) => {
+  let onSubmit = formData => {
     props.addPost(33,formData.newPostText)
   }
 

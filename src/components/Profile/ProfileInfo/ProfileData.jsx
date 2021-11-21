@@ -4,7 +4,8 @@ import Socials from "../../common/Socials/Socials";
 import ProfileStatusContainer from "./ProfileStatus/ProfileStatusContainer";
 
 
-const ProfileData = ({isAuthProfile,activateEditMode,profile}) => {
+const ProfileData = React.memo(({isAuthProfile,activateEditMode,profile}) => {
+// const ProfileData = ({isAuthProfile,activateEditMode,profile}) => {
 
   return <div>
     <h2 className={styles.fullName}>{profile.fullName}</h2>
@@ -28,6 +29,6 @@ const ProfileData = ({isAuthProfile,activateEditMode,profile}) => {
     </div>
   </div>
 }
-
+)
 
 export default ProfileData;
