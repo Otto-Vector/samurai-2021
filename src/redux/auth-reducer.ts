@@ -6,9 +6,9 @@ const CAPTCHA_URL_SUCCESS = 'CAPTCHA_URL_SUCCESS'
 
 let initialState = {
   data: {
-    id: null,
-    email: null,
-    login: null
+    id: null as number | null,
+    email: null as string | null,
+    login: null as string | null
   },
   isFetching: false,
   isAuth: false,
@@ -16,8 +16,10 @@ let initialState = {
   captchaUrl: null,
 }
 
+export type authInitialStateType = typeof initialState
+export type authInitialStateTypeData = typeof initialState.data
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action: setAuthUserDataType | isFetchingSwichToType | captchaUrlSuccessType) => {
 
   switch (action.type) {
 
@@ -48,29 +50,30 @@ const authReducer = (state = initialState, action) => {
   return state
 }
 
-export const setAuthUserData = (id, email, login, isAuth) => ({
-  type: SET_AUTH,
-  payload: {id, email, login},
-  isAuth
-})
-export const isFetchingSwichTo = isFetching => ({type: IS_FETCHING_SWICH_TO, isFetching})
-const captchaUrlSuccess = captchaUrl => ({type: CAPTCHA_URL_SUCCESS, captchaUrl})
+export type setAuthUserDataType =  { type: typeof SET_AUTH, payload: authInitialStateTypeData, isAuth: boolean}
+export const setAuthUserData = (payload: authInitialStateTypeData, isAuth: boolean): setAuthUserDataType => ({
+  type: SET_AUTH, payload, isAuth })
+
+export type isFetchingSwichToType = {type: typeof IS_FETCHING_SWICH_TO, isFetching: boolean}
+export const isFetchingSwichTo = (isFetching:boolean) : isFetchingSwichToType => ({type: IS_FETCHING_SWICH_TO, isFetching})
+export type captchaUrlSuccessType = {type: typeof CAPTCHA_URL_SUCCESS, captchaUrl: string}
+const captchaUrlSuccess = (captchaUrl: string): captchaUrlSuccessType => ({type: CAPTCHA_URL_SUCCESS, captchaUrl})
 
 export const getAuth = () =>
-  async dispatch => {
+  async (dispatch: Function) => {
     dispatch(isFetchingSwichTo(true))
     let response = await authAPI.getAuth()
 
     if (response.resultCode === 0) {
       let {id, login, email} = response.data
-      dispatch(setAuthUserData(id, email, login, true))
+      dispatch(setAuthUserData({id, email, login}, true))
     }
     dispatch(isFetchingSwichTo(false))
 
   }
 
-export const loginIn = loginData =>
-  async dispatch => {
+export const loginIn = (loginData : authInitialStateTypeData) =>
+  async (dispatch: Function) => {
     const response = await authAPI.loginIn(loginData)
 
     if (response.resultCode === 0) {
@@ -85,11 +88,11 @@ export const loginIn = loginData =>
   }
 
 export const loginOut = () =>
-  async dispatch => {
+  async (dispatch: Function) => {
     let response = await authAPI.loginOut()
 
     if (response.resultCode === 0) {
-      dispatch(setAuthUserData(null, null, null, false))
+      dispatch(setAuthUserData({id:null, email: null, login: null}, false))
     }
 
   }
