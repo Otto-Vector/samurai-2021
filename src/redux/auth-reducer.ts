@@ -1,4 +1,5 @@
 import {authAPI, securityAPI} from "../api/samurai-api";
+import {AuthDataType} from "./types/types";
 
 const SET_AUTH = 'SET-AUTH'
 const IS_FETCHING_SWICH_TO = 'IS-FETCHING-SWICH-TO'
@@ -9,17 +10,17 @@ let initialState = {
     id: null as number | null,
     email: null as string | null,
     login: null as string | null
-  },
+  } as AuthDataType,
   isFetching: false,
   isAuth: false,
-  authURL: 'https://social-network.samuraijs.com',
-  captchaUrl: null,
+  authURL: 'https://social-network.samuraijs.com', // захардкодил ссылку в header логина
+  captchaUrl: null as string | null,
 }
 
-export type authInitialStateType = typeof initialState
-export type authInitialStateTypeData = typeof initialState.data
+export type AuthReducerStateType = typeof initialState
+type ActionsType = setAuthUserDataType | isFetchingSwitchToType | captchaUrlSuccessType
 
-const authReducer = (state = initialState, action: setAuthUserDataType | isFetchingSwichToType | captchaUrlSuccessType) => {
+const authReducer = (state = initialState, action: ActionsType): AuthReducerStateType    => {
 
   switch (action.type) {
 
@@ -50,29 +51,30 @@ const authReducer = (state = initialState, action: setAuthUserDataType | isFetch
   return state
 }
 
-export type setAuthUserDataType =  { type: typeof SET_AUTH, payload: authInitialStateTypeData, isAuth: boolean}
-export const setAuthUserData = (payload: authInitialStateTypeData, isAuth: boolean): setAuthUserDataType => ({
+type setAuthUserDataType =  { type: typeof SET_AUTH, payload: AuthDataType, isAuth: boolean}
+export const setAuthUserData = (payload: AuthDataType, isAuth: boolean): setAuthUserDataType => ({
   type: SET_AUTH, payload, isAuth })
 
-export type isFetchingSwichToType = {type: typeof IS_FETCHING_SWICH_TO, isFetching: boolean}
-export const isFetchingSwichTo = (isFetching:boolean) : isFetchingSwichToType => ({type: IS_FETCHING_SWICH_TO, isFetching})
-export type captchaUrlSuccessType = {type: typeof CAPTCHA_URL_SUCCESS, captchaUrl: string}
+type isFetchingSwitchToType = {type: typeof IS_FETCHING_SWICH_TO, isFetching: boolean}
+export const isFetchingSwitchTo = (isFetching:boolean): isFetchingSwitchToType => ({type: IS_FETCHING_SWICH_TO, isFetching})
+
+type captchaUrlSuccessType = {type: typeof CAPTCHA_URL_SUCCESS, captchaUrl: string}
 const captchaUrlSuccess = (captchaUrl: string): captchaUrlSuccessType => ({type: CAPTCHA_URL_SUCCESS, captchaUrl})
 
 export const getAuth = () =>
   async (dispatch: Function) => {
-    dispatch(isFetchingSwichTo(true))
+    dispatch(isFetchingSwitchTo(true))
     let response = await authAPI.getAuth()
 
     if (response.resultCode === 0) {
       let {id, login, email} = response.data
       dispatch(setAuthUserData({id, email, login}, true))
     }
-    dispatch(isFetchingSwichTo(false))
+    dispatch(isFetchingSwitchTo(false))
 
   }
 
-export const loginIn = (loginData : authInitialStateTypeData) =>
+export const loginIn = (loginData : AuthDataType) =>
   async (dispatch: Function) => {
     const response = await authAPI.loginIn(loginData)
 

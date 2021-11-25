@@ -3,12 +3,17 @@ import {getResponseFriends} from "./friends-reducer";
 
 const SET_INITIALAZED = 'SET_INITIALAZED'
 
-let initialState = {
-  initialazed: false
+export type AppReducerStateType = {
+  initialazed: boolean,
+}
+
+let initialState: AppReducerStateType = {
+  initialazed: false,
 }
 
 
-const appReducer = (state = initialState, action) => {
+const appReducer = (state = initialState,
+                    action: setInitialazedSuccessActionType) : AppReducerStateType => {
 
   switch (action.type) {
 
@@ -26,12 +31,12 @@ const appReducer = (state = initialState, action) => {
 
   // return state
 }
-
-export const setInitialazedSuccess = () => ({type: SET_INITIALAZED})
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+type setInitialazedSuccessActionType = { type: typeof SET_INITIALAZED }
+export const setInitialazedSuccess = (): setInitialazedSuccessActionType => ({type: SET_INITIALAZED})
+const sleep = (ms: number) : Promise<Function> => new Promise(resolve => setTimeout(resolve, ms))
 
 export const initialazedAll = () => {
-  return dispatch => {
+  return (dispatch : Function) => {
     let promise = dispatch(getAuth())
     let promise2 = sleep(100)
     let friends = dispatch(getResponseFriends())

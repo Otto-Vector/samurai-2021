@@ -1,24 +1,29 @@
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import thunkMiddleWare from "redux-thunk";
 
-import profileReducer from "./profile-reducer";
-import dialogsReducer from "./dialogs-reducer";
-import friendsReducer from "./friends-reducer";
-import usersReducer from "./users-reducer";
-import authReducer, {authInitialStateType} from "./auth-reducer";
-import appReducer from "./app-reducer";
+import profileReducer, {ProfileReducerStateType} from "./profile-reducer";
+import dialogsReducer, {DialogsReducerStateType} from "./dialogs-reducer";
+import friendsReducer, {FriendsReducerStateType} from "./friends-reducer";
+import usersReducer, {UsersReducerStateType} from "./users-reducer";
+import authReducer, {AuthReducerStateType} from "./auth-reducer";
+import appReducer, {AppReducerStateType} from "./app-reducer";
 
 let reducersObject = {
-  profilePage : profileReducer,
-  dialogsPage : dialogsReducer,
+  profilePage: profileReducer,
+  dialogsPage: dialogsReducer,
   sidebar: friendsReducer,
-  usersPage : usersReducer,
+  usersPage: usersReducer,
   auth: authReducer,
   app: appReducer,
 }
 
 export type StateType = {
-  auth : authInitialStateType
+  auth: AuthReducerStateType
+  profilePage: ProfileReducerStateType
+  dialogsPage: DialogsReducerStateType,
+  sidebar: FriendsReducerStateType,
+  usersPage: UsersReducerStateType,
+  app: AppReducerStateType
 }
 
 let reducers = combineReducers(reducersObject)

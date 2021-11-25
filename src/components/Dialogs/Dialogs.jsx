@@ -7,15 +7,15 @@ import MessageTextForm from "./MessageTextForm";
 const Dialogs = (props) => {
 
   let onSubmit = (formData, form) => {
-    props.addMessage(formData.message)
+    props.addMessage({id: props.authId, message: formData.message})
     //сброс значений после ввода
     form.reset()
   }
 
   //хардкодим сопоставление иконок айдишникам
   let zz = (idd) => {
-    for (let {id, imageURL} of props.dialogs)
-      if (id === +idd) return imageURL
+    for (let {id} of props.dialogs)
+      if (id === +idd) return null
   }
 
 

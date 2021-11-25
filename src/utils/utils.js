@@ -7,18 +7,23 @@
 // randomDifferentIntegersArrayCreator(array.length)(from 1 to array.length).map(el=>array[el])
 export const randomDifferentIntegersArrayCreator = (realArraySize = 1) =>
   (needArraySize = realArraySize) => {
-  let justArray = (a, b = []) => {while (a--) b[a] = a; return b }
-  let arrayOfNumbers = justArray(realArraySize), nextNumber, buffered
 
-  while (realArraySize) {
-    nextNumber = Math.floor(Math.random() *(--realArraySize + 1))
-    buffered = arrayOfNumbers[realArraySize]
-    arrayOfNumbers[realArraySize] = arrayOfNumbers[nextNumber]
+  let justArray = (a, b = []) => {while (a--) b[a] = a; return b }
+  let arrayOfNumbers = justArray(realArraySize),
+  nextNumber, buffered, size = realArraySize
+
+  while (size) {
+    nextNumber = Math.floor(Math.random() *(--size + 1))
+    buffered = arrayOfNumbers[size]
+    arrayOfNumbers[size] = arrayOfNumbers[nextNumber]
     arrayOfNumbers[nextNumber] = buffered
   }
 
-  return arrayOfNumbers.slice(-Math.min(realArraySize, needArraySize))
+  let needToSliced = Math.min(realArraySize, needArraySize)
+
+  return arrayOfNumbers.slice(-needToSliced)
 }
+
 
 export const errorParser = errorStringArray => {
   // c сервера приходят ошибки в таком формате
