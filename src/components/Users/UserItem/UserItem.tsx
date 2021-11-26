@@ -2,8 +2,16 @@ import React from "react";
 import styles from "./UserItem.module.css"
 import userNoImage from '../../../assets/images/userNoImage.png'
 import {NavLink} from "react-router-dom";
+import {UsersFromSearchType} from "../../../redux/types/types";
 
-const UserItem = ({id, photos, isFetchingById, followed, follow, name, status}) => {
+type PropsType = {
+    isFetchingById: number[]
+    follow: (followed: boolean, id: number) => void
+}
+
+export type UserItemType = UsersFromSearchType & PropsType
+
+const UserItem = ({id, photos, isFetchingById, followed, follow, name, status}:UserItemType) => {
 
   return (
     <div className={styles.user}>
@@ -32,6 +40,5 @@ const UserItem = ({id, photos, isFetchingById, followed, follow, name, status}) 
       </div>
     </div>)
 }
-
 
 export default UserItem;

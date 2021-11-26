@@ -2,11 +2,13 @@ import React from 'react';
 import styles from './login.module.css'
 import {Redirect} from "react-router-dom";
 import LoginForm from "./LoginForm";
+import { LoginContainerType } from './LoginContainer';
+import {AuthDataType} from "../../redux/types/types";
 
 
-const Login = props => {
+const Login = (props: LoginContainerType) => {
 
-  let onSubmit = async formData => {
+  let onSubmit = async (formData: AuthDataType) => {
     const errorMessages = await props.loginIn(formData)
     //возвращает ошибку в форму из стейта
     return errorMessages || null

@@ -1,12 +1,12 @@
 import {UsersAPI} from "../api/samurai-api";
-import {UsersFromType} from "./types/types";
+import {UsersFromSearchType} from "./types/types";
 
 const ADD_FRIENDS = "ADD_FRIENDS"
 const FRIENDS_IS_FETCHING = "FRIENDS-IS-FETCHING"
 
 
 let initialState = {
-  friends: [] as UsersFromType[],
+  friends: [] as UsersFromSearchType[],
   header: 'Friends',
   friendsToShow: 16,
   isFetching: true
@@ -41,9 +41,9 @@ const friendsReducer = (state = initialState, action: ActionsType): FriendsReduc
 
 type AddFriendsActionType = {
   type: typeof ADD_FRIENDS
-  friends: UsersFromType[]
+  friends: UsersFromSearchType[]
 }
-const addFriends = (friends: UsersFromType[]): AddFriendsActionType => ({type: ADD_FRIENDS, friends})
+const addFriends = (friends: UsersFromSearchType[]): AddFriendsActionType => ({type: ADD_FRIENDS, friends})
 
 type FriendsResponseIsFetchingActionType = {
   type: typeof FRIENDS_IS_FETCHING

@@ -6,9 +6,9 @@
 // к которому можно потом "замапится" для перемешивания значений искомого массива, например:
 // randomDifferentIntegersArrayCreator(array.length)(from 1 to array.length).map(el=>array[el])
 export const randomDifferentIntegersArrayCreator = (realArraySize = 1) =>
-  (needArraySize = realArraySize) => {
+  (needArraySize = realArraySize): number[] => {
 
-  let justArray = (a, b = []) => {while (a--) b[a] = a; return b }
+  let justArray = (a: number, b: number[] = []) => {while (a--) b[a] = a; return b }
   let arrayOfNumbers = justArray(realArraySize),
   nextNumber, buffered, size = realArraySize
 
@@ -25,7 +25,7 @@ export const randomDifferentIntegersArrayCreator = (realArraySize = 1) =>
 }
 
 
-export const errorParser = errorStringArray => {
+export const errorParser = (errorStringArray: string[]): Object => {
   // c сервера приходят ошибки в таком формате
   // errorStringArray = [
   //   "The AboutMe field is required. (AboutMe)",
@@ -35,9 +35,9 @@ export const errorParser = errorStringArray => {
   // ]
 
   //убираем первую заглавную букву из названий будущих полей переменных
-  const unCapitalizeFirstChar = string => string.charAt(0).toLowerCase() + string.slice(1)
+  const unCapitalizeFirstChar = (string: string) => string.charAt(0).toLowerCase() + string.slice(1)
   //удаление последнего символа
-  const deleteLastChar = string => string.slice(0, -1)
+  const deleteLastChar = (string: string) => string.slice(0, -1)
 
   //запускаем редюсер по массиву и возвращаем объект в result
   return errorStringArray.reduce((result, value) => {
@@ -51,6 +51,7 @@ export const errorParser = errorStringArray => {
         return {
           ...result,
           [firstLevel]: {
+        // @ts-ignore
             ...result[firstLevel],
             [secondLevel]: errorMessage
           }

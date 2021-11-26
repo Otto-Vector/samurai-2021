@@ -1,7 +1,13 @@
 import React from "react";
 import styles from "./FormType.module.css"
+import {FieldProps, FormProps} from "react-final-form";
 
-const FormType = FormType => ({input, meta, resetFieldBy, placeholder}) => {
+type TFormType = {
+    resetFieldBy: FormProps['form']
+    placeholder: string
+}
+
+const FormType = (FormType: string) => ({input, meta, resetFieldBy, placeholder}: any) => {
 
   const error = meta.error || meta.submitError
   const boolError = error && meta.touched

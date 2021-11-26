@@ -1,5 +1,5 @@
 import {UsersAPI} from "../api/samurai-api";
-import {UsersFromType} from "./types/types";
+import {UsersFromSearchType} from "./types/types";
 import {Dispatch} from "redux";
 
 const FOLLOW_TOGGLE = 'FOLLOW-TOGGLE'
@@ -11,7 +11,7 @@ const TOGGLE_IS_FETCHING_BY_ID = 'TOGGLE-IS-FETCHING-BY-ID'
 const TOGGLE_FRIENDS_ONLY = 'TOGGLE-FRIENDS-ONLY'
 
 let initialState = {
-    users: [] as UsersFromType[],
+    users: [] as UsersFromSearchType[],
     pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
@@ -98,8 +98,8 @@ export const followSuccessToggle = (userId: number, isFollow: boolean): followSu
     isFollow
 })
 
-type setUsersActionType = { type: typeof SET_USERS, users: UsersFromType[] }
-export const setUsers = (users: UsersFromType[]): setUsersActionType => ({type: SET_USERS, users})
+type setUsersActionType = { type: typeof SET_USERS, users: UsersFromSearchType[] }
+export const setUsers = (users: UsersFromSearchType[]): setUsersActionType => ({type: SET_USERS, users})
 
 type changePageActionType = { type: typeof CHANGE_PAGE, page: number }
 export const changePage = (page: number): changePageActionType => ({type: CHANGE_PAGE, page})
@@ -130,7 +130,7 @@ export const friendsOnlyToggle = (isFriendsFilter: boolean | null): friendsOnlyT
 })
 
 
-export const getUsers = (pageSize: number, page: number, isFriendsFilter = null) =>
+export const getUsers = (pageSize: number, page: number, isFriendsFilter = null as boolean|null) =>
     async (dispatch: Function | Dispatch<ActionsTypes>) => {
 
         dispatch(toggleIsFetching(true))
@@ -146,7 +146,7 @@ export const getUsers = (pageSize: number, page: number, isFriendsFilter = null)
 
 
 export const follow = (isFollow: boolean, userId: number) =>
-    async (dispatch: Dispatch<ActionsTypes>) => {
+    async (dispatch: any) => {
         dispatch(isFetchingToggleId(true, userId))
 
         const todo = !isFollow ? 'follow' : 'unfollow'

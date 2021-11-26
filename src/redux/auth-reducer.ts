@@ -75,7 +75,7 @@ export const getAuth = () =>
   }
 
 export const loginIn = (loginData : AuthDataType) =>
-  async (dispatch: Function) => {
+  async (dispatch: Function): Promise<string[] | null> => {
     const response = await authAPI.loginIn(loginData)
 
     if (response.resultCode === 0) {

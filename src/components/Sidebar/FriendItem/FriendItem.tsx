@@ -2,8 +2,11 @@ import React from 'react';
 import styles from './friendItem.module.css';
 import {NavLink} from "react-router-dom";
 import noImage from '../../../assets/images/userNoImage.png'
+import {UsersFromSearchType} from "../../../redux/types/types";
 
-const FriendItem = ({id, name, photos}) => {
+type PropsType = UsersFromSearchType
+
+const FriendItem = ({id, name, photos}:PropsType) => {
   let path = "/profile/" + id;
   return <div className={styles.friendItem}>
     <NavLink to={path}>

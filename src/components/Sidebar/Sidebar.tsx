@@ -2,8 +2,9 @@ import React from 'react';
 import styles from './sidebar.module.css';
 import FriendItem from "./FriendItem/FriendItem";
 import Preloader from "../common/Preloader/Preloader";
+import { SidebarContainerType } from './SidebarContainer';
 
-const Sidebar = props => {
+const Sidebar = (props: SidebarContainerType) => {
 
   let refreshFriends = () => {
     props.getResponseFriends()

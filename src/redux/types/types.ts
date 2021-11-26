@@ -18,7 +18,7 @@ export type PhotosType = {
   large: string | null
 }
 
-export type UsersFromType = {
+export type UsersFromSearchType = {
   id: number
   name: string
   status: string | null

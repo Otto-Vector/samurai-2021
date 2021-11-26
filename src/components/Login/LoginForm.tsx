@@ -2,13 +2,13 @@ import React from 'react';
 import styles from './login.module.css'
 
 import {Input} from "../common/FormType/FormType";
-import {Field, Form} from "react-final-form";
+import {Field, Form, FormProps} from "react-final-form";
 import {composeValidators, required} from "../../utils/validators";
 import {FORM_ERROR} from "final-form";
 
-const LoginForm = props => {
+const LoginForm = (props: FormProps ) => {
 
-  let onSubmit = async formData => {
+  let onSubmit = async (formData) => {
     let error = await props.onSubmit(formData)
     return {
       [FORM_ERROR]: error || null
