@@ -1,9 +1,12 @@
 import {authAPI, securityAPI} from "../api/samurai-api";
-import {AuthDataType} from "./types/types";
+import {AuthDataType, LoginDataType} from "./types/types";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
 
-const SET_AUTH = 'SET-AUTH'
-const IS_FETCHING_SWICH_TO = 'IS-FETCHING-SWICH-TO'
-const CAPTCHA_URL_SUCCESS = 'CAPTCHA_URL_SUCCESS'
+const SET_AUTH = 'auth-reducer/SET-AUTH'
+const IS_FETCHING_SWICH_TO = 'auth-reducer/IS-FETCHING-SWICH-TO'
+const CAPTCHA_URL_SUCCESS = 'auth-reducer/CAPTCHA_URL_SUCCESS'
+const SET_AUTH_ERRORS_FROM_API = 'auth-reducer/SET_AUTH_ERRORS_FROM_API'
 
 let initialState = {
   data: {
@@ -15,12 +18,14 @@ let initialState = {
   isAuth: false,
   authURL: 'https://social-network.samuraijs.com', // захардкодил ссылку в header логина
   captchaUrl: null as string | null,
+  errorsFromApi: null as string[] | null
 }
 
 export type AuthReducerStateType = typeof initialState
-type ActionsType = setAuthUserDataType | isFetchingSwitchToType | captchaUrlSuccessType
+type ActionsTypes = setAuthUserDataType | isFetchingSwitchToActionType | captchaUrlSuccessActionType |
+  setAuthErrorsFromApiActionType
 
-const authReducer = (state = initialState, action: ActionsType): AuthReducerStateType    => {
+const authReducer = (state = initialState, action: ActionsTypes): AuthReducerStateType    => {
 
   switch (action.type) {
 
@@ -43,6 +48,13 @@ const authReducer = (state = initialState, action: ActionsType): AuthReducerStat
         captchaUrl: action.captchaUrl
       }
     }
+    case SET_AUTH_ERRORS_FROM_API : {
+      return {
+        ...state,
+        errorsFromApi: action.errorsFromApi
+      }
+    }
+
     default : {
       // return {...state}
     }
@@ -55,14 +67,19 @@ type setAuthUserDataType =  { type: typeof SET_AUTH, payload: AuthDataType, isAu
 export const setAuthUserData = (payload: AuthDataType, isAuth: boolean): setAuthUserDataType => ({
   type: SET_AUTH, payload, isAuth })
 
-type isFetchingSwitchToType = {type: typeof IS_FETCHING_SWICH_TO, isFetching: boolean}
-export const isFetchingSwitchTo = (isFetching:boolean): isFetchingSwitchToType => ({type: IS_FETCHING_SWICH_TO, isFetching})
+type isFetchingSwitchToActionType = {type: typeof IS_FETCHING_SWICH_TO, isFetching: boolean}
+export const isFetchingSwitchTo = (isFetching:boolean): isFetchingSwitchToActionType => ({type: IS_FETCHING_SWICH_TO, isFetching})
 
-type captchaUrlSuccessType = {type: typeof CAPTCHA_URL_SUCCESS, captchaUrl: string}
-const captchaUrlSuccess = (captchaUrl: string): captchaUrlSuccessType => ({type: CAPTCHA_URL_SUCCESS, captchaUrl})
+type captchaUrlSuccessActionType = {type: typeof CAPTCHA_URL_SUCCESS, captchaUrl: string}
+const captchaUrlSuccess = (captchaUrl: string): captchaUrlSuccessActionType => ({type: CAPTCHA_URL_SUCCESS, captchaUrl})
 
-export const getAuth = () =>
-  async (dispatch: Function) => {
+type setAuthErrorsFromApiActionType = {type: typeof SET_AUTH_ERRORS_FROM_API, errorsFromApi: string[] | null}
+const setAuthErrorsFromApi = (errorsFromApi: string[] | null): setAuthErrorsFromApiActionType => ({type: SET_AUTH_ERRORS_FROM_API, errorsFromApi})
+
+type AuthThunkActionType<R> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
+
+export const getAuth = (): AuthThunkActionType<void> =>
+  async (dispatch) => {
     dispatch(isFetchingSwitchTo(true))
     let response = await authAPI.getAuth()
 
@@ -74,23 +91,24 @@ export const getAuth = () =>
 
   }
 
-export const loginIn = (loginData : AuthDataType) =>
-  async (dispatch: Function): Promise<string[] | null> => {
+export const loginIn = (loginData: LoginDataType): AuthThunkActionType<void> =>
+  async (dispatch) => {
     const response = await authAPI.loginIn(loginData)
 
     if (response.resultCode === 0) {
       dispatch(getAuth())
-      return null
+      dispatch(setAuthErrorsFromApi(null))
     } else if (response.resultCode === 10) {
       //десятый код запрашивает капчу и мы забираем её у сервера
       const response = await securityAPI.getCaptchaUrl()
       dispatch(captchaUrlSuccess(response.url))
+    } else {
+      dispatch(setAuthErrorsFromApi(response.messages))
     }
-      return response.messages
   }
 
-export const loginOut = () =>
-  async (dispatch: Function) => {
+export const loginOut = (): AuthThunkActionType<void> =>
+  async (dispatch) => {
     let response = await authAPI.loginOut()
 
     if (response.resultCode === 0) {

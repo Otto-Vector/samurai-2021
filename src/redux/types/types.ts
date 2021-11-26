@@ -4,6 +4,13 @@ export type AuthDataType =  {
     login: string | null
 }
 
+export type LoginDataType = {
+  email: string
+  login: string
+  rememberMe: boolean
+  captcha: string
+}
+
 export type DialogsType = {
   id: number,
   name: string

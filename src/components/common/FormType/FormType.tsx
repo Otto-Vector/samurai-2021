@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./FormType.module.css"
-import {FieldProps, FormProps} from "react-final-form";
+// import {FieldProps, FormProps} from "react-final-form";
 
-type TFormType = {
-    resetFieldBy: FormProps['form']
-    placeholder: string
-}
+// type TFormType = {
+//     resetFieldBy: FormProps['form']
+//     placeholder: string
+// }
 
 const FormType = (FormType: string) => ({input, meta, resetFieldBy, placeholder}: any) => {
 

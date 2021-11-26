@@ -2,18 +2,19 @@ import React from 'react';
 import Login from "./Login";
 import {connect} from "react-redux";
 import {loginIn} from "../../redux/auth-reducer";
-import {getAuthURL, getCaptchaUrl, getIsAuthUser} from "../../reselect/auth-reselectors";
+import {getAuthErrorsFromApi, getAuthURL, getCaptchaUrl, getIsAuthUser} from "../../reselect/auth-reselectors";
 import {AppStateType} from "../../redux/redux-store";
-import {AuthDataType} from "../../redux/types/types";
+import {LoginDataType} from "../../redux/types/types";
 
 type MapStatePropsType = {
     isAuth: boolean
     authURL: string
     captchaUrl: string | null
+    errorsFromApi: string[] | null
 }
 
 type DispatchPropsType = {
-  loginIn: (loginData : AuthDataType) => void
+  loginIn: (loginData : LoginDataType) => void
 }
 
 export type LoginContainerType = MapStatePropsType & DispatchPropsType
@@ -29,6 +30,7 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     isAuth: getIsAuthUser(state),
     authURL: getAuthURL(state),
     captchaUrl: getCaptchaUrl(state),
+    errorsFromApi: getAuthErrorsFromApi(state)
   }
 }
 

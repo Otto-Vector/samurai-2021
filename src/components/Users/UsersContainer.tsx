@@ -1,7 +1,7 @@
 import React from "react";
 import Users from "./Users";
 import {
-  changePage, follow, friendsOnlyToggle, getUsers, setUsers,
+  changePage, follow, friendsOnlyToggle, getUsers,
 } from "../../redux/users-reducer";
 import {connect} from "react-redux";
 import {compose} from "redux";

@@ -12,13 +12,13 @@ const ProfileInfo = React.memo(props => {
 
   let onSubmit = async formData => {
 
-    let errorMessage = await props.setProfileData(formData)
-
+    await props.setProfileData(formData)
+    console.log(props.errorsFromApi)
     //если ошибок не прилетело возвращает нормальное отображение
-    if (!errorMessage) setEditMode(false)
+    // if (!props.errorsFromApi) setEditMode(false)
 
     //возвращает ошибку в форму из стейта
-    return errorMessage || null
+    return props.errorsFromApi
   }
 
   const sendFile = e => {

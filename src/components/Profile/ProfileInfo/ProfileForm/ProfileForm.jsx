@@ -5,7 +5,6 @@ import {Input, TextArea} from "../../../common/FormType/FormType";
 import {Field, Form} from "react-final-form";
 import {composeValidators, required} from "../../../../utils/validators";
 import {FORM_ERROR} from "final-form";
-import {errorParser} from "../../../../utils/utils";
 import {socialsImageSource} from "../../../common/Socials/SocialsImageSource";
 
 const ProfileForm = props => {
@@ -14,7 +13,7 @@ const ProfileForm = props => {
 
   let onSubmit = async formData => {
     let error = await props.onSubmit(formData)
-    return error ? errorParser(error) : {[FORM_ERROR]: null}
+    return error ? error : {[FORM_ERROR]: null}
   }
 
   return (

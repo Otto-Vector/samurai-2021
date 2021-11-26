@@ -6,7 +6,12 @@ import {withRouter} from "react-router-dom";
 import Profile from "./Profile";
 import {getProfile, setIsAuthProfile, setPhoto, setProfileData, getStatus} from "../../redux/profile-reducer";
 import {getAuthorizedUserDataId, getIsAuthUser} from "../../reselect/auth-reselectors";
-import {getProfileData, getProfileIsAuth, getProfileIsFetching} from "../../reselect/profile-selectors";
+import {
+  getErrorFromApi,
+  getProfileData,
+  getProfileIsAuth,
+  getProfileIsFetching
+} from "../../reselect/profile-selectors";
 
 
 class ProfileContainer extends React.Component {
@@ -52,6 +57,7 @@ let mapStateToProps = state => {
     profile: getProfileData(state),
     isFetching: getProfileIsFetching(state),
     isAuthProfile: getProfileIsAuth(state),
+    errorsFromApi: getErrorFromApi(state)
   }
 }
 

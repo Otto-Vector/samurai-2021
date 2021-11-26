@@ -2,13 +2,14 @@ import React from 'react';
 import styles from './login.module.css'
 
 import {Input} from "../common/FormType/FormType";
-import {Field, Form, FormProps} from "react-final-form";
+import {Field, Form} from "react-final-form";
 import {composeValidators, required} from "../../utils/validators";
 import {FORM_ERROR} from "final-form";
+import { LoginDataType } from '../../redux/types/types';
 
-const LoginForm = (props: FormProps ) => {
+const LoginForm = (props: any ) => {
 
-  let onSubmit = async (formData) => {
+  let onSubmit = async (formData:LoginDataType) => {
     let error = await props.onSubmit(formData)
     return {
       [FORM_ERROR]: error || null
@@ -69,7 +70,8 @@ const LoginForm = (props: FormProps ) => {
           <button type={'button'}
                       className={styles.button}
                       disabled={pristine || submitting}
-                      onClick={form.reset}>X
+                      // onClick={form.reset}
+          >X
               </button>
           {submitError && <span className={styles.onError}>{submitError}</span>}
         </form>
