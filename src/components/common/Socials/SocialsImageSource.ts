@@ -12,24 +12,32 @@ import twitterEmpty from '../../../assets/images/socials/empty/twitter-empty.png
 import vkEmpty from '../../../assets/images/socials/empty/vk-empty.png'
 import youtubeEmpty from '../../../assets/images/socials/empty/youtube-empty.png'
 
+// export type EmptyFilledTypeStrings = 'empty' | 'filled'
 export type EmptyFilledType = {
     empty: string
     filled: string
   }
 
-export type SocialsImageSourceType = {
-  facebook: EmptyFilledType
-  github: EmptyFilledType
-  instagram: EmptyFilledType
-  twitter: EmptyFilledType
-  vk: EmptyFilledType
-  youtube: EmptyFilledType
+enum SocialsHasImage {
+  facebook = "facebook",
+  github = "github",
+  instagram = "instagram",
+  twitter = "twitter",
+  vk = "vk",
+  youtube = "youtube",
 }
+
+type SocialsImageSourceType = Partial<{ [ key in keyof typeof SocialsHasImage]: EmptyFilledType }>
+// type SocialsImageSourceType = Record<EmptyFilledType, string>
+// interface StringDynamicKey {
+//   [key: string]: EmptyFilledType;
+// }
+
 
 export const socialsImageSource: SocialsImageSourceType = {
   facebook: {
     empty: facebookEmpty,
-    filled: facebookFilled
+    filled: facebookFilled,
   },
   github: {
     empty: githubEmpty,
@@ -52,5 +60,3 @@ export const socialsImageSource: SocialsImageSourceType = {
     filled: youtubeFilled
   }
 }
-
-// export type SocialsImageSourceType = typeof socialsImageSource

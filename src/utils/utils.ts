@@ -28,7 +28,6 @@ export const randomDifferentIntegersArrayCreator = (realArraySize = 1) =>
   return arrayOfNumbers.slice(-needToSliced)
 }
 
-
 export const errorParser = (errorStringArray: string[]): Object => {
   // c сервера приходят ошибки в таком формате
   // errorStringArray = [
@@ -55,7 +54,7 @@ export const errorParser = (errorStringArray: string[]): Object => {
         return {
           ...result,
           [firstLevel]: {
-        // @ts-ignore
+          // @ts-ignore
             ...result[firstLevel],
             [secondLevel]: errorMessage
           }

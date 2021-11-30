@@ -8,21 +8,20 @@ type OwnProps = {
 }
 
 
-const Socials: React.FC<OwnProps> = ({contacts}) => {
+const Socials = ({contacts}: OwnProps) => {
+
+  const filteredBySource = Object.keys(contacts).filter((key) => socialsImageSource.hasOwnProperty(key))
 
   return (
-    <div className={styles.socials}>
-      {Object.keys(contacts).map((key) => {
-          if (socialsImageSource.hasOwnProperty(key)) {
-            let image = Object(socialsImageSource).getProperty(key).filled
-            let urlImage = Object(contacts).hasOwnProperty(key) ? image.filled : image.empty
-
-            return <a key={key} target="_blank" rel="noopener noreferrer" href={Object(contacts).getProperty(key)}>
-              <img alt={key} title={key} src={urlImage}/>
-            </a>
-          }
-          return null
-        })
+    <div className={ styles.socials }>
+      { filteredBySource.map((key: string) => {
+        // @ts-ignore
+        let image = socialsImageSource[key][contacts[key] ? 'filled' : 'empty']
+        // @ts-ignore
+        return <a key={ key } target="_blank" rel="noopener noreferrer" href={ contacts[key] }>
+          <img alt={ key } title={ key } src={ image }/>
+        </a>
+      })
       }
     </div>
   )
