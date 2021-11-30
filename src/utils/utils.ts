@@ -1,6 +1,11 @@
 // возвращает случайное целое число в заданном диапазоне
 // const randMinMax = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
+// возвращает пронумерованный массив (a: number ) элементов, до (plus)
+export const justNumberedArray = (a: number , plus = 0): number[] => {
+  let b: number[] = []; while (a--) b[a] = a + plus;
+  return b }
+
 // возвращает массив из необходимого числа элементов needArraySize
 // рандомных /НЕ ОДИНАКОВЫХ/ целых чисел (from 0 to realArraySize)
 // к которому можно потом "замапится" для перемешивания значений искомого массива, например:
@@ -8,8 +13,7 @@
 export const randomDifferentIntegersArrayCreator = (realArraySize = 1) =>
   (needArraySize = realArraySize): number[] => {
 
-  let justArray = (a: number, b: number[] = []) => {while (a--) b[a] = a; return b }
-  let arrayOfNumbers = justArray(realArraySize),
+  let arrayOfNumbers = justNumberedArray(realArraySize),
   nextNumber, buffered, size = realArraySize
 
   while (size) {

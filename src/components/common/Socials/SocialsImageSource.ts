@@ -12,7 +12,21 @@ import twitterEmpty from '../../../assets/images/socials/empty/twitter-empty.png
 import vkEmpty from '../../../assets/images/socials/empty/vk-empty.png'
 import youtubeEmpty from '../../../assets/images/socials/empty/youtube-empty.png'
 
-export const socialsImageSource = {
+export type EmptyFilledType = {
+    empty: string
+    filled: string
+  }
+
+export type SocialsImageSourceType = {
+  facebook: EmptyFilledType
+  github: EmptyFilledType
+  instagram: EmptyFilledType
+  twitter: EmptyFilledType
+  vk: EmptyFilledType
+  youtube: EmptyFilledType
+}
+
+export const socialsImageSource: SocialsImageSourceType = {
   facebook: {
     empty: facebookEmpty,
     filled: facebookFilled
@@ -38,3 +52,5 @@ export const socialsImageSource = {
     filled: youtubeFilled
   }
 }
+
+// export type SocialsImageSourceType = typeof socialsImageSource

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Pagination.module.css"
+import {justNumberedArray} from "../../../utils/utils";
 
 export type PaginationPropsType = {
     totalUsersCount: number
@@ -10,18 +11,12 @@ export type PaginationPropsType = {
 
 
 const Pagination = (props: PaginationPropsType) => {
-    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
-    let justArray = (a: number): number[] => {
-        let b: number[] = []
-        while (a--) b[a] = a + 1;
-        return b
-    }
-    let pages = justArray(pagesCount)
+    const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
 
     return (
         <div className={ styles.pagination }>
             {
-                pages.map(p => {
+                justNumberedArray(pagesCount,1).map((p) => {
                     return <div
                         key={ p * 0.3 }
                         className={ `${ styles.page } ${ props.currentPage === p && styles.selectedPage }` }
