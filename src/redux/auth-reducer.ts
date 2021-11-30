@@ -76,9 +76,9 @@ const captchaUrlSuccess = (captchaUrl: string): captchaUrlSuccessActionType => (
 type setAuthErrorsFromApiActionType = {type: typeof SET_AUTH_ERRORS_FROM_API, errorsFromApi: string[] | null}
 const setAuthErrorsFromApi = (errorsFromApi: string[] | null): setAuthErrorsFromApiActionType => ({type: SET_AUTH_ERRORS_FROM_API, errorsFromApi})
 
-type AuthThunkActionType<R> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
+export type AuthThunkActionType<R=void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
 
-export const getAuth = (): AuthThunkActionType<void> =>
+export const getAuth = (): AuthThunkActionType =>
   async (dispatch) => {
     dispatch(isFetchingSwitchTo(true))
     let response = await authAPI.getAuth()
@@ -91,13 +91,14 @@ export const getAuth = (): AuthThunkActionType<void> =>
 
   }
 
-export const loginIn = (loginData: LoginDataType): AuthThunkActionType<void> =>
+export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string|null> =>
   async (dispatch) => {
+    // dispatch(isFetchingSwitchTo(true))
     const response = await authAPI.loginIn(loginData)
-
     if (response.resultCode === 0) {
       dispatch(getAuth())
       dispatch(setAuthErrorsFromApi(null))
+      return null
     } else if (response.resultCode === 10) {
       //десятый код запрашивает капчу и мы забираем её у сервера
       const response = await securityAPI.getCaptchaUrl()
@@ -105,9 +106,11 @@ export const loginIn = (loginData: LoginDataType): AuthThunkActionType<void> =>
     } else {
       dispatch(setAuthErrorsFromApi(response.messages))
     }
+    // dispatch(isFetchingSwitchTo(false))
+    return response.messages
   }
 
-export const loginOut = (): AuthThunkActionType<void> =>
+export const loginOut = (): AuthThunkActionType =>
   async (dispatch) => {
     let response = await authAPI.loginOut()
 

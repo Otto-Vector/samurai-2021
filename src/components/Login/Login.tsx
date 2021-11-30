@@ -9,10 +9,10 @@ import { LoginDataType} from "../../redux/types/types";
 const Login = (props: LoginContainerType) => {
 
   let onSubmit = async (formData: LoginDataType) => {
-    await props.loginIn(formData)
-
-    //возвращает ошибку в форму из стейта
-    return props.errorsFromApi
+    // let error = await props.loginIn(formData)
+    // console.log(props.errorsFromApi)
+    // возвращает ошибку в форму из стейта
+    return await props.loginIn(formData)
   }
 
   if (props.isAuth) return <Redirect to={'profile'} />
@@ -22,7 +22,11 @@ const Login = (props: LoginContainerType) => {
        title={'API сервер для авторизации и доков'}>
       <h1 className={styles.header}>LOGIN here</h1>
     </a>
-    <LoginForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/>
+    < LoginForm
+                onSubmit={ props.loginIn }
+                captchaUrl={ props.captchaUrl }
+    />
+
   </div>
 }
 

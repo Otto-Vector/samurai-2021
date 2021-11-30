@@ -6,11 +6,11 @@ import ProfileForm from "./ProfileForm/ProfileForm";
 import ProfileData from "./ProfileData";
 
 
-const ProfileInfo = React.memo(props => {
+const ProfileInfo = React.memo((props) => {
 
   let [editMode, setEditMode] = useState(false)
 
-  let onSubmit = async formData => {
+  let onSubmit = async (formData) => {
 
     await props.setProfileData(formData)
     console.log(props.errorsFromApi)

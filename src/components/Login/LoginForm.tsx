@@ -6,19 +6,24 @@ import {Field, Form} from "react-final-form";
 import {composeValidators, required} from "../../utils/validators";
 import {FORM_ERROR} from "final-form";
 import { LoginDataType } from '../../redux/types/types';
+import {AuthThunkActionType} from "../../redux/auth-reducer";
 
-const LoginForm = (props: any ) => {
+type OwnProps = {
+  captchaUrl: string | null
+  onSubmit: (loginData: LoginDataType) => AuthThunkActionType<string|null> | Promise<string|null>
+}
 
-  let onSubmit = async (formData:LoginDataType) => {
-    let error = await props.onSubmit(formData)
-    return {
-      [FORM_ERROR]: error || null
-    }
+const LoginForm = ({onSubmit, captchaUrl}: OwnProps) => {
+
+  const onSubmit2 = async (formData: LoginDataType) => {
+    let error = await onSubmit(formData)
+
+    return { [FORM_ERROR]: error || null }
   }
 
   return (
   <Form
-    onSubmit={onSubmit}
+    onSubmit={onSubmit2}
     initialValues={{
       email: '',
       password: '',
@@ -54,8 +59,8 @@ const LoginForm = (props: any ) => {
             </label>
           </div>
 
-          {props.captchaUrl && <div className={styles.forCaptcha}>
-            <img alt={'captcha'} title={'captcha'} src={props.captchaUrl}/>
+          {captchaUrl && <div className={styles.forCaptcha}>
+            <img alt={'captcha'} title={'captcha'} src={captchaUrl ?? undefined}/>
             <div className={styles.input}>
              <Field name={'captcha'}
                    component={Input}
@@ -66,7 +71,7 @@ const LoginForm = (props: any ) => {
             </div>
           </div>
           }
-          <button className={styles.button} type={'submit'}>Done</button>
+          {<button className={styles.button} type={'submit'} disabled={submitting}>Done</button>}
           <button type={'button'}
                       className={styles.button}
                       disabled={pristine || submitting}
