@@ -26,13 +26,26 @@ enum SocialsHasImage {
   vk = "vk",
   youtube = "youtube",
 }
+// interface IObjectKeys {
+//   [key: string]: any;
+// }
+//
+// interface SocialsImageSourceType<T=EmptyFilledType> extends IObjectKeys{
+//   facebook: T
+//   github: T
+//   instagram: T
+//   twitter: T
+//   vk: T
+//   youtube: T
+// }
 
-type SocialsImageSourceType = Partial<{ [ key in keyof typeof SocialsHasImage]: EmptyFilledType }>
+
+
+export type SocialsImageSourceType = Partial<{ [ key in keyof typeof SocialsHasImage]: EmptyFilledType }>
 // type SocialsImageSourceType = Record<EmptyFilledType, string>
 // interface StringDynamicKey {
 //   [key: string]: EmptyFilledType;
 // }
-
 
 export const socialsImageSource: SocialsImageSourceType = {
   facebook: {
@@ -60,3 +73,5 @@ export const socialsImageSource: SocialsImageSourceType = {
     filled: youtubeFilled
   }
 }
+
+

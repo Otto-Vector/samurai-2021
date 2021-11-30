@@ -76,3 +76,19 @@ export const errorParser = (errorStringArray: string[]): Object => {
   // }
 }
 
+export const getKeyValue = <U extends keyof T, T extends object>(key: U) => (obj: T) =>
+  obj[key];
+//ПРИМЕНЕНИЕ
+// interface User {
+//   name: string;
+//   age: number;
+// }
+//
+// const user: User = {
+//   name: "John Smith",
+//   age: 20
+// };
+//
+// const getUserName = getKeyValue<keyof User, User>("name")(user);
+//
+// // => 'John Smith'
