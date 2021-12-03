@@ -1,10 +1,14 @@
 // возвращает случайное целое число в заданном диапазоне
 // const randMinMax = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
-// возвращает пронумерованный массив (a: number ) элементов, до (plus)
-export const justNumberedArray = (a: number , plus = 0): number[] => {
-  let b: number[] = []; while (a--) b[a] = a + plus;
-  return b }
+// возвращает пронумерованный массив
+// arraySize  : количество элементов в массиве (abs(integers) from 1)
+// (from = 0) : с какого числа начинается пронумерованный массив (abs(integers) from 0)
+export const justNumberedArray = (arraySize: number, from = 0): number[] => {
+  let array: number[] = []
+  while (arraySize--) array[arraySize] = arraySize + from
+  return array
+}
 
 // возвращает массив из необходимого числа элементов needArraySize
 // рандомных /НЕ ОДИНАКОВЫХ/ целых чисел (from 0 to realArraySize)
@@ -12,21 +16,23 @@ export const justNumberedArray = (a: number , plus = 0): number[] => {
 // randomDifferentIntegersArrayCreator(array.length)(from 1 to array.length).map(el=>array[el])
 export const randomDifferentIntegersArrayCreator = (realArraySize = 1) =>
   (needArraySize = realArraySize): number[] => {
-
-  let arrayOfNumbers = justNumberedArray(realArraySize),
-  nextNumber, buffered, size = realArraySize
-
-  while (size) {
-    nextNumber = Math.floor(Math.random() *(--size + 1))
-    buffered = arrayOfNumbers[size]
-    arrayOfNumbers[size] = arrayOfNumbers[nextNumber]
-    arrayOfNumbers[nextNumber] = buffered
+    // создаём пронумерованный массив и переменные
+    let arrayOfNumbers = justNumberedArray(realArraySize),
+      nextNumber, buffered, size = realArraySize
+    // замешиваем перестановками с рандомом
+    while (size) {
+      nextNumber = Math.floor(Math.random() * (--size + 1))
+      buffered = arrayOfNumbers[size]
+      arrayOfNumbers[size] = arrayOfNumbers[nextNumber]
+      arrayOfNumbers[nextNumber] = buffered
+    }
+    // определяем необходимое для отрезания количество элементов
+    let needToSliced = Math.min(realArraySize, needArraySize)
+    // выдаём укороченный массив
+    return arrayOfNumbers.slice(-needToSliced)
   }
 
-  let needToSliced = Math.min(realArraySize, needArraySize)
 
-  return arrayOfNumbers.slice(-needToSliced)
-}
 
 export const errorParser = (errorStringArray: string[]): Object => {
   // c сервера приходят ошибки в таком формате
@@ -54,8 +60,7 @@ export const errorParser = (errorStringArray: string[]): Object => {
         return {
           ...result,
           [firstLevel]: {
-          // @ts-ignore
-            ...result[firstLevel],
+            ...result[firstLevel as keyof Object],
             [secondLevel]: errorMessage
           }
         }
@@ -65,7 +70,7 @@ export const errorParser = (errorStringArray: string[]): Object => {
     }, {} //объявление пустого объекта, как инициализация первого значения result
   )
 
-  // возвращаются в таком формате
+  // возвращаем в таком формате
   // return {
   //   aboutMe: 'The AboutMe field is required.',
   //   contacts: {
@@ -76,19 +81,3 @@ export const errorParser = (errorStringArray: string[]): Object => {
   // }
 }
 
-export const getKeyValue = <U extends keyof T, T extends object>(key: U) => (obj: T) =>
-  obj[key];
-//ПРИМЕНЕНИЕ
-// interface User {
-//   name: string;
-//   age: number;
-// }
-//
-// const user: User = {
-//   name: "John Smith",
-//   age: 20
-// };
-//
-// const getUserName = getKeyValue<keyof User, User>("name")(user);
-//
-// // => 'John Smith'

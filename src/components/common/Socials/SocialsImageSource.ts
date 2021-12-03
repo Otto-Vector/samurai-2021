@@ -12,24 +12,24 @@ import twitterEmpty from '../../../assets/images/socials/empty/twitter-empty.png
 import vkEmpty from '../../../assets/images/socials/empty/vk-empty.png'
 import youtubeEmpty from '../../../assets/images/socials/empty/youtube-empty.png'
 
-// export type EmptyFilledTypeStrings = 'empty' | 'filled'
+
 export type EmptyFilledType = {
     empty: string
     filled: string
   }
 
 enum SocialsHasImage {
-  facebook = "facebook",
-  github = "github",
-  instagram = "instagram",
-  twitter = "twitter",
-  vk = "vk",
-  youtube = "youtube",
+  facebook,
+  github,
+  instagram,
+  twitter,
+  vk,
+  youtube,
 }
 // interface IObjectKeys {
 //   [key: string]: any;
 // }
-//
+
 // interface SocialsImageSourceType<T=EmptyFilledType> extends IObjectKeys{
 //   facebook: T
 //   github: T
@@ -38,8 +38,6 @@ enum SocialsHasImage {
 //   vk: T
 //   youtube: T
 // }
-
-
 
 export type SocialsImageSourceType = Partial<{ [ key in keyof typeof SocialsHasImage]: EmptyFilledType }>
 // type SocialsImageSourceType = Record<EmptyFilledType, string>

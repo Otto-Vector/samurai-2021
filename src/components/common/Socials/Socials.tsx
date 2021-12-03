@@ -12,7 +12,6 @@ const Socials = ({contacts}: OwnProps) => {
   const filteredBySource = Object.keys(contacts)
     .filter((key) => socialsImageSource.hasOwnProperty(key))
 
-
   return (
     <div className={ styles.socials }>
       { filteredBySource.map((key: string) => {
