@@ -1,14 +1,18 @@
-import {errorParser} from "../utils/utils";
-import {createSelector} from "reselect";
+// import {errorParser} from "../utils/utils";
+// import {createSelector} from "reselect";
+import {AppStateType} from "../redux/redux-store";
+import {ProfileReducerStateType} from "../redux/profile-reducer";
 
-export const getPosts = state => state.profilePage.posts
-export const getNewPostTextPlaceholder = state => state.profilePage.newPostTextPlaceholder
+type AppStateReturned<T> = (state: AppStateType) => T
 
-export const getProfileData = state => state.profilePage.profile
-export const getProfileIsFetching = state => state.profilePage.isFetching
-export const getProfileIsAuth = state => state.profilePage.isAuthProfile
-export const getError = state => state.profilePage.errorsFromApi
+export const getPosts: AppStateReturned<ProfileReducerStateType['posts']> = state => state.profilePage.posts
+export const getNewPostTextPlaceholder: AppStateReturned<ProfileReducerStateType['newPostTextPlaceholder']> = state => state.profilePage.newPostTextPlaceholder
 
-export const getErrorFromApi = createSelector( getError,
-  (error) => !error ? null : errorParser(error)
-)
+export const getProfileData: AppStateReturned<ProfileReducerStateType['profile']> = state => state.profilePage.profile
+export const getProfileIsFetching: AppStateReturned<ProfileReducerStateType['isFetching']> = state => state.profilePage.isFetching
+export const getProfileIsAuth: AppStateReturned<ProfileReducerStateType['isAuthProfile']> = state => state.profilePage.isAuthProfile
+// export const getError: AppStateReturned<ProfileReducerStateType['errorsFromApi']> = state => state.profilePage.errorsFromApi
+//
+// export const getErrorFromApi = createSelector( getError,
+//   (error:ProfileReducerStateType['errorsFromApi']) => !error ? null : errorParser(error)
+// )

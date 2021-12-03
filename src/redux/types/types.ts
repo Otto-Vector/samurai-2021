@@ -1,7 +1,7 @@
-export type AuthDataType =  {
-    id: number | null,
-    email: string | null,
-    login: string | null
+export type AuthDataType = {
+  id: number | null,
+  email: string | null,
+  login: string | null
 }
 
 export type LoginDataType = {
@@ -16,7 +16,7 @@ export type DialogsType = {
   name: string
 }
 export type MessagesType = {
-  id: number| null,
+  id: number | null,
   message: string
 }
 
@@ -34,28 +34,29 @@ export type UsersFromSearchType = {
 }
 
 export type PostType = {
-    id: number | null
-    imageURL: string | null
-    message: string | null
-    likesCount: number | null
+  id: number | null
+  imageURL: string | null
+  message: string | null
+  likesCount: number | null
 }
 
 export type ContactsType = {
-    github: string
-    vk: string
-    facebook: string
-    instagram: string
-    twitter: string
-    website: string
-    youtube: string
-    mainLink: string
+  github: string
+  vk: string
+  facebook: string
+  instagram: string
+  twitter: string
+  website: string
+  youtube: string
+  mainLink: string
 }
 
 export type ProfileType = {
-    userId: number | undefined
-    lookingForAJob: boolean
-    lookingForAJobDescription: string
-    fullName: string
-    contacts: ContactsType
-    photos: PhotosType
+  aboutMe: string | null,
+  userId: number | undefined
+  lookingForAJob: boolean
+  lookingForAJobDescription: string | null
+  fullName: string
+  contacts: ContactsType
+  photos: PhotosType
 }

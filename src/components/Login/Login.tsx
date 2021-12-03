@@ -6,13 +6,6 @@ import { LoginContainerType } from './LoginContainer';
 
 
 const Login: React.FC<LoginContainerType> = ({isAuth, authURL, loginIn, captchaUrl}) => {
-  //
-  // let onSubmit = async (formData: LoginDataType) => {
-  //   // let error = await props.loginIn(formData)
-  //   // console.log(props.errorsFromApi)
-  //   // возвращает ошибку в форму из стейта
-  //   return await props.loginIn(formData)
-  // }
 
   if (isAuth) return <Redirect to={'profile'} />
 

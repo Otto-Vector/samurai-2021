@@ -22,10 +22,7 @@ type MapStatePropsType = {
 type DispatchPropsType = {
   loginIn: (loginData: LoginDataType) => AuthThunkActionType<string|null> | Promise<string|null>
 }
-//вот такой вот костылёк для TS :)
-// type DispatchPropsTypeForComponent = {
-//   loginIn: (loginData: LoginDataType) => Promise<string|null>
-// }
+
 
 export type LoginContainerType = MapStatePropsType & DispatchPropsType
 

@@ -4,10 +4,12 @@ import {socialsImageSource, SocialsImageSourceType} from "./SocialsImageSource";
 import {ContactsType} from "../../../redux/types/types";
 
 type OwnProps = {
-  contacts: ContactsType
+  contacts: ContactsType | undefined
 }
 
 const Socials = ({contacts}: OwnProps) => {
+
+  if (contacts === undefined) return null
 
   const filteredBySource = Object.keys(contacts)
     .filter((key) => socialsImageSource.hasOwnProperty(key))

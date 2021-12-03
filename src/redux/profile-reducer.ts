@@ -48,15 +48,14 @@ let initialState = {
 }
 
 export type ProfileReducerStateType = typeof initialState
-type ActionsTypes =
-  AddPostActionType |
-  SetProfileStateActionType |
-  SetIsAuthProfileActionType |
-  ToggleIsFetchingProfileActionType |
-  SetPhotoSuccessActionType |
-  SetStatusProfileActionType |
-  ToggleStatusProfileFetchingActionType |
-  SetErrorFromApiActionType
+type ActionsTypes = AddPostActionType
+  | SetProfileStateActionType
+  | SetIsAuthProfileActionType
+  | ToggleIsFetchingProfileActionType
+  | SetPhotoSuccessActionType
+  | SetStatusProfileActionType
+  | ToggleStatusProfileFetchingActionType
+  // | SetErrorFromApiActionType
 
 const profileReducer = (state = initialState, action: ActionsTypes): ProfileReducerStateType => {
 
@@ -113,12 +112,12 @@ const profileReducer = (state = initialState, action: ActionsTypes): ProfileRedu
         profileStatusFetching: action.profileStatusFetching
       }
     }
-    case SET_ERROR_FROM_API : {
-      return {
-        ...state,
-        errorsFromApi: action.errorsFromApi
-      }
-    }
+    // case SET_ERROR_FROM_API : {
+    //   return {
+    //     ...state,
+    //     errorsFromApi: action.errorsFromApi
+    //   }
+    // }
 
     default : {
       return state
@@ -159,27 +158,26 @@ type ToggleStatusProfileFetchingActionType = { type: typeof TOGGLE_STATUS_FETCHI
 export const toggleStatusProfileFetching = (profileStatusFetching: boolean): ToggleStatusProfileFetchingActionType => (
   {type: TOGGLE_STATUS_FETCHING, profileStatusFetching})
 
-type SetErrorFromApiActionType = { type: typeof SET_ERROR_FROM_API, errorsFromApi: string[] | null }
-const setErrorFromApi = (errorsFromApi: string[] | null): SetErrorFromApiActionType =>  ({ type: SET_ERROR_FROM_API, errorsFromApi })
+// type SetErrorFromApiActionType = { type: typeof SET_ERROR_FROM_API, errorsFromApi: string[] | null }
+// const setErrorFromApi = (errorsFromApi: string[] | null): SetErrorFromApiActionType =>  ({ type: SET_ERROR_FROM_API, errorsFromApi })
 
 
-type ProfileThunkActionType<R> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
+export type ProfileThunkActionType<R> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
 
-export const getProfile = (userId = defaultUserId): ProfileThunkActionType<void> =>
+export const getProfile = (userId = defaultUserId as number| null): ProfileThunkActionType<void> =>
   async (dispatch) => {
     try {
       dispatch(toggleIsFetchingProfile(true))
       let response = await profileAPI.getProfile(userId)
       dispatch(setProfileState(response))
-    } catch (error) {
-      // console.error(error)
+    } catch (error) { //если ошибка, то хардкодим на свой акк
       let response = await profileAPI.getProfile(defaultUserId)
       dispatch(setProfileState(response))
     }
     dispatch(toggleIsFetchingProfile(false))
   }
 
-export const setPhoto = (userPhoto: string): ProfileThunkActionType<void> =>
+export const setPhoto = (userPhoto: File): ProfileThunkActionType<void> =>
   async (dispatch) => {
     let response = await profileAPI.setPhoto(userPhoto)
     if (response.resultCode === 0) {
@@ -187,20 +185,22 @@ export const setPhoto = (userPhoto: string): ProfileThunkActionType<void> =>
     }
   }
 
-export const setProfileData = (data: ProfileType): ProfileThunkActionType<void> =>
+export const setProfileData = (data: ProfileType): ProfileThunkActionType<string[]|null> =>
   async (dispatch) => {
-    dispatch(setErrorFromApi(null))
+    // dispatch(setErrorFromApi(null))
     let response = await profileAPI.setData(data)
     if (response.resultCode === 0) {
-      dispatch(setErrorFromApi(null))
+      // await dispatch(setErrorFromApi(null))
       dispatch(getProfile(data.userId))
+      return null
     } else {
-      dispatch(setErrorFromApi(response.messages))
+      // await dispatch(setErrorFromApi(response.messages))
+      return response.mappings
     }
   }
 
 
-export const getStatus = (userId = defaultUserId): ProfileThunkActionType<void> =>
+export const getStatus = (userId = defaultUserId as number | null): ProfileThunkActionType<void> =>
   async (dispatch) => {
     dispatch(toggleStatusProfileFetching(true))
     try {
