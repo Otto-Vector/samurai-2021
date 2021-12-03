@@ -1,7 +1,7 @@
 import {getAuth} from "./auth-reducer";
 import {getResponseFriends} from "./friends-reducer";
 
-const SET_INITIALAZED = 'SET_INITIALAZED'
+const SET_INITIALAZED = 'app-reducer/SET_INITIALAZED'
 
 export type AppReducerStateType = {
   initialazed: boolean,

@@ -22,8 +22,8 @@ const ProfileInfo = React.memo(
   let [editMode, setEditMode] = useState(false)
 
 
-  const sendFile = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) setPhoto(e.target.files[0])
+  const sendFile = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.length) setPhoto(event.target.files[0])
   }
 
   if (isFetching) {

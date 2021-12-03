@@ -80,4 +80,3 @@ export const errorParser = (errorStringArray: string[]): Object => {
   //   }
   // }
 }
-

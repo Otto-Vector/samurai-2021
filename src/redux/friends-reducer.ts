@@ -1,8 +1,8 @@
 import {UsersAPI} from "../api/samurai-api";
 import {UsersFromSearchType} from "./types/types";
 
-const ADD_FRIENDS = "ADD_FRIENDS"
-const FRIENDS_IS_FETCHING = "FRIENDS-IS-FETCHING"
+const ADD_FRIENDS = "friends-reducer/ADD_FRIENDS"
+const FRIENDS_IS_FETCHING = "friends-reducer/FRIENDS-IS-FETCHING"
 
 
 let initialState = {

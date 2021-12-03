@@ -2,13 +2,13 @@ import {UsersAPI} from "../api/samurai-api";
 import {UsersFromSearchType} from "./types/types";
 import {Dispatch} from "redux";
 
-const FOLLOW_TOGGLE = 'FOLLOW-TOGGLE'
-const SET_USERS = 'SET-USERS'
-const CHANGE_PAGE = 'CHANGE-PAGE'
-const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
-const TOGGLE_IS_FETCHING = 'TOGGLE-IS-FETCHING'
-const TOGGLE_IS_FETCHING_BY_ID = 'TOGGLE-IS-FETCHING-BY-ID'
-const TOGGLE_FRIENDS_ONLY = 'TOGGLE-FRIENDS-ONLY'
+const FOLLOW_TOGGLE = 'users-reducer/FOLLOW-TOGGLE'
+const SET_USERS = 'users-reducer/SET-USERS'
+const CHANGE_PAGE = 'users-reducer/CHANGE-PAGE'
+const SET_TOTAL_USERS_COUNT = 'users-reducer/SET-TOTAL-USERS-COUNT'
+const TOGGLE_IS_FETCHING = 'users-reducer/TOGGLE-IS-FETCHING'
+const TOGGLE_IS_FETCHING_BY_ID = 'users-reducer/TOGGLE-IS-FETCHING-BY-ID'
+const TOGGLE_FRIENDS_ONLY = 'users-reducer/TOGGLE-FRIENDS-ONLY'
 
 let initialState = {
     users: [] as UsersFromSearchType[],

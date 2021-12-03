@@ -1,7 +1,7 @@
 // import {randomFaceImage} from "../api/randomFace";
 import {DialogsType, MessagesType} from "./types/types";
 
-const ADD_MESSAGE = 'ADD-MESSAGE'
+const ADD_MESSAGE = 'dialog-reducer/ADD-MESSAGE'
 
 let initialState = {
     dialogs: [

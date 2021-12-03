@@ -11,7 +11,7 @@ const SET_IS_AUTH_PROFILE = 'profile-reducer/SET-IS-AUTH-PROFILE'
 const SET_PHOTO_SUCCESS = 'profile-reducer/SET_PHOTO_SUCCESS'
 const SET_STATUS = 'profile-reducer/SET-STATUS-PROFILE'
 const TOGGLE_STATUS_FETCHING = 'profile-reducer/TOGGLE-STATUS-FETCHING'
-const SET_ERROR_FROM_API = 'profile-reducer/SET_ERROR_FROM_API'
+// const SET_ERROR_FROM_API = 'profile-reducer/SET_ERROR_FROM_API'
 
 let initialState = {
   posts: [
@@ -44,7 +44,7 @@ let initialState = {
   profileStatusFetching: true,
   profileStatusPlaceholder: 'input status here' as string | null,
 
-  errorsFromApi: null as string[] | null
+  // errorsFromApi: null as string[] | null
 }
 
 export type ProfileReducerStateType = typeof initialState
@@ -187,15 +187,12 @@ export const setPhoto = (userPhoto: File): ProfileThunkActionType<void> =>
 
 export const setProfileData = (data: ProfileType): ProfileThunkActionType<string[]|null> =>
   async (dispatch) => {
-    // dispatch(setErrorFromApi(null))
     let response = await profileAPI.setData(data)
     if (response.resultCode === 0) {
-      // await dispatch(setErrorFromApi(null))
       dispatch(getProfile(data.userId))
       return null
     } else {
-      // await dispatch(setErrorFromApi(response.messages))
-      return response.mappings
+      return response.messages
     }
   }
 
