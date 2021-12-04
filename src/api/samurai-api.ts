@@ -4,6 +4,7 @@ import {AuthDataType, LoginDataType, PhotosType, ProfileType, UsersFromSearchTyp
 const instance = axios.create({
   withCredentials: true,
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
+  // transformResponse: (resp) => resp.data,
   headers: {
     "API-KEY": "2c7ffcd4-043c-4906-ad30-376abef26209"
   }
@@ -52,7 +53,6 @@ export const UsersAPI = {
     return instance.post<ResponseApiType>(`follow/${ id }`)
       .then(res => res.data)
   }
-
 }
 
 
