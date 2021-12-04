@@ -1,4 +1,4 @@
-import {authAPI, securityAPI} from "../api/samurai-api";
+import {authAPI, ResultCodesEnum, ResultCodesWithCaptchaEnum, securityAPI} from "../api/samurai-api";
 import {AuthDataType, LoginDataType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
@@ -6,7 +6,7 @@ import {AppStateType} from "./redux-store";
 const SET_AUTH = 'auth-reducer/SET-AUTH'
 const IS_FETCHING_SWICH_TO = 'auth-reducer/IS-FETCHING-SWICH-TO'
 const CAPTCHA_URL_SUCCESS = 'auth-reducer/CAPTCHA_URL_SUCCESS'
-const SET_AUTH_ERRORS_FROM_API = 'auth-reducer/SET_AUTH_ERRORS_FROM_API'
+// const SET_AUTH_ERRORS_FROM_API = 'auth-reducer/SET_AUTH_ERRORS_FROM_API'
 
 let initialState = {
   data: {
@@ -18,12 +18,15 @@ let initialState = {
   isAuth: false,
   authURL: 'https://social-network.samuraijs.com', // захардкодил ссылку в header логина
   captchaUrl: null as string | null,
-  errorsFromApi: null as string[] | null
+  // errorsFromApi: null as string[] | null
 }
 
 export type AuthReducerStateType = typeof initialState
-type ActionsTypes = setAuthUserDataType | isFetchingSwitchToActionType | captchaUrlSuccessActionType |
-  setAuthErrorsFromApiActionType
+type ActionsTypes =
+  setAuthUserDataType
+  | isFetchingSwitchToActionType
+  | captchaUrlSuccessActionType
+  // | setAuthErrorsFromApiActionType
 
 const authReducer = (state = initialState, action: ActionsTypes): AuthReducerStateType    => {
 
@@ -48,12 +51,12 @@ const authReducer = (state = initialState, action: ActionsTypes): AuthReducerSta
         captchaUrl: action.captchaUrl
       }
     }
-    case SET_AUTH_ERRORS_FROM_API : {
-      return {
-        ...state,
-        errorsFromApi: action.errorsFromApi
-      }
-    }
+    // case SET_AUTH_ERRORS_FROM_API : {
+    //   return {
+    //     ...state,
+    //     errorsFromApi: action.errorsFromApi
+    //   }
+    // }
 
     default : {
       // return {...state}
@@ -73,8 +76,8 @@ export const isFetchingSwitchTo = (isFetching:boolean): isFetchingSwitchToAction
 type captchaUrlSuccessActionType = {type: typeof CAPTCHA_URL_SUCCESS, captchaUrl: string}
 const captchaUrlSuccess = (captchaUrl: string): captchaUrlSuccessActionType => ({type: CAPTCHA_URL_SUCCESS, captchaUrl})
 
-type setAuthErrorsFromApiActionType = {type: typeof SET_AUTH_ERRORS_FROM_API, errorsFromApi: string[] | null}
-const setAuthErrorsFromApi = (errorsFromApi: string[] | null): setAuthErrorsFromApiActionType => ({type: SET_AUTH_ERRORS_FROM_API, errorsFromApi})
+// type setAuthErrorsFromApiActionType = {type: typeof SET_AUTH_ERRORS_FROM_API, errorsFromApi: string[] | null}
+// const setAuthErrorsFromApi = (errorsFromApi: string[] | null): setAuthErrorsFromApiActionType => ({type: SET_AUTH_ERRORS_FROM_API, errorsFromApi})
 
 export type AuthThunkActionType<R=void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
 
@@ -83,7 +86,7 @@ export const getAuth = (): AuthThunkActionType =>
     dispatch(isFetchingSwitchTo(true))
     let response = await authAPI.getAuth()
 
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
       let {id, login, email} = response.data
       dispatch(setAuthUserData({id, email, login}, true))
     }
@@ -91,22 +94,22 @@ export const getAuth = (): AuthThunkActionType =>
 
   }
 
-export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string|null> =>
+export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string[]|null> =>
   async (dispatch) => {
-    // dispatch(isFetchingSwitchTo(true))
     const response = await authAPI.loginIn(loginData)
-    if (response.resultCode === 0) {
+
+    if (response.resultCode === ResultCodesEnum.Success) {
       dispatch(getAuth())
-      dispatch(setAuthErrorsFromApi(null))
+      // dispatch(setAuthErrorsFromApi(null))
       return null
-    } else if (response.resultCode === 10) {
+    } else if (response.resultCode === ResultCodesWithCaptchaEnum.CaptchaRequired) {
       //десятый код запрашивает капчу и мы забираем её у сервера
       const response = await securityAPI.getCaptchaUrl()
+      // response.
       dispatch(captchaUrlSuccess(response.url))
     } else {
-      dispatch(setAuthErrorsFromApi(response.messages))
+      // dispatch(setAuthErrorsFromApi(response.messages))
     }
-    // dispatch(isFetchingSwitchTo(false))
     return response.messages
   }
 
@@ -114,7 +117,7 @@ export const loginOut = (): AuthThunkActionType =>
   async (dispatch) => {
     let response = await authAPI.loginOut()
 
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
       dispatch(setAuthUserData({id:null, email: null, login: null}, false))
     }
 

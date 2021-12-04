@@ -1,6 +1,7 @@
-import {UsersAPI} from "../api/samurai-api";
+import {ResultCodesEnum, UsersAPI} from "../api/samurai-api";
 import {UsersFromSearchType} from "./types/types";
-import {Dispatch} from "redux";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
 
 const FOLLOW_TOGGLE = 'users-reducer/FOLLOW-TOGGLE'
 const SET_USERS = 'users-reducer/SET-USERS'
@@ -21,17 +22,17 @@ let initialState = {
 }
 
 export type UsersReducerStateType = typeof initialState
-type ActionsTypes =
-    followSuccessToggleActionType |
-    setUsersActionType |
-    changePageActionType |
-    setTotalUsersCountActionType |
-    toggleIsFetchingActionType |
-    isFetchingToggleIdActionType |
-    friendsOnlyToggleActionType
+type ActionsType =
+    followSuccessToggleActionType
+    | setUsersActionType
+    | changePageActionType
+    | setTotalUsersCountActionType
+    | toggleIsFetchingActionType
+    | isFetchingToggleIdActionType
+    | friendsOnlyToggleActionType
 
 
-let usersReducer = (state = initialState, action: ActionsTypes): UsersReducerStateType => {
+let usersReducer = (state = initialState, action: ActionsType): UsersReducerStateType => {
 
     switch (action.type) {
         case FOLLOW_TOGGLE: {
@@ -92,11 +93,8 @@ let usersReducer = (state = initialState, action: ActionsTypes): UsersReducerSta
     // return state
 }
 type followSuccessToggleActionType = { type: typeof FOLLOW_TOGGLE, userId: number, isFollow: boolean }
-export const followSuccessToggle = (userId: number, isFollow: boolean): followSuccessToggleActionType => ({
-    type: FOLLOW_TOGGLE,
-    userId,
-    isFollow
-})
+export const followSuccessToggle = (userId: number, isFollow: boolean): followSuccessToggleActionType=> ({
+    type: FOLLOW_TOGGLE, userId, isFollow })
 
 type setUsersActionType = { type: typeof SET_USERS, users: UsersFromSearchType[] }
 export const setUsers = (users: UsersFromSearchType[]): setUsersActionType => ({type: SET_USERS, users})
@@ -129,13 +127,14 @@ export const friendsOnlyToggle = (isFriendsFilter: boolean | null): friendsOnlyT
     isFriendsFilter
 })
 
+export type UsersReducerThunkActionType<R=void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
 
-export const getUsers = (pageSize: number, page: number, isFriendsFilter = null as boolean|null) =>
-    async (dispatch: Function | Dispatch<ActionsTypes>) => {
+export const getUsers = (pageSize: number, page: number, isFriendsFilter = null as boolean|null): UsersReducerThunkActionType =>
+    async (dispatch) => {
 
         dispatch(toggleIsFetching(true))
 
-        let response = await UsersAPI.getUsers(pageSize, page, isFriendsFilter)
+        const response = await UsersAPI.getUsers(pageSize, page, isFriendsFilter)
 
         dispatch(setUsers(response.items))
 
@@ -145,15 +144,15 @@ export const getUsers = (pageSize: number, page: number, isFriendsFilter = null 
     }
 
 
-export const follow = (isFollow: boolean, userId: number) =>
-    async (dispatch: any) => {
+export const follow = (isFollow: boolean, userId: number):UsersReducerThunkActionType =>
+    async (dispatch) => {
         dispatch(isFetchingToggleId(true, userId))
 
         const todo = !isFollow ? 'follow' : 'unfollow'
 
         const response = await UsersAPI[todo](userId)
 
-        if (response.resultCode === 0) {
+        if (response.resultCode === ResultCodesEnum.Success) {
             dispatch(followSuccessToggle(userId, !isFollow))
         }
 

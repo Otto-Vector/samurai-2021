@@ -8,7 +8,7 @@ export type LoginDataType = {
   email: string
   login: string
   rememberMe: boolean
-  captcha: string
+  captcha: string | null
 }
 
 export type DialogsType = {
@@ -34,7 +34,7 @@ export type UsersFromSearchType = {
 }
 
 export type PostType = {
-  id: number | null
+  id: number
   imageURL: string | null
   message: string | null
   likesCount: number | null

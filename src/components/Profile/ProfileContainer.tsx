@@ -31,9 +31,9 @@ type MapStatePropsType = {
 }
 
 type MapDispatchType = {
-  getProfile: (userId: number | null) => void
+  getProfile: (userId: number) => void
   setIsAuthProfile: (isAuthProfile: boolean) => void
-  getStatus: (userId: number | null) => void
+  getStatus: (userId: number) => void
   setPhoto: (userPhoto: File) => void
   setProfileData: (data: ProfileType) => ProfileThunkActionType<string[] | null> | Promise<string[] | null>
 }
@@ -55,7 +55,7 @@ class ProfileContainer extends React.Component<ProfileContainerType> {
   updateProfile() {
     let idFromRouter = +(this.props.match.params.userId || "0")
     let authUsId = +(this.props.authUserId || "0")
-    let userId = idFromRouter || authUsId || null
+    let userId = idFromRouter || authUsId
     let isAuthProfile = (userId === authUsId)
 
     this.props.setIsAuthProfile(isAuthProfile)

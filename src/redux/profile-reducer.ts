@@ -1,5 +1,5 @@
 import {randomFaceImage} from "../api/randomFace";
-import {profileAPI} from "../api/samurai-api";
+import {profileAPI, ResultCodesEnum} from "../api/samurai-api";
 import {PhotosType, PostType, ProfileType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
@@ -150,8 +150,8 @@ type SetPhotoSuccessActionType = { type: typeof SET_PHOTO_SUCCESS, photos: Photo
 export const setPhotoSuccess = (photos: PhotosType): SetPhotoSuccessActionType => (
   {type: SET_PHOTO_SUCCESS, photos})
 
-type SetStatusProfileActionType = { type: typeof SET_STATUS, profileStatusText: string }
-export const setStatusProfile = (profileStatusText: string): SetStatusProfileActionType => (
+type SetStatusProfileActionType = { type: typeof SET_STATUS, profileStatusText: string | null}
+export const setStatusProfile = (profileStatusText: string | null): SetStatusProfileActionType => (
   {type: SET_STATUS, profileStatusText})
 
 type ToggleStatusProfileFetchingActionType = { type: typeof TOGGLE_STATUS_FETCHING, profileStatusFetching: boolean }
@@ -161,10 +161,9 @@ export const toggleStatusProfileFetching = (profileStatusFetching: boolean): Tog
 // type SetErrorFromApiActionType = { type: typeof SET_ERROR_FROM_API, errorsFromApi: string[] | null }
 // const setErrorFromApi = (errorsFromApi: string[] | null): SetErrorFromApiActionType =>  ({ type: SET_ERROR_FROM_API, errorsFromApi })
 
+export type ProfileThunkActionType<R=void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
 
-export type ProfileThunkActionType<R> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
-
-export const getProfile = (userId = defaultUserId as number| null): ProfileThunkActionType<void> =>
+export const getProfile = (userId: number): ProfileThunkActionType =>
   async (dispatch) => {
     try {
       dispatch(toggleIsFetchingProfile(true))
@@ -177,19 +176,19 @@ export const getProfile = (userId = defaultUserId as number| null): ProfileThunk
     dispatch(toggleIsFetchingProfile(false))
   }
 
-export const setPhoto = (userPhoto: File): ProfileThunkActionType<void> =>
+export const setPhoto = (userPhoto: File): ProfileThunkActionType =>
   async (dispatch) => {
     let response = await profileAPI.setPhoto(userPhoto)
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
       dispatch(setPhotoSuccess(response.data.photos))
     }
   }
 
 export const setProfileData = (data: ProfileType): ProfileThunkActionType<string[]|null> =>
   async (dispatch) => {
-    let response = await profileAPI.setData(data)
-    if (response.resultCode === 0) {
-      dispatch(getProfile(data.userId))
+    let response = await profileAPI.setProfileData(data)
+    if (response.resultCode === ResultCodesEnum.Success) {
+      dispatch(getProfile(data.userId || defaultUserId))
       return null
     } else {
       return response.messages
@@ -197,7 +196,7 @@ export const setProfileData = (data: ProfileType): ProfileThunkActionType<string
   }
 
 
-export const getStatus = (userId = defaultUserId as number | null): ProfileThunkActionType<void> =>
+export const getStatus = (userId = defaultUserId ): ProfileThunkActionType =>
   async (dispatch) => {
     dispatch(toggleStatusProfileFetching(true))
     try {
@@ -210,7 +209,7 @@ export const getStatus = (userId = defaultUserId as number | null): ProfileThunk
     dispatch(toggleStatusProfileFetching(false))
   }
 
-export const updateStatus = (status: string): ProfileThunkActionType<void> =>
+export const updateStatus = (status: string): ProfileThunkActionType =>
   async (dispatch) => {
     let response = await profileAPI.setStatus(status)
 
