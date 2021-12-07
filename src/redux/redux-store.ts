@@ -32,6 +32,11 @@ let rootReducer = combineReducers(reducersObject)
 type StateType = typeof rootReducer
 export type AppStateType = ReturnType<StateType>
 
+// export type ActionsAnyType = {[key: string]: (...args: any[]) => any}
+export type ActionsAnyType = Record<string, (...args: any[]) => any>
+export type PropertiesType<T> = T extends {[key: string]: infer U} ? U : never;
+export type GetActionsTypes<T extends ActionsAnyType> = ReturnType<PropertiesType<T>>
+
 //для расширения reduxDevTool в браузере и отслеживания стейта
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

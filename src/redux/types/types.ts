@@ -25,6 +25,7 @@ export type PhotosType = {
   large: string | null
 }
 
+//Объект, возвращаемый при поиске пользователей
 export type UsersFromSearchType = {
   id: number
   name: string
