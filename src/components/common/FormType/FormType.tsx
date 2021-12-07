@@ -1,13 +1,16 @@
 import React from "react";
 import styles from "./FormType.module.css"
-// import {FieldProps, FormProps} from "react-final-form";
+import {FieldState, FormApi} from "final-form";
 
-// type TFormType = {
-//     resetFieldBy: FormProps['form']
-//     placeholder: string
-// }
+type OwnProps = {
+  form: FormApi
+  placeholder?: string
+  meta: FieldState<any>
+  input: any
+}
 
-const FormType = (FormType: string) => ({input, meta, resetFieldBy, placeholder}: any) => {
+
+const FormType = (FormType: string): React.FC<OwnProps> => ({input, meta, form, placeholder}) => {
 
   const error = meta.error || meta.submitError
   const boolError = error && meta.touched
@@ -20,11 +23,11 @@ const FormType = (FormType: string) => ({input, meta, resetFieldBy, placeholder}
       />
       {/*кнопка для сброса параметров поля
       (проявляется, если переданы методы resetFieldBy={form} в объявленном объекте Field*/ }
-      { meta.visited && resetFieldBy && <div
+      { meta.visited && form && <div
         className={ styles.resetButton }
         onClick={ () => {
-          resetFieldBy.change(input.name, '')
-          resetFieldBy.resetFieldState(input.name)
+          form.change(input.name, '')
+          form.resetFieldState(input.name)
         } }
       >
       </div> }
