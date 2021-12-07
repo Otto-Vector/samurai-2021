@@ -1,10 +1,7 @@
 import {getAuth} from "./auth-reducer";
 import {getResponseFriends} from "./friends-reducer";
 import {ThunkAction} from "redux-thunk";
-import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store";
-
-// const SET_INITIALAZED = 'app-reducer/SET_INITIALAZED'
-
+import {AppStateType, GetActionsTypes} from "./redux-store";
 
 let initialState = {
   initialazed: false,
@@ -33,8 +30,7 @@ const appReducer = (state = initialState,
 
   // return state
 }
-// type setInitialazedSuccessActionType = { type: typeof SET_INITIALAZED }
-// export const setInitialazedSuccess = (): setInitialazedSuccessActionType => ({type: 'app-reducer/SET_INITIALAZED'})
+
 const sleep = (ms: number) : Promise<Function> => new Promise(resolve => setTimeout(resolve, ms))
 
 const appActions = {
@@ -42,10 +38,10 @@ const appActions = {
 }
 
 // const importedActions: ActionsAnyType = {
-const importedActions = {
-  getAuth,
-  getResponseFriends
-}
+// const importedActions = {
+//   getAuth, //санка
+//   getResponseFriends //тоже санка
+// }
 // почему-то работает без этого типа в InitialazedThunkActionType
 // type ImportedActionTypes = GetActionsTypes<typeof importedActions>
 
@@ -53,9 +49,9 @@ export type InitialazedThunkActionType = ThunkAction<void, AppStateType, unknown
 
 export const initialazedAll = (): InitialazedThunkActionType =>
   (dispatch) => {
-    let promise = dispatch(importedActions.getAuth())
+    let promise = dispatch(getAuth())
     let promise2 = sleep(100)
-    let friends = dispatch(importedActions.getResponseFriends())
+    let friends = dispatch(getResponseFriends())
 
     Promise.all([
         promise,

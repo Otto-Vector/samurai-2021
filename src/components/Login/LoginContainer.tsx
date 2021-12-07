@@ -20,7 +20,7 @@ type MapStatePropsType = {
 }
 
 type DispatchPropsType = {
-  loginIn: (loginData: LoginDataType) => AuthThunkActionType<string[]|null> | Promise<string[]|null>
+  loginIn: (loginData: LoginDataType) => AuthThunkActionType<string[]|null|undefined> | Promise<string[]|null>
 }
 
 
