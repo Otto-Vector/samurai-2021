@@ -5,8 +5,6 @@ import {
   getAuthURL,
   getAuthCaptchaUrl,
   getIsAuthUser,
-  // getAuthErrorsFromApi,
-  // getAuthIsFetching
 } from "../../reselect/auth-reselectors";
 import {AppStateType} from "../../redux/redux-store";
 import {LoginDataType} from "../../redux/types/types";
@@ -20,25 +18,22 @@ type MapStatePropsType = {
 }
 
 type DispatchPropsType = {
-  loginIn: (loginData: LoginDataType) => AuthThunkActionType<string[]|null|undefined> | Promise<string[]|null>
+  loginIn: (loginData: LoginDataType) => AuthThunkActionType<string[]|null> | Promise<string[]|null>
+  // loginIn: typeof loginIn
 }
 
 
 export type LoginContainerType = MapStatePropsType & DispatchPropsType
 
 // const LoginContainer = (props: LoginContainerType) => {
-//
 //   return <Login{ ...props }/>;
-//
 // }
 
-let mapStateToProps = (state: AppStateType): MapStatePropsType => {
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     isAuth: getIsAuthUser(state),
     authURL: getAuthURL(state),
     captchaUrl: getAuthCaptchaUrl(state),
-    // errorsFromApi: getAuthErrorsFromApi(state),
-    // isFetching: getAuthIsFetching(state),
   }
 }
 

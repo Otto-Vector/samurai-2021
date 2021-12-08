@@ -16,7 +16,8 @@ let initialState = {
     pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
-    isFriendsFilter: null as boolean | null,
+    isFriendsFilter: null as boolean | null, // здесь используется именно null в запросах api, чтобы не фильтровать друзей
+    // итого три состояния null - все, true - только друзья, false - все кроме друзей
     isFetching: true,
     isFetchingById: [6]
 }
@@ -32,7 +33,7 @@ type ActionsType =
     | friendsOnlyToggleActionType
 
 
-let usersReducer = (state = initialState, action: ActionsType): UsersReducerStateType => {
+const usersReducer = (state = initialState, action: ActionsType): UsersReducerStateType => {
 
     switch (action.type) {
         case FOLLOW_TOGGLE: {

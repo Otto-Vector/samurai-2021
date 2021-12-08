@@ -10,7 +10,7 @@ import {AuthThunkActionType} from "../../redux/auth-reducer";
 
 type OwnProps = {
   captchaUrl: string | null
-  onSubmit: (loginData: LoginDataType) => AuthThunkActionType<string[]|null|undefined> | Promise<string[]|null>
+  onSubmit: (loginData: LoginDataType) => AuthThunkActionType<string[]|null> | Promise<string[]|null>
 }
 
 const LoginForm = ({onSubmit, captchaUrl}: OwnProps) => {
@@ -24,7 +24,7 @@ const LoginForm = ({onSubmit, captchaUrl}: OwnProps) => {
   return (
   <Form
     onSubmit={onSubmit2}
-    initialValues={{
+    initialValues={{ // toDo: Передать initialValues из стейта?
       email: '',
       password: '',
       rememberMe: true,

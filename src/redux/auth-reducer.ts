@@ -1,8 +1,7 @@
 import {authAPI, ResultCodesEnum, ResultCodesWithCaptchaEnum, securityAPI} from "../api/samurai-api";
 import {AuthDataType, LoginDataType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
-import {AppStateType, GetActionsTypes} from "./redux-store";
-
+import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store";
 
 const initialState = {
   data: {
@@ -54,7 +53,7 @@ const authReducer = (state = initialState, action: ActionsTypes): AuthReducerSta
 }
 
 
-const authActions = {
+const authActions: ActionsAnyType = {
   setAuthUserData: (payload: AuthDataType, isAuth: boolean) => ({
     type: 'auth-reducer/SET-AUTH',
     payload,
@@ -67,7 +66,7 @@ const authActions = {
   captchaUrlSuccess: (captchaUrl: string) => ({
     type: 'auth-reducer/CAPTCHA_URL_SUCCESS',
     captchaUrl
-  } as const)
+  } as const),
 }
 
 
@@ -83,10 +82,9 @@ export const getAuth = (): AuthThunkActionType =>
       dispatch(authActions.setAuthUserData({id, email, login}, true))
     }
     dispatch(authActions.isFetchingSwitchTo(false))
-
   }
 
-export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string[] | null | undefined> =>
+export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string[] | null > =>
   async (dispatch) => {
     const response = await authAPI.loginIn(loginData)
 
@@ -98,11 +96,8 @@ export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string[] 
       //десятый код запрашивает капчу и мы забираем её у сервера
       const response = await securityAPI.getCaptchaUrl()
       dispatch(authActions.captchaUrlSuccess(response.url))
-
-    } else {
-
-      return response.messages
     }
+    return response.messages
   }
 
 export const loginOut = (): AuthThunkActionType =>
