@@ -8,10 +8,10 @@ const initialState = {
 }
 
 export type AppReducerStateType = typeof initialState
-type ActionTypes = GetActionsTypes<typeof appActions>
+type ActionsType = GetActionsTypes<typeof appActions>
 
 const appReducer = (state = initialState,
-                    action: ActionTypes) : AppReducerStateType => {
+                    action: ActionsType) : AppReducerStateType => {
 
   switch (action.type) {
 
@@ -39,8 +39,8 @@ const appActions = {
 
 
 /* САНКИ */
-// конструктор для санок
-export type InitialazedThunkActionType = ThunkAction<void, AppStateType, unknown, ActionTypes>
+// конструктор для типов санок
+export type InitialazedThunkActionType = ThunkAction<void, AppStateType, unknown, ActionsType>
 
 // просто ещё один Промис для кучи
 const sleep = (ms: number) : Promise<Function> => new Promise(resolve => setTimeout(resolve, ms))

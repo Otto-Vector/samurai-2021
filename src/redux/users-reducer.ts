@@ -4,7 +4,7 @@ import {ThunkAction} from "redux-thunk";
 import {AppStateType, GetActionsTypes} from "./redux-store";
 
 
-let initialState = {
+const initialState = {
   users: [] as UsersFromSearchType[],
   pageSize: 5,
   totalUsersCount: 0,

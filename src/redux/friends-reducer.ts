@@ -1,11 +1,7 @@
-import {UsersAPI} from "../api/samurai-api";
-import {UsersFromSearchType} from "./types/types";
-import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
-
-const ADD_FRIENDS = "friends-reducer/ADD_FRIENDS"
-const FRIENDS_IS_FETCHING = "friends-reducer/FRIENDS-IS-FETCHING"
-
+import {UsersAPI} from "../api/samurai-api"
+import {UsersFromSearchType} from "./types/types"
+import {ThunkAction} from "redux-thunk"
+import {AppStateType, GetActionsTypes} from "./redux-store"
 
 const initialState = {
   friends: [] as UsersFromSearchType[],
@@ -15,20 +11,20 @@ const initialState = {
 }
 
 export type FriendsReducerStateType = typeof initialState
-type ActionsType = AddFriendsActionType | FriendsResponseIsFetchingActionType
+// type ActionsType = AddFriendsActionType | FriendsResponseIsFetchingActionType
+type ActionsType = GetActionsTypes<typeof friendsActions>
 
 const friendsReducer = (state = initialState, action: ActionsType): FriendsReducerStateType => {
 
   switch (action.type) {
 
-    case ADD_FRIENDS : {
+    case "friends-reducer/ADD_FRIENDS" : {
       return {
         ...state,
         friends: action.friends
       }
     }
-
-    case  FRIENDS_IS_FETCHING : {
+    case "friends-reducer/FRIENDS-IS-FETCHING" : {
       return {
         ...state,
         isFetching: action.isFetching
@@ -40,27 +36,30 @@ const friendsReducer = (state = initialState, action: ActionsType): FriendsReduc
   }
 }
 
-type AddFriendsActionType = {
-  type: typeof ADD_FRIENDS
-  friends: UsersFromSearchType[]
+/* ЭКШОНЫ ДЛЯ ДРУЗЕЙ */
+export const friendsActions = {
+  // добавляет массив данных друзей
+  addFriends: (friends: UsersFromSearchType[]) => ({
+    type: "friends-reducer/ADD_FRIENDS",
+    friends
+  } as const),
+  // изменяет переменную отображения загрузки данных
+  friendsResponseIsFetching: (isFetching: boolean) => ({
+    type: "friends-reducer/FRIENDS-IS-FETCHING",
+    isFetching
+  } as const),
 }
-const addFriends = (friends: UsersFromSearchType[]): AddFriendsActionType => ({type: ADD_FRIENDS, friends})
 
-type FriendsResponseIsFetchingActionType = {
-  type: typeof FRIENDS_IS_FETCHING
-  isFetching: boolean
-}
-const friendsResponseIsFetching = (isFetching: boolean): FriendsResponseIsFetchingActionType => ({type: FRIENDS_IS_FETCHING, isFetching})
+/* САНКИ */
 
-export type FriendsReducerThunkActionType<R=void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
+export type FriendsReducerThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
 
 export const getResponseFriends = (): FriendsReducerThunkActionType =>
   async (dispatch) => {
-    dispatch(friendsResponseIsFetching(true))
+    dispatch(friendsActions.friendsResponseIsFetching(true))
     const response = await UsersAPI.getUsers(100, 1, true)
-
-    dispatch(addFriends(response.items))
-    dispatch(friendsResponseIsFetching(false))
+    dispatch(friendsActions.addFriends(response.items))
+    dispatch(friendsActions.friendsResponseIsFetching(false))
   }
 
 export default friendsReducer

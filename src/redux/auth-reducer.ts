@@ -16,10 +16,10 @@ const initialState = {
 }
 
 export type AuthReducerStateType = typeof initialState
-type ActionsTypes = GetActionsTypes<typeof authActions>
+type ActionsType = GetActionsTypes<typeof authActions>
 
 
-const authReducer = (state = initialState, action: ActionsTypes): AuthReducerStateType => {
+const authReducer = (state = initialState, action: ActionsType): AuthReducerStateType => {
 
   switch (action.type) {
 
@@ -73,7 +73,8 @@ const authActions = {
 
 /* САНКИ */
 // типизация санок авторизации
-export type AuthThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
+export type AuthThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
+
 // запрос авторизации
 export const getAuth = (): AuthThunkActionType =>
   async (dispatch) => {
@@ -87,6 +88,7 @@ export const getAuth = (): AuthThunkActionType =>
     dispatch(authActions.isFetchingSwitchTo(false))
   }
 
+// авторизация по логину и паролю
 export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string[] | null > =>
   async (dispatch) => {
     const response = await authAPI.loginIn(loginData)
@@ -103,6 +105,7 @@ export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string[] 
     return response.messages
   }
 
+// выход из авторизованного режима
 export const loginOut = (): AuthThunkActionType =>
   async (dispatch) => {
     const response = await authAPI.loginOut()
