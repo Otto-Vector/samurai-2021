@@ -43,7 +43,6 @@ const authReducer = (state = initialState, action: ActionsTypes): AuthReducerSta
       }
     }
 
-
     default : {
       // return {...state}
     }
@@ -65,7 +64,7 @@ const authActions = {
     type: 'auth-reducer/IS-FETCHING-SWITCH-TO',
     isFetching
   } as const),
-  //
+  // капча прилетела в url
   captchaUrlSuccess: (captchaUrl: string) => ({
     type: 'auth-reducer/CAPTCHA_URL_SUCCESS',
     captchaUrl

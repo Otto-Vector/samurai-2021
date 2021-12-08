@@ -18,7 +18,7 @@ const instance = axios.create({
 
 export enum ResultCodesEnum {
   Success = 0,
-  Error = 1
+  Error = 1 //пока нигде не используется, потому что else
 }
 
 export enum ResultCodesWithCaptchaEnum {

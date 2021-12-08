@@ -1,5 +1,5 @@
 // import React from 'react';
-import {addPost} from "../../../redux/profile-reducer";
+import {profileActions} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
 import {getNewPostTextPlaceholder, getPosts} from "../../../reselect/profile-selectors";
@@ -10,6 +10,8 @@ let mapStateToProps = state => {
     newPostTextPlaceholder : getNewPostTextPlaceholder(state)
   }
 }
+
+const {addPost} = profileActions
 
 const MyPostsContainer = connect(mapStateToProps, {
   addPost

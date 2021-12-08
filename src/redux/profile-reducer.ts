@@ -2,16 +2,8 @@ import {randomFaceImage} from "../api/randomFace";
 import {profileAPI, ResultCodesEnum} from "../api/samurai-api";
 import {PhotosType, PostType, ProfileType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
+import {AppStateType, GetActionsTypes} from "./redux-store";
 
-const ADD_POST = 'profile-reducer/ADD-POST'
-const SET_PROFILE_STATE = 'profile-reducer/SET-PROFILE-STATE'
-const TOGGLE_FETCHING = 'profile-reducer/TOGGLE-FETCHING'
-const SET_IS_AUTH_PROFILE = 'profile-reducer/SET-IS-AUTH-PROFILE'
-const SET_PHOTO_SUCCESS = 'profile-reducer/SET_PHOTO_SUCCESS'
-const SET_STATUS = 'profile-reducer/SET-STATUS-PROFILE'
-const TOGGLE_STATUS_FETCHING = 'profile-reducer/TOGGLE-STATUS-FETCHING'
-// const SET_ERROR_FROM_API = 'profile-reducer/SET_ERROR_FROM_API'
 
 let initialState = {
   posts: [
@@ -43,27 +35,18 @@ let initialState = {
   profileStatusText: null as string | null,
   profileStatusFetching: true,
   profileStatusPlaceholder: 'input status here' as string | null,
-
-  // errorsFromApi: null as string[] | null
 }
 
 export type ProfileReducerStateType = typeof initialState
-type ActionsTypes = AddPostActionType
-  | SetProfileStateActionType
-  | SetIsAuthProfileActionType
-  | ToggleIsFetchingProfileActionType
-  | SetPhotoSuccessActionType
-  | SetStatusProfileActionType
-  | ToggleStatusProfileFetchingActionType
-  // | SetErrorFromApiActionType
+type ActionsType = GetActionsTypes<typeof profileActions>
 
-const profileReducer = (state = initialState, action: ActionsTypes): ProfileReducerStateType => {
+const profileReducer = (state = initialState, action: ActionsType): ProfileReducerStateType => {
 
   switch (action.type) {
-    case ADD_POST : {
+    case "profile-reducer/ADD-POST" : {
       let newPost: PostType = {
         id: action.id,
-        imageURL: randomFaceImage(action.id),
+        imageURL: randomFaceImage(action.id), // пока добавляем рандомную фотку
         message: action.newPostText || 'empty',
         likesCount: 0
       }
@@ -72,121 +55,123 @@ const profileReducer = (state = initialState, action: ActionsTypes): ProfileRedu
         posts: [newPost, ...state.posts],
       }
     }
-
-    case SET_PROFILE_STATE : {
+    case "profile-reducer/SET-PROFILE-STATE" : {
       return {
         ...state,
         profile: action.profile
       }
     }
-
-    case TOGGLE_FETCHING : {
+    case "profile-reducer/TOGGLE-FETCHING" : {
       return {
         ...state,
         isFetching: action.isFetching
       }
     }
-
-    case SET_IS_AUTH_PROFILE : {
+    case "profile-reducer/SET-IS-AUTH-PROFILE" : {
       return {
         ...state,
         isAuthProfile: action.isAuthProfile
       }
     }
-
-    case SET_PHOTO_SUCCESS : {
+    case "profile-reducer/SET_PHOTO_SUCCESS" : {
       return {
         ...state,
         profile: {...state.profile, photos: action.photos} as ProfileType
       }
     }
-    case  SET_STATUS : {
+    case  "profile-reducer/SET-STATUS-PROFILE" : {
       return {
         ...state,
         profileStatusText: action.profileStatusText
       }
     }
-    case TOGGLE_STATUS_FETCHING : {
+    case "profile-reducer/TOGGLE-STATUS-FETCHING" : {
       return {
         ...state,
         profileStatusFetching: action.profileStatusFetching
       }
     }
-    // case SET_ERROR_FROM_API : {
-    //   return {
-    //     ...state,
-    //     errorsFromApi: action.errorsFromApi
-    //   }
-    // }
 
     default : {
       return state
     }
   }
-
-  // return state
 }
 
-let defaultUserId = 20116
-type AddPostActionType = { type: typeof ADD_POST, id: number, newPostText: string }
-export const addPost = (id = defaultUserId, newPostText: string): AddPostActionType => ({
-  type: ADD_POST,
-  id,
-  newPostText
-})
+let defaultUserId = 20116 //маленький костылёк для "кривых" акков
 
-type SetProfileStateActionType = { type: typeof SET_PROFILE_STATE, profile: ProfileType }
-export const setProfileState = (profile: ProfileType): SetProfileStateActionType => ({type: SET_PROFILE_STATE, profile})
+/* ЭКШОНЫ ПРОФИЛЯ */
+export const profileActions = {
+  addPost: (id = defaultUserId, newPostText: string) => ({
+    type: 'profile-reducer/ADD-POST',
+    id,
+    newPostText
+  } as const),
 
-type SetIsAuthProfileActionType = { type: typeof SET_IS_AUTH_PROFILE, isAuthProfile: boolean }
-export const setIsAuthProfile = (isAuthProfile: boolean): SetIsAuthProfileActionType => (
-  {type: SET_IS_AUTH_PROFILE, isAuthProfile})
+  setProfileState: (profile: ProfileType) => ({
+    type: 'profile-reducer/SET-PROFILE-STATE',
+    profile
+  } as const),
 
-type ToggleIsFetchingProfileActionType = { type: typeof TOGGLE_FETCHING, isFetching: boolean }
-export const toggleIsFetchingProfile = (isFetching: boolean): ToggleIsFetchingProfileActionType => (
-  {type: TOGGLE_FETCHING, isFetching})
+  setIsAuthProfile: (isAuthProfile: boolean) => ({
+    type: 'profile-reducer/SET-IS-AUTH-PROFILE',
+    isAuthProfile
+  } as const),
 
-type SetPhotoSuccessActionType = { type: typeof SET_PHOTO_SUCCESS, photos: PhotosType }
-export const setPhotoSuccess = (photos: PhotosType): SetPhotoSuccessActionType => (
-  {type: SET_PHOTO_SUCCESS, photos})
+  toggleIsFetchingProfile: (isFetching: boolean) => ({
+    type: 'profile-reducer/TOGGLE-FETCHING',
+    isFetching
+  } as const),
 
-type SetStatusProfileActionType = { type: typeof SET_STATUS, profileStatusText: string | null}
-export const setStatusProfile = (profileStatusText: string | null): SetStatusProfileActionType => (
-  {type: SET_STATUS, profileStatusText})
+  setPhotoSuccess: (photos: PhotosType) => ({
+    type: 'profile-reducer/SET_PHOTO_SUCCESS',
+    photos
+  } as const),
 
-type ToggleStatusProfileFetchingActionType = { type: typeof TOGGLE_STATUS_FETCHING, profileStatusFetching: boolean }
-export const toggleStatusProfileFetching = (profileStatusFetching: boolean): ToggleStatusProfileFetchingActionType => (
-  {type: TOGGLE_STATUS_FETCHING, profileStatusFetching})
+  setStatusProfile: (profileStatusText: string | null) => ({
+    type: 'profile-reducer/SET-STATUS-PROFILE',
+    profileStatusText
+  } as const),
 
-// type SetErrorFromApiActionType = { type: typeof SET_ERROR_FROM_API, errorsFromApi: string[] | null }
-// const setErrorFromApi = (errorsFromApi: string[] | null): SetErrorFromApiActionType =>  ({ type: SET_ERROR_FROM_API, errorsFromApi })
+  toggleStatusProfileFetching: (profileStatusFetching: boolean) => ({
+    type: 'profile-reducer/TOGGLE-STATUS-FETCHING',
+    profileStatusFetching
+  } as const),
+}
 
-export type ProfileThunkActionType<R=void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
+/* САНКИ ПРОФИЛЯ*/
 
+export type ProfileThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
+
+// запрос данных профиля из API
 export const getProfile = (userId: number): ProfileThunkActionType =>
   async (dispatch) => {
     try {
-      dispatch(toggleIsFetchingProfile(true))
-      let response = await profileAPI.getProfile(userId)
-      dispatch(setProfileState(response))
+      dispatch(profileActions.toggleIsFetchingProfile(true))
+      const response = await profileAPI.getProfile(userId)
+      dispatch(profileActions.setProfileState(response))
+
     } catch (error) { //если ошибка, то хардкодим на свой акк
-      let response = await profileAPI.getProfile(defaultUserId)
-      dispatch(setProfileState(response))
+      const response = await profileAPI.getProfile(defaultUserId)
+      dispatch(profileActions.setProfileState(response))
     }
-    dispatch(toggleIsFetchingProfile(false))
+    dispatch(profileActions.toggleIsFetchingProfile(false))
   }
 
+// отправка на сервер и возврат обработанного фото
 export const setPhoto = (userPhoto: File): ProfileThunkActionType =>
   async (dispatch) => {
-    let response = await profileAPI.setPhoto(userPhoto)
+    const response = await profileAPI.setPhoto(userPhoto)
     if (response.resultCode === ResultCodesEnum.Success) {
-      dispatch(setPhotoSuccess(response.data.photos))
+      dispatch(profileActions.setPhotoSuccess(response.data.photos))
     }
   }
 
-export const setProfileData = (data: ProfileType): ProfileThunkActionType<string[]|null> =>
+// изменение данных авторизованного пользователя на API и в state
+// возвращает значение ошибки в string[] | null для onSubmit
+export const setProfileData = (data: ProfileType): ProfileThunkActionType<string[] | null> =>
   async (dispatch) => {
-    let response = await profileAPI.setProfileData(data)
+    const response = await profileAPI.setProfileData(data)
     if (response.resultCode === ResultCodesEnum.Success) {
       dispatch(getProfile(data.userId || defaultUserId))
       return null
@@ -195,26 +180,27 @@ export const setProfileData = (data: ProfileType): ProfileThunkActionType<string
     }
   }
 
-
-export const getStatus = (userId = defaultUserId ): ProfileThunkActionType =>
+// запрос данных статуса из API
+export const getStatus = (userId = defaultUserId): ProfileThunkActionType =>
   async (dispatch) => {
-    dispatch(toggleStatusProfileFetching(true))
+    dispatch(profileActions.toggleStatusProfileFetching(true))
     try {
-      let response = await profileAPI.getStatus(userId)
-      dispatch(setStatusProfile(response))
+      const response = await profileAPI.getStatus(userId)
+      dispatch(profileActions.setStatusProfile(response))
     } catch (error) {
-      let response = await profileAPI.getStatus(defaultUserId)
-      dispatch(setStatusProfile(response))
+      const response = await profileAPI.getStatus(defaultUserId)
+      dispatch(profileActions.setStatusProfile(response))
     }
-    dispatch(toggleStatusProfileFetching(false))
+    dispatch(profileActions.toggleStatusProfileFetching(false))
   }
 
+// изменение данных статуса пользователя в API и в React
 export const updateStatus = (status: string): ProfileThunkActionType =>
   async (dispatch) => {
-    let response = await profileAPI.setStatus(status)
+    const response = await profileAPI.setStatus(status)
 
-    if (response.resultCode === 0) {
-      dispatch(setStatusProfile(status))
+    if (response.resultCode === ResultCodesEnum.Success) {
+      dispatch(profileActions.setStatusProfile(status))
     }
   }
 

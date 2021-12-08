@@ -7,7 +7,7 @@ const ADD_FRIENDS = "friends-reducer/ADD_FRIENDS"
 const FRIENDS_IS_FETCHING = "friends-reducer/FRIENDS-IS-FETCHING"
 
 
-let initialState = {
+const initialState = {
   friends: [] as UsersFromSearchType[],
   header: 'Friends',
   friendsToShow: 16,
@@ -35,10 +35,9 @@ const friendsReducer = (state = initialState, action: ActionsType): FriendsReduc
       }
     }
     default : {
-      return {...state}
+      return state
     }
   }
-  // return {...state}
 }
 
 type AddFriendsActionType = {

@@ -6,11 +6,11 @@ import {withRouter, RouteComponentProps} from "react-router-dom";
 import Profile from "./Profile";
 import {
   getProfile,
-  setIsAuthProfile,
   setPhoto,
   setProfileData,
   getStatus,
-  ProfileThunkActionType
+  ProfileThunkActionType,
+  profileActions
 } from "../../redux/profile-reducer";
 import {getAuthorizedUserDataId, getIsAuthUser} from "../../reselect/auth-reselectors";
 import {
@@ -103,6 +103,8 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     // errorsFromApi: getErrorFromApi(state)
   }
 }
+
+const {setIsAuthProfile} = profileActions
 
 export default compose(
   connect<MapStatePropsType, MapDispatchType, OwnProps, AppStateType>(mapStateToProps, {

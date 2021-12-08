@@ -3,13 +3,6 @@ import {UsersFromSearchType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, GetActionsTypes} from "./redux-store";
 
-// const FOLLOW_TOGGLE = 'users-reducer/FOLLOW-TOGGLE'
-// const SET_USERS = 'users-reducer/SET-USERS'
-// const CHANGE_PAGE = 'users-reducer/CHANGE-PAGE'
-// const SET_TOTAL_USERS_COUNT = 'users-reducer/SET-TOTAL-USERS-COUNT'
-// const TOGGLE_IS_FETCHING = 'users-reducer/TOGGLE-IS-FETCHING'
-// const TOGGLE_IS_FETCHING_BY_ID = 'users-reducer/TOGGLE-IS-FETCHING-BY-ID'
-// const TOGGLE_FRIENDS_ONLY = 'users-reducer/TOGGLE-FRIENDS-ONLY'
 
 let initialState = {
   users: [] as UsersFromSearchType[],
@@ -84,7 +77,6 @@ const usersReducer = (state = initialState, action: ActionsType): UsersReducerSt
     }
   }
 
-  // return state
 }
 
 /* ЭКШОНЫ USERS */
@@ -92,9 +84,15 @@ const usersReducer = (state = initialState, action: ActionsType): UsersReducerSt
 export const usersActions = {
   // добавление|удаление пользователя в список друзей
   followSuccessToggle: (userId: number, isFollow: boolean) => ({
-    type: 'users-reducer/FOLLOW-TOGGLE', userId, isFollow
+    type: 'users-reducer/FOLLOW-TOGGLE',
+    userId,
+    isFollow
   } as const),
-  setUsers: (users: UsersFromSearchType[]) => ({type: 'users-reducer/SET-USERS', users} as const),
+  // установка значения в карточки пользователей одной страницы
+  setUsers: (users: UsersFromSearchType[]) => ({
+    type: 'users-reducer/SET-USERS',
+    users
+  } as const),
   // установке значения активной страницы
   // возвращаемого из API поиска
   changePage: (page: number) => ({type: 'users-reducer/CHANGE-PAGE', page} as const),
