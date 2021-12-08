@@ -1,8 +1,7 @@
 import React from "react";
 import Users from "./Users";
 import {
-  changePage, follow, friendsOnlyToggle, getUsers,
-} from "../../redux/users-reducer";
+follow, getUsers, usersActions} from "../../redux/users-reducer";
 import {connect} from "react-redux";
 import {compose} from "redux";
 
@@ -81,7 +80,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
   }
 }
 
-
+const {changePage,friendsOnlyToggle} = usersActions
 
 export default compose(
   connect<MapStateToPropsType, DispatchToPropsType,{},AppStateType>(mapStateToProps, {

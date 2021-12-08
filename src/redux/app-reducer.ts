@@ -3,12 +3,11 @@ import {getResponseFriends} from "./friends-reducer";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, GetActionsTypes} from "./redux-store";
 
-let initialState = {
+const initialState = {
   initialazed: false,
 }
 
 export type AppReducerStateType = typeof initialState
-
 type ActionTypes = GetActionsTypes<typeof appActions>
 
 const appReducer = (state = initialState,
@@ -16,7 +15,7 @@ const appReducer = (state = initialState,
 
   switch (action.type) {
 
-    case 'app-reducer/SET_INITIALAZED' : {
+    case 'app-reducer/SET_INITIALIZED' : {
       return {
         ...state,
         initialazed: true
@@ -24,29 +23,29 @@ const appReducer = (state = initialState,
     }
 
     default : {
-      return {...state}
+      // возвращаем вообще без изменений
+      return state
     }
   }
 
-  // return state
 }
 
-const sleep = (ms: number) : Promise<Function> => new Promise(resolve => setTimeout(resolve, ms))
 
+/* ЭКШОНЫ */
 const appActions = {
-  setInitialazedSuccess: () => ({type: 'app-reducer/SET_INITIALAZED'} as const),
+  // при обращении, изменяет стейт initialazed на true
+  setInitialazedSuccess: () => ({type: 'app-reducer/SET_INITIALIZED'} as const),
 }
 
-// const importedActions: ActionsAnyType = {
-// const importedActions = {
-//   getAuth, //санка
-//   getResponseFriends //тоже санка
-// }
-// почему-то работает без этого типа в InitialazedThunkActionType
-// type ImportedActionTypes = GetActionsTypes<typeof importedActions>
 
+/* САНКИ */
+// конструктор для санок
 export type InitialazedThunkActionType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
+// просто ещё один Промис для кучи
+const sleep = (ms: number) : Promise<Function> => new Promise(resolve => setTimeout(resolve, ms))
+
+// запускаем комбайн загрузок/обращений к API
 export const initialazedAll = (): InitialazedThunkActionType =>
   (dispatch) => {
     let promise = dispatch(getAuth())

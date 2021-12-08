@@ -1,7 +1,7 @@
 import {authAPI, ResultCodesEnum, ResultCodesWithCaptchaEnum, securityAPI} from "../api/samurai-api";
 import {AuthDataType, LoginDataType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
-import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store";
+import {AppStateType, GetActionsTypes} from "./redux-store";
 
 const initialState = {
   data: {
@@ -30,7 +30,7 @@ const authReducer = (state = initialState, action: ActionsTypes): AuthReducerSta
         isAuth: action.isAuth
       }
     }
-    case 'auth-reducer/IS-FETCHING-SWICH-TO' : {
+    case 'auth-reducer/IS-FETCHING-SWITCH-TO' : {
       return {
         ...state,
         isFetching: action.isFetching
@@ -52,26 +52,30 @@ const authReducer = (state = initialState, action: ActionsTypes): AuthReducerSta
   return state
 }
 
-
-const authActions: ActionsAnyType = {
+/* ЭКШОНЫ АВТОРИЗАЦИИ */
+const authActions = {
+  // обновляет данные авторизированного пользователя
   setAuthUserData: (payload: AuthDataType, isAuth: boolean) => ({
     type: 'auth-reducer/SET-AUTH',
     payload,
     isAuth
   } as const),
+  // индикация загрузки данных
   isFetchingSwitchTo: (isFetching: boolean) => ({
-    type: 'auth-reducer/IS-FETCHING-SWICH-TO',
+    type: 'auth-reducer/IS-FETCHING-SWITCH-TO',
     isFetching
   } as const),
+  //
   captchaUrlSuccess: (captchaUrl: string) => ({
     type: 'auth-reducer/CAPTCHA_URL_SUCCESS',
     captchaUrl
   } as const),
 }
 
-
+/* САНКИ */
+// типизация санок авторизации
 export type AuthThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsTypes>
-
+// запрос авторизации
 export const getAuth = (): AuthThunkActionType =>
   async (dispatch) => {
     dispatch(authActions.isFetchingSwitchTo(true))

@@ -10,12 +10,15 @@ type OwnProps = {
 }
 
 
-const FormType = (FormType: string): React.FC<OwnProps> => ({input, meta, form, placeholder}) => {
+const FormType = (FormType: string): React.FC<OwnProps> =>
+  ({ input,
+     meta: {error: metaError, submitError, touched, visited, active},
+     form, placeholder}) => {
 
-  const error = meta.error || meta.submitError
-  const boolError = error && meta.touched
+  const error = metaError || submitError
+  const boolError = error && touched
 
-  return (<div className={ styles.wrapper + ' ' + (boolError && styles.error) + ' ' + (meta.active && styles.active) }>
+  return (<div className={ styles.wrapper + ' ' + (boolError && styles.error) + ' ' + (active && styles.active) }>
       <FormType
         { ...input }
         className={ styles.textarea }
@@ -23,7 +26,7 @@ const FormType = (FormType: string): React.FC<OwnProps> => ({input, meta, form, 
       />
       {/*кнопка для сброса параметров поля
       (проявляется, если переданы методы resetFieldBy={form} в объявленном объекте Field*/ }
-      { meta.visited && form && <div
+      { visited && form && <div
         className={ styles.resetButton }
         onClick={ () => {
           form.change(input.name, '')
