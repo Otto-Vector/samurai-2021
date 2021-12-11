@@ -77,7 +77,7 @@ const ProfileForm: React.FC<OwnProps> = (props) => {
                      validate={ composeValidators(required) }
               />
             </div>
-            <div>CONTACTS</div>
+            <div><b>CONTACTS</b></div>
             { Object.keys(contacts).map(key => <div key={ key } className={ styles.socialInput }>
               { socialsImageSource.hasOwnProperty(key) &&
               <img className={ styles.socialImage }

@@ -3,22 +3,21 @@ import styles from "./FormType.module.css"
 import {FieldState, FormApi} from "final-form";
 
 type OwnProps = {
-  form: FormApi
+  resetFieldBy: FormApi
   placeholder?: string
   meta: FieldState<any>
   input: any
 }
 
 
-const FormType = (FormType: string): React.FC<OwnProps> =>
-  ({ input,
-     meta: {error: metaError, submitError, touched, visited, active},
-     form, placeholder}) => {
+const FormType = (FormType: string): React.FC<OwnProps> => ({
+  input, meta, resetFieldBy, placeholder}) => {
 
-  const error = metaError || submitError
-  const boolError = error && touched
+  const isError = (meta.error || meta.submitError) && meta.touched
 
-  return (<div className={ styles.wrapper + ' ' + (boolError && styles.error) + ' ' + (active && styles.active) }>
+  return (<div className={ styles.wrapper
+    + ' ' + (isError && styles.error)
+  }>
       <FormType
         { ...input }
         className={ styles.textarea }
@@ -26,16 +25,17 @@ const FormType = (FormType: string): React.FC<OwnProps> =>
       />
       {/*кнопка для сброса параметров поля
       (проявляется, если переданы методы resetFieldBy={form} в объявленном объекте Field*/ }
-      { visited && form && <div
+      {resetFieldBy && <div
         className={ styles.resetButton }
         onClick={ () => {
-          form.change(input.name, '')
-          form.resetFieldState(input.name)
+          resetFieldBy.change(input.name, '')
+          resetFieldBy.resetFieldState(input.name)
         } }
       >
-      </div> }
+      </div>
+      }
       {/*сообщение об ошибке появляется в этом спане*/ }
-      { boolError && (<span className={ styles.span }>{ error }</span>) }
+      { isError && (<span className={ styles.span }>{ meta.error }</span>) }
     </div>
   )
 }

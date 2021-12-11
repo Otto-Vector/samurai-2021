@@ -11,7 +11,6 @@ const initialState = {
 }
 
 export type FriendsReducerStateType = typeof initialState
-// type ActionsType = AddFriendsActionType | FriendsResponseIsFetchingActionType
 type ActionsType = GetActionsTypes<typeof friendsActions>
 
 const friendsReducer = (state = initialState, action: ActionsType): FriendsReducerStateType => {
