@@ -1,7 +1,7 @@
-import {UsersAPI} from "../api/samurai-api"
 import {UsersFromSearchType} from "./types/types"
 import {ThunkAction} from "redux-thunk"
-import {AppStateType, GetActionsTypes} from "./redux-store"
+import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store"
+import {UsersAPI} from "../api/users-api";
 
 const initialState = {
   friends: [] as UsersFromSearchType[],
@@ -36,7 +36,7 @@ const friendsReducer = (state = initialState, action: ActionsType): FriendsReduc
 }
 
 /* ЭКШОНЫ ДЛЯ ДРУЗЕЙ */
-export const friendsActions = {
+export const friendsActions: ActionsAnyType = {
   // добавляет массив данных друзей
   addFriends: (friends: UsersFromSearchType[]) => ({
     type: "friends-reducer/ADD_FRIENDS",

@@ -1,8 +1,9 @@
 import {randomFaceImage} from "../api/randomFace";
-import {profileAPI, ResultCodesEnum} from "../api/samurai-api";
+import {ResultCodesEnum} from "../api/samurai-api";
 import {PhotosType, PostType, ProfileType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
-import {AppStateType, GetActionsTypes} from "./redux-store";
+import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store";
+import {profileAPI} from "../api/profile-api";
 
 
 let initialState = {
@@ -101,7 +102,7 @@ const profileReducer = (state = initialState, action: ActionsType): ProfileReduc
 let defaultUserId = 20116 //маленький костылёк для "кривых" акков
 
 /* ЭКШОНЫ ПРОФИЛЯ */
-export const profileActions = {
+export const profileActions: ActionsAnyType = {
   addPost: (id = defaultUserId, newPostText: string) => ({
     type: 'profile-reducer/ADD-POST',
     id,

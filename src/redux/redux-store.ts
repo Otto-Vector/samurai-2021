@@ -8,15 +8,6 @@ import usersReducer from "./users-reducer";
 import authReducer from "./auth-reducer";
 import appReducer from "./app-reducer";
 
-// export type StateType = {
-//   auth: AuthReducerStateType
-//   profilePage: ProfileReducerStateType
-//   dialogsPage: DialogsReducerStateType,
-//   sidebar: FriendsReducerStateType,
-//   usersPage: UsersReducerStateType,
-//   app: AppReducerStateType
-// }
-
 
 const reducersObject = {
   profilePage: profileReducer,
@@ -32,10 +23,8 @@ let rootReducer = combineReducers(reducersObject)
 type StateType = typeof rootReducer
 export type AppStateType = ReturnType<StateType>
 
-// export type ActionsAnyType = {[key: string]: (...args: any[]) => any}
 // создал тип с обязательным type среди возвращаемых ключей для actions
 export type ActionsAnyType = Record<string, (...args: any[]) => {type: string,[key: string]: any}>
-// export type ActionsAnyType = Record<string, (...args infer U) => {type: string,[U]: any}>
 // комбайним все значения объекта
 export type PropertiesType<T> = T extends {[key: string]: infer U} ? U : never;
 // возвращаем комбайн возвращаемых значений, также extends-ом проверяем, является ли он типом ActionsAnyType

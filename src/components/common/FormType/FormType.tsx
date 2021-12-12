@@ -15,9 +15,7 @@ const FormType = (FormType: string): React.FC<OwnProps> => ({
 
   const isError = (meta.error || meta.submitError) && meta.touched
 
-  return (<div className={ styles.wrapper
-    + ' ' + (isError && styles.error)
-  }>
+  return (<div className={ styles.wrapper + ' ' + (isError && styles.error) }>
       <FormType
         { ...input }
         className={ styles.textarea }

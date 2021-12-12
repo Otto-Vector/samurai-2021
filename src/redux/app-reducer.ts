@@ -1,7 +1,7 @@
 import {getAuth} from "./auth-reducer";
 import {getResponseFriends} from "./friends-reducer";
 import {ThunkAction} from "redux-thunk";
-import {AppStateType, GetActionsTypes} from "./redux-store";
+import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store";
 
 const initialState = {
   initialazed: false,
@@ -32,7 +32,7 @@ const appReducer = (state = initialState,
 
 
 /* ЭКШОНЫ */
-const appActions = {
+const appActions: ActionsAnyType = {
   // при обращении, изменяет стейт initialazed на true
   setInitialazedSuccess: () => ({type: 'app-reducer/SET_INITIALIZED'} as const),
 }

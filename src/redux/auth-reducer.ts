@@ -1,7 +1,8 @@
-import {authAPI, ResultCodesEnum, ResultCodesWithCaptchaEnum, securityAPI} from "../api/samurai-api";
+import {ResultCodesEnum, ResultCodesWithCaptchaEnum} from "../api/samurai-api";
 import {AuthDataType, LoginDataType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
-import {AppStateType, GetActionsTypes} from "./redux-store";
+import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store";
+import {authAPI, securityAPI} from "../api/auth-api";
 
 const initialState = {
   data: {
@@ -52,7 +53,7 @@ const authReducer = (state = initialState, action: ActionsType): AuthReducerStat
 }
 
 /* ЭКШОНЫ АВТОРИЗАЦИИ */
-const authActions = {
+const authActions: ActionsAnyType = {
   // обновляет данные авторизированного пользователя
   setAuthUserData: (payload: AuthDataType, isAuth: boolean) => ({
     type: 'auth-reducer/SET-AUTH',
@@ -96,7 +97,6 @@ export const loginIn = (loginData: LoginDataType): AuthThunkActionType<string[] 
     if (response.resultCode === ResultCodesEnum.Success) {
       dispatch(getAuth())
       return null
-
     } else if (response.resultCode === ResultCodesWithCaptchaEnum.CaptchaRequired) {
       //десятый код запрашивает капчу и мы забираем её у сервера
       const response = await securityAPI.getCaptchaUrl()
