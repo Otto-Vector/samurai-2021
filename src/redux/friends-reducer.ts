@@ -1,7 +1,7 @@
-import {UsersAPI} from "../api/samurai-api"
 import {UsersFromSearchType} from "./types/types"
 import {ThunkAction} from "redux-thunk"
 import {AppStateType, GetActionsTypes} from "./redux-store"
+import {UsersAPI} from "../api/users-api";
 
 const initialState = {
   friends: [] as UsersFromSearchType[],

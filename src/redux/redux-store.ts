@@ -8,15 +8,6 @@ import usersReducer from "./users-reducer";
 import authReducer from "./auth-reducer";
 import appReducer from "./app-reducer";
 
-// export type StateType = {
-//   auth: AuthReducerStateType
-//   profilePage: ProfileReducerStateType
-//   dialogsPage: DialogsReducerStateType,
-//   sidebar: FriendsReducerStateType,
-//   usersPage: UsersReducerStateType,
-//   app: AppReducerStateType
-// }
-
 
 const reducersObject = {
   profilePage: profileReducer,
