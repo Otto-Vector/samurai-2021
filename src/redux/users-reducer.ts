@@ -1,7 +1,7 @@
 import {ResultCodesEnum} from "../api/samurai-api";
 import {UsersFromSearchType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
-import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store";
+import {AppStateType, GetActionsTypes} from "./redux-store";
 import {UsersAPI} from "../api/users-api";
 
 
@@ -82,7 +82,7 @@ const usersReducer = (state = initialState, action: ActionsType): UsersReducerSt
 
 /* ЭКШОНЫ USERS */
 
-export const usersActions: ActionsAnyType = {
+export const usersActions = {
   // добавление|удаление пользователя в список друзей
   followSuccessToggle: (userId: number, isFollow: boolean) => ({
     type: 'users-reducer/FOLLOW-TOGGLE',

@@ -1,6 +1,6 @@
 import {UsersFromSearchType} from "./types/types"
 import {ThunkAction} from "redux-thunk"
-import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store"
+import { AppStateType, GetActionsTypes} from "./redux-store"
 import {UsersAPI} from "../api/users-api";
 
 const initialState = {
@@ -36,7 +36,7 @@ const friendsReducer = (state = initialState, action: ActionsType): FriendsReduc
 }
 
 /* ЭКШОНЫ ДЛЯ ДРУЗЕЙ */
-export const friendsActions: ActionsAnyType = {
+export const friendsActions = {
   // добавляет массив данных друзей
   addFriends: (friends: UsersFromSearchType[]) => ({
     type: "friends-reducer/ADD_FRIENDS",

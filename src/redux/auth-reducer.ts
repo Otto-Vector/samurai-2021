@@ -1,7 +1,7 @@
 import {ResultCodesEnum, ResultCodesWithCaptchaEnum} from "../api/samurai-api";
 import {AuthDataType, LoginDataType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
-import {ActionsAnyType, AppStateType, GetActionsTypes} from "./redux-store";
+import {AppStateType, GetActionsTypes} from "./redux-store";
 import {authAPI, securityAPI} from "../api/auth-api";
 
 const initialState = {
@@ -53,7 +53,7 @@ const authReducer = (state = initialState, action: ActionsType): AuthReducerStat
 }
 
 /* ЭКШОНЫ АВТОРИЗАЦИИ */
-const authActions: ActionsAnyType = {
+const authActions = {
   // обновляет данные авторизированного пользователя
   setAuthUserData: (payload: AuthDataType, isAuth: boolean) => ({
     type: 'auth-reducer/SET-AUTH',
@@ -113,7 +113,6 @@ export const loginOut = (): AuthThunkActionType =>
     if (response.resultCode === ResultCodesEnum.Success) {
       dispatch(authActions.setAuthUserData({id: null, email: null, login: null}, false))
     }
-
   }
 
 export default authReducer;

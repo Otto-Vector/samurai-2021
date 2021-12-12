@@ -40,13 +40,13 @@ const appActions: ActionsAnyType = {
 
 /* САНКИ */
 // конструктор для типов санок
-export type InitialazedThunkActionType = ThunkAction<void, AppStateType, unknown, ActionsType>
+export type InitializedThunkActionType = ThunkAction<void, AppStateType, unknown, ActionsType>
 
 // просто ещё один Промис для кучи
 const sleep = (ms: number) : Promise<Function> => new Promise(resolve => setTimeout(resolve, ms))
 
 // запускаем комбайн загрузок/обращений к API
-export const initialazedAll = (): InitialazedThunkActionType =>
+export const initializedAll = (): InitializedThunkActionType =>
   (dispatch) => {
     let promise = dispatch(getAuth())
     let promise2 = sleep(100)

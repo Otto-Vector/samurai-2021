@@ -12,7 +12,7 @@ import {
   connect,
   Provider
 } from "react-redux";
-import {initialazedAll} from "./redux/app-reducer";
+import {initializedAll} from "./redux/app-reducer";
 import {compose} from "redux";
 import Navbar from './components/Navbar/Navbar';
 
@@ -63,7 +63,7 @@ let mapStateToProps = (state) => {
 
 let App = compose(
   withRouter,
-  connect(mapStateToProps, {initialazedAll})
+  connect(mapStateToProps, {initialazedAll: initializedAll})
 )(AppClass)
 
 

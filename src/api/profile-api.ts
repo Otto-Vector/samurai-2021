@@ -9,8 +9,6 @@ export const profileAPI = {
   },
   // загрузка данных профиля из формы на сервер
   setProfileData(data: ProfileType) {
-    // userId, lookingForAJob, lookingForAJobDescription, fullName, aboutMe
-    // contacts: { github, vk, facebook, instagram, twitter, website, youtube, mainLink}
     return instance.put<ProfileType, { data: ResponseApiType }>(`profile`, data)
       .then(response => response.data)
   },
