@@ -1,4 +1,3 @@
-// import {randomFaceImage} from "../api/randomFace";
 import {DialogsType, MessagesType} from "./types/types";
 
 const ADD_MESSAGE = 'dialog-reducer/ADD-MESSAGE'

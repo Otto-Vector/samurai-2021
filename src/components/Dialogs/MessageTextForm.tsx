@@ -4,7 +4,7 @@ import styles from './Dialogs.module.css';
 import {Form, Field} from 'react-final-form'
 import {TextArea} from "../common/FormType/FormType";
 
-import {composeValidators, required} from "../../utils/validators";
+import {composeValidators, maxLength50, required} from "../../utils/validators";
 import {onAltEnterKey} from "../../utils/KeyListeners";
 import {MessagesType} from "../../redux/types/types";
 import {FormApi} from "final-form";
@@ -17,46 +17,50 @@ type OwnProps = {
 const MessageTextForm: React.FC<OwnProps> = ({textMessagePlaceholder, onSubmit}) => {
 
   // передача значений со сбросом поля ввода
-    const onSubmitResetForm = (formData: MessagesType, form: FormApi<MessagesType>)=>{
-      onSubmit(formData)
-      //сброс значений после ввода
-      form.reset()
-    }
+  const onSubmitResetForm = (formData: MessagesType, form: FormApi<MessagesType>) => {
+    onSubmit(formData)
+    // сброс значений после ввода
+    form.reset()
+  }
 
   return (
-    <div className={styles.addField}>
+    <div className={ styles.addField }>
       <Form
-        onSubmit={onSubmitResetForm}
-        initialValues={{
+        onSubmit={ onSubmitResetForm }
+        initialValues={ {
           message: ''
-        }}
+        } }
         render=
-          {({handleSubmit, pristine, form, submitting, values }) => (
-            <form className={styles.addField} onSubmit={handleSubmit}>
-              <div className={styles.textarea}
-                   onKeyDown={(e) => {onAltEnterKey(e)(form.submit)}}
+          { ({handleSubmit, pristine, form, submitting, values}) => (
+            <form className={ styles.addField } onSubmit={ handleSubmit }>
+              <div className={ styles.textarea }
+                   onKeyDown={ (e) => {
+                     onAltEnterKey(e)(form.submit)
+                   } }
               >
-                <Field name={'message'}
-                       validate={composeValidators(required)}
-                       placeholder={textMessagePlaceholder}
-                       component={TextArea}
+                <Field name={ 'message' }
+                       validate={ composeValidators(required, maxLength50) }
+                       placeholder={ textMessagePlaceholder }
+                       component={ TextArea }
                 />
               </div>
-              <div className={styles.buttonsWrapper}>
-                <button type={'submit'}
-                        className={styles.button}
-                        disabled={submitting}
+              <div className={ styles.buttonsWrapper }>
+                <button type={ 'submit' }
+                        className={ styles.button }
+                        disabled={ submitting }
                 >Add message
                 </button>
-                <button type={'button'}
-                        className={styles.resetButton}
-                        disabled={pristine || submitting}
-                        onClick={(e)=>{form.reset()}}
+                <button type={ 'button' }
+                        className={ styles.resetButton }
+                        disabled={ pristine || submitting }
+                        onClick={ (e) => {
+                          form.reset()
+                        } }
                 >X
                 </button>
               </div>
             </form>
-          )}
+          ) }
       />
     </div>
   )
