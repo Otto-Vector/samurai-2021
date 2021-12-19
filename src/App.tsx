@@ -37,8 +37,8 @@ const AppFunc: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (
   {initializedAll, initialazed}) => {
 
   useEffect(() => {
-    initializedAll()
-  }, [])
+    if (!initialazed) initializedAll()
+  }, [initialazed,initializedAll])
 
   if (!initialazed) return <Preloader/>
 

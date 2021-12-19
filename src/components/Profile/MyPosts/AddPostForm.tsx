@@ -42,7 +42,8 @@ const AddPostForm: React.FC<OwnProps> = ({onSubmit, newPostTextPlaceholder}) => 
           <button type={'button'}
                       className={styles.resetButton}
                       disabled={pristine || submitting}
-                      onClick={(e)=>{form.reset}}>X
+                      onClick={(e)=>{form.reset()}}
+          >X
               </button>
           <button type={'submit'}
                   className={styles.buttonAddPost}
