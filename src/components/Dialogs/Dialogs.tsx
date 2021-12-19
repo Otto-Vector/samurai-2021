@@ -6,25 +6,18 @@ import MessageTextForm from "./MessageTextForm";
 import {DialogsContainerType} from "./DialogsContainer";
 import {MessagesType} from "../../redux/types/types";
 
-const Dialogs: React.FC<DialogsContainerType> = (props) => {
+const Dialogs: React.FC<DialogsContainerType> = (
+  {dialogs,addMessage,messages,authId,textMessagePlaceholder}) => {
 
 
-  const onSubmit = (formData: MessagesType, form: any) => {
-    props.addMessage({id: props.authId, message: formData.message})
-    //сброс значений после ввода
-    form.reset()
+  const onSubmit = ({message}: MessagesType) => {
+    addMessage({id: authId, message})
   }
 
-  //хардкодим сопоставление иконок айдишникам
-  // let zz = (idd) => {
-  //   for (let {id} of props.dialogs)
-  //     if (id === +idd) return null
-  // }
 
-
-  const dialogsElements = props.dialogs.map(args => <DialogItem {...args} key={Math.random().toString()}/>)
-  const messagesElements = props.messages.map(
-    args => <Message {...args} key={Math.random().toString()} image={undefined}/>)
+  const dialogsElements = dialogs.map((args) => <DialogItem {...args} key={args.id} />)
+  const messagesElements = messages.map(
+    (args) => <Message {...args} key={args.id} image={undefined}/>)
 
   return (
     <div className={styles.dialogs}>
@@ -37,7 +30,7 @@ const Dialogs: React.FC<DialogsContainerType> = (props) => {
           {messagesElements}
         </div>
         <MessageTextForm onSubmit={onSubmit}
-                         textMessagePlaceholder={props.textMessagePlaceholder}
+                         textMessagePlaceholder={textMessagePlaceholder}
         />
       </div>
     </div>

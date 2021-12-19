@@ -60,9 +60,12 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
   // и меняем пользователя внутри компоненты, пока она живёт
   let [userID, changeUserID] = useState(+(match.params.userId || "0"))
 
+  // по умолчанию, всегда берёт активный userID
   const updateProfile = (idFromRouter = userID) => {
-    authUserId = +(authUserId || "0")
+
+    authUserId = +(authUserId || 0)
     let userId = idFromRouter || authUserId
+
     setIsAuthProfile(userId === authUserId)
     getProfile(userId)
     getStatus(userId)
@@ -71,15 +74,17 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
   useEffect(() => {
     // загружаем данные пользователя в UI
     updateProfile()
+    // создаём прослушку истории браузера
     const unlisten = history.listen(({pathname}) => {
       // преображаем id пользователя в число
       let idFromRoute = +pathname.split('/').reverse()[0]
-      // изменяем значение id пользователя для загрузки
+      // изменяем значение id пользователя
       changeUserID(idFromRoute)
     });
+    // отписываемся от прослушки истории
     return () => {
       unlisten()
-    } // отписываемся от прослушки истории
+    }
   }, [userID]) // запускается при каждом изменении userID
 
   // передаваемые переменные

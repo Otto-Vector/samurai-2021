@@ -7,20 +7,26 @@ import {TextArea} from "../common/FormType/FormType";
 import {composeValidators, required} from "../../utils/validators";
 import {onAltEnterKey} from "../../utils/KeyListeners";
 import {MessagesType} from "../../redux/types/types";
+import {FormApi} from "final-form";
 
 type OwnProps = {
   textMessagePlaceholder: string
-  // onSubmit: ()=> Promise<void>
-  onSubmit: (formData: MessagesType, form: any) => void
+  onSubmit: (formData: MessagesType) => void
 }
 
-const MessageTextForm = ({textMessagePlaceholder, onSubmit}: OwnProps) => {
+const MessageTextForm: React.FC<OwnProps> = ({textMessagePlaceholder, onSubmit}) => {
 
+  // передача значений со сбросом поля ввода
+    const onSubmitResetForm = (formData: MessagesType, form: FormApi<MessagesType>)=>{
+      onSubmit(formData)
+      //сброс значений после ввода
+      form.reset()
+    }
 
   return (
     <div className={styles.addField}>
       <Form
-        onSubmit={onSubmit}
+        onSubmit={onSubmitResetForm}
         initialValues={{
           message: ''
         }}
@@ -28,7 +34,7 @@ const MessageTextForm = ({textMessagePlaceholder, onSubmit}: OwnProps) => {
           {({handleSubmit, pristine, form, submitting, values }) => (
             <form className={styles.addField} onSubmit={handleSubmit}>
               <div className={styles.textarea}
-                   onKeyDown={e => {onAltEnterKey(e)(form.submit)}}
+                   onKeyDown={(e) => {onAltEnterKey(e)(form.submit)}}
               >
                 <Field name={'message'}
                        validate={composeValidators(required)}
