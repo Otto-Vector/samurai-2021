@@ -6,16 +6,17 @@ import withAuthRedirect from "../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {getDialogs, getDialogsMessages, getDialogsTextMessagePlaceholder} from "../../reselect/dialogs-reselectors";
 import {getAuthorizedUserDataId} from "../../reselect/auth-reselectors";
-import {DialogsType, MessagesType} from "../../redux/types/types";
+import {MessagesType} from "../../redux/types/types";
 import {AppStateType} from "../../redux/redux-store";
 
 
-type MapStatePropsType = {
-  authId: number | null
-  dialogs: DialogsType[]
-  messages: MessagesType[]
-  textMessagePlaceholder: string
-}
+type MapStatePropsType = ReturnType<typeof mapStateToProps>
+//   {
+//   authId: number | null
+//   dialogs: DialogsType[]
+//   messages: MessagesType[]
+//   textMessagePlaceholder: string
+// }
 
 type MapDispatchPropsType = {
   addMessage: (payload: MessagesType) => void
@@ -23,7 +24,7 @@ type MapDispatchPropsType = {
 
 export type DialogsContainerType = MapStatePropsType & MapDispatchPropsType
 
-const mapStateToProps = (state: AppStateType): MapStatePropsType => {
+const mapStateToProps = (state: AppStateType) => {
   return {
     authId: getAuthorizedUserDataId(state),
     dialogs: getDialogs(state),
@@ -33,7 +34,7 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
 }
 
 
-export default compose(
+export default compose<React.ComponentType>(
   connect<MapStatePropsType,MapDispatchPropsType,{},AppStateType>(mapStateToProps,{
     addMessage
   }),

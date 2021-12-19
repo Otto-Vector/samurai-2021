@@ -7,18 +7,18 @@ import {compose} from "redux";
 
 import withAuthRedirect from "../hoc/withAuthRedirect";
 import {AppStateType} from "../../redux/redux-store";
-import {UsersFromSearchType} from "../../redux/types/types";
 
 
-type MapStateToPropsType = {
-    isFriendsFilter: boolean | null
-    isFetching: boolean
-    users: UsersFromSearchType[]
-    isFetchingById: number[]
-    totalUsersCount: number
-    pageSize: number
-    currentPage: number
-}
+type MapStateToPropsType = ReturnType<typeof mapStateToProps>
+//   {
+//     isFriendsFilter: boolean | null
+//     isFetching: boolean
+//     users: UsersFromSearchType[]
+//     isFetchingById: number[]
+//     totalUsersCount: number
+//     pageSize: number
+//     currentPage: number
+// }
 
 type DispatchToPropsType = {
   follow: (isFollow: boolean, userId: number) => void
@@ -68,7 +68,7 @@ class UsersContainer extends React.Component<PropsType> {
 
 /////////////////////////////////////////////////////
 
-let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
+let mapStateToProps = (state: AppStateType) => {
   return {
     users: state.usersPage.users,
     pageSize: state.usersPage.pageSize,
@@ -82,7 +82,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 
 const {changePage,friendsOnlyToggle} = usersActions
 
-export default compose(
+export default compose<React.ComponentType>(
   connect<MapStateToPropsType, DispatchToPropsType,{},AppStateType>(mapStateToProps, {
     follow,
     changePage,

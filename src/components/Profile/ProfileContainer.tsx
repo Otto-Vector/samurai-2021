@@ -21,13 +21,14 @@ import {
 import {ProfileType} from "../../redux/types/types";
 import {AppStateType} from "../../redux/redux-store";
 
-type MapStatePropsType = {
-  isAuth: boolean
-  authUserId: number | null
-  profile: ProfileType | null
-  isFetching: boolean
-  isAuthProfile: boolean
-}
+type MapStatePropsType = ReturnType<typeof mapStateToProps>
+// {
+//   isAuth: boolean
+//   authUserId: number | null
+//   profile: ProfileType | null
+//   isFetching: boolean
+//   isAuthProfile: boolean
+// }
 
 type MapDispatchType = {
   getProfile: (userId: number) => void
@@ -99,7 +100,7 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
 
 }
 
-const mapStateToProps = (state: AppStateType): MapStatePropsType => {
+const mapStateToProps = (state: AppStateType) => {
   return {
     isAuth: getIsAuthUser(state),
     authUserId: getAuthorizedUserDataId(state),
@@ -111,7 +112,7 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
 
 const {setIsAuthProfile} = profileActions
 
-export default compose(
+export default compose<React.ComponentType>(
   connect<MapStatePropsType, MapDispatchType, OwnProps, AppStateType>(mapStateToProps, {
     getProfile,
     setIsAuthProfile,
