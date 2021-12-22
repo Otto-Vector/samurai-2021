@@ -54,25 +54,27 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
     // BLL
     setPhoto, setProfileData, setIsAuthProfile, getProfile, getStatus,
     // whithRouter
-    history, match
+    history, match: {params}
   }) => {
 
   // присваиваем первое значение из роутера
   // и меняем пользователя внутри компоненты, пока она живёт
-  let [userID, changeUserID] = useState(+(match.params.userId || "0"))
+  const [userID, changeUserID] = useState(+(params.userId || 0))
 
+
+  // const hist_ory = useHistory()
   // по умолчанию, всегда берёт активный userID
   const updateProfile = (idFromRouter = userID) => {
 
-    authUserId = +(authUserId || 0)
-    let userId = idFromRouter || authUserId
+    let _userId = idFromRouter || +(authUserId || 0)
 
-    setIsAuthProfile(userId === authUserId)
-    getProfile(userId)
-    getStatus(userId)
+    setIsAuthProfile(_userId === +(authUserId || 0))
+    getProfile(_userId)
+    getStatus(_userId)
   }
 
   useEffect(() => {
+    // console.log('params: ',params);
     // загружаем данные пользователя в UI
     updateProfile()
     // создаём прослушку истории браузера
