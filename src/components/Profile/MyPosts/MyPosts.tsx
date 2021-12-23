@@ -6,11 +6,12 @@ import {MyPostsContainerOwnedProps} from "./MyPostsContainer";
 
 export type newPostTextType = {newPostText: string }
 
-const MyPosts: React.FC<MyPostsContainerOwnedProps> = React.memo(({posts, newPostTextPlaceholder, addPost}) => {
+const MyPosts: React.FC<MyPostsContainerOwnedProps> = (
+  {posts, newPostTextPlaceholder, addPost}) => {
 
   const postsElements = posts.map((args) => <Post {...args} key={args.id}/>)
 
-  let onSubmit = ({newPostText}: newPostTextType) => {
+  const onSubmit = ({newPostText}: newPostTextType) => {
     addPost(33, newPostText)
   }
 
@@ -23,6 +24,8 @@ const MyPosts: React.FC<MyPostsContainerOwnedProps> = React.memo(({posts, newPos
       </div>
     </div>
   )
-})
+}
 
-export default MyPosts;
+const memoizedMyPosts = React.memo(MyPosts)
+
+export default memoizedMyPosts;

@@ -16,11 +16,10 @@ type OwnPropsType = {
 }
 
 
-const ProfileInfo = React.memo(
-  ({profile, isAuthProfile, isFetching, setPhoto, setProfileData}: OwnPropsType) => {
+const ProfileInfo: React.FC<OwnPropsType> = (
+  {profile, isAuthProfile, isFetching, setPhoto, setProfileData}) => {
 
-  let [editMode, setEditMode] = useState(false)
-
+  const [editMode, setEditMode] = useState(false)
 
   const sendFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) setPhoto(event.target.files[0])
@@ -51,5 +50,7 @@ const ProfileInfo = React.memo(
     </div>
   )
 }
-)
-export default ProfileInfo;
+
+const memoizedProfileInfo = React.memo(ProfileInfo)
+
+export default memoizedProfileInfo;

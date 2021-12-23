@@ -1,0 +1,16 @@
+
+
+.item a {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.item a.activeLink {
+    color: gold;
+    text-shadow: 1px 1px black;
+}
+
+.friends {
+    margin-top: 60px;
+}

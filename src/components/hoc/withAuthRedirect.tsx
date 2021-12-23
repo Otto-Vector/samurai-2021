@@ -6,24 +6,23 @@ import {AppStateType} from "../../redux/redux-store";
 import {getAuthIsFetching, getIsAuthUser} from "../../reselect/auth-reselectors";
 
 
-type MapStateToPropsType = {
-  isAuth: boolean
-  isFetchingAuth: boolean
-}
-
-const authMapStateToProps = (state: AppStateType): MapStateToPropsType => {
+const authMapStateToProps = (state: AppStateType) => {
   return {
     isAuth: getIsAuthUser(state),
     isFetchingAuth: getAuthIsFetching(state),
   }
 }
 
+type MapStateToPropsType = ReturnType<typeof authMapStateToProps>
+
+/* Если пользователь не авторизован, редиректит на Login
+  а из логина редиректит на Profile */
 const withAuthRedirect = (Component: any) => {
 
-  const wrapperComponent = (props: MapStateToPropsType) => {
+  const wrapperComponent: React.FC<MapStateToPropsType> = ({isFetchingAuth,isAuth, ...props}) => {
 
-    if (props.isFetchingAuth) return <Preloader/>
-    else if (!props.isAuth) return <Redirect to='/login'/>
+    if (isFetchingAuth) return <Preloader/>
+    else if (!isAuth) return <Redirect to='/login'/>
 
     return <Component {...props}/>
   }

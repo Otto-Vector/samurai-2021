@@ -1,10 +1,9 @@
 import React from 'react';
 import styles from './Navbar.module.css';
 import {NavLink} from "react-router-dom";
-import SidebarContainer from "../Sidebar/SidebarContainer";
 
 
-const Navbar = (props: any) => {
+const Navbar: React.FC<any> = (props) => {
   return (
     <nav className={styles.nav}>
       <div className={styles.item}>
@@ -31,9 +30,7 @@ const Navbar = (props: any) => {
       {/*<div className={styles.item}>*/}
       {/*    <a href={'#'}>Settings</a>*/}
       {/*</div>*/}
-      <div className={styles.friends}>
-        <SidebarContainer/>
-      </div>
+
     </nav>
   )
 }

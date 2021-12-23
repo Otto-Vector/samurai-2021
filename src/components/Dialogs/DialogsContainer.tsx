@@ -33,7 +33,6 @@ const mapStateToProps = (state: AppStateType) => {
   }
 }
 
-
 export default compose<React.ComponentType>(
   connect<MapStatePropsType,MapDispatchPropsType,{},AppStateType>(mapStateToProps,{
     addMessage

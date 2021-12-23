@@ -5,7 +5,8 @@ import {NavLink} from "react-router-dom";
 import {HeaderContainerType} from "./HeaderContainer";
 
 
-const Header: React.FC<HeaderContainerType> =  ({isAuth, data: {id, login}, loginOut})=> {
+const Header: React.FC<HeaderContainerType> =  (
+  {isAuth, data: {id, login}, loginOut}) => {
 
   return <header className={styles.header}>
     <img alt='logo' src={logoSamurai}/>
@@ -23,4 +24,6 @@ const Header: React.FC<HeaderContainerType> =  ({isAuth, data: {id, login}, logi
   </header>
 }
 
-export default Header;
+const memoizedHeader = React.memo(Header)
+
+export default memoizedHeader;

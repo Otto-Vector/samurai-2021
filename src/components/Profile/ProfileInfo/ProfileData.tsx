@@ -10,7 +10,8 @@ type OwnPropsType = {
   activateEditMode: ()=>void
 }
 
-const ProfileData = React.memo(({isAuthProfile,activateEditMode,profile}:OwnPropsType) => {
+const ProfileData: React.FC<OwnPropsType> = (
+  {isAuthProfile,activateEditMode,profile}) => {
 
   return <div>
     <h2 className={styles.fullName}>{profile?.fullName}</h2>
@@ -34,6 +35,7 @@ const ProfileData = React.memo(({isAuthProfile,activateEditMode,profile}:OwnProp
     </div>
   </div>
 }
-)
 
-export default ProfileData;
+const memoizedProfileData = React.memo(ProfileData)
+
+export default memoizedProfileData;

@@ -9,15 +9,13 @@ import {MessagesType} from "../../redux/types/types";
 const Dialogs: React.FC<DialogsContainerType> = (
   {dialogs,addMessage,messages,authId,textMessagePlaceholder}) => {
 
-
   const onSubmit = ({message}: MessagesType) => {
     addMessage({id: authId, message})
   }
 
-
-  const dialogsElements = dialogs.map((args) => <DialogItem {...args} key={args.id} />)
+  const dialogsElements = dialogs.map((args) => <DialogItem {...args} key={Math.random()||args.id} />)
   const messagesElements = messages.map(
-    (args) => <Message {...args} key={args.id} image={undefined}/>)
+    (args) => <Message {...args} key={Math.random()||args.id} image={undefined}/>)
 
   return (
     <div className={styles.dialogs}>

@@ -1,34 +1,11 @@
 .sidebar {
-  padding: 10px;
-  width: 250px;
+    grid-area: n;
+    background-color: burlywood;
+    padding: 20px;
 }
 
-.headerWrapper {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  justify-items: center;
-  align-items: center;
-  padding-bottom: 15px;
-}
-
-.header {
-  color: whitesmoke;
-  font-weight: bold;
-  font-size: 30px;
-
-}
-
-.refreshButton {
-  padding: 5px;
-  background-color: gray;
-  border-radius: 3px;
-  color: gold;
-}
-
-.friendItems {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+.delimiter {
+    width: 100%;
+    background-color: inherit;
+    height: 50px;
 }

@@ -16,8 +16,7 @@ type OwnProps = {
 const LoginForm = ({onSubmit, captchaUrl}: OwnProps) => {
 
   const onSubmit2 = async (formData: LoginDataType) => {
-    let error = await onSubmit(formData)
-
+    const error = await onSubmit(formData)
     return { [FORM_ERROR]: error || null }
   }
 
@@ -72,10 +71,10 @@ const LoginForm = ({onSubmit, captchaUrl}: OwnProps) => {
           </div>
           }
           {<button className={styles.button} type={'submit'} disabled={submitting}>Done</button>}
-          <button type={'button'}
+          <button type={'reset'}
                       className={styles.button}
                       disabled={pristine || submitting}
-                      // onClick={form.reset}
+                      onClick={()=>{form.reset()}}
           >X
               </button>
           {submitError && <span className={styles.onError}>{submitError}</span>}

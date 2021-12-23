@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './friendItem.module.css';
 import {NavLink} from "react-router-dom";
-import noImage from '../../../assets/images/userNoImage.png'
-import {UsersFromSearchType} from "../../../redux/types/types";
+import noImage from '../../../../assets/images/userNoImage.png'
+import {UsersFromSearchType} from "../../../../redux/types/types";
 
 type PropsType = UsersFromSearchType
 

@@ -13,10 +13,9 @@ const authMapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 
 const withAuthNotShown = (Component: any) => {
-  const wrapperComponent = (props: MapStateToPropsType) => {
-    return !props.isAuth ? <div>Authorize please</div> : <Component {...props}/>
+  const wrapperComponent = ({isAuth, ...props}: MapStateToPropsType) => {
+    return !isAuth ? <div>Authorize please</div> : <Component {...props}/>
   }
-
   return connect<MapStateToPropsType, {}, {}, AppStateType>(authMapStateToProps)(wrapperComponent)
 }
 
