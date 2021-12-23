@@ -28,12 +28,7 @@ enum SocialsHasImage {
 }
 
 
-// export type SocialsImageSourceType = Partial<{ [ key in keyof typeof SocialsHasImage]: EmptyFilledType }>
 export type SocialsImageSourceType = Record<keyof typeof SocialsHasImage, EmptyFilledType>
-// type SocialsImageSourceType = Record<EmptyFilledType, string>
-// interface StringDynamicKey {
-//   [key: string]: EmptyFilledType;
-// }
 
 export const socialsImageSource: SocialsImageSourceType = {
   facebook: {
