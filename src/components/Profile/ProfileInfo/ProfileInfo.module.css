@@ -69,6 +69,13 @@
     justify-self: flex-end;
 }
 
+.underImage {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-flow: nowrap row;
+    justify-content: center;
+}
 
 .followButton {
     height: 20px;

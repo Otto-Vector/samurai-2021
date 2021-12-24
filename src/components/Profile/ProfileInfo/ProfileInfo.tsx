@@ -33,21 +33,22 @@ const ProfileInfo: React.FC<OwnPropsType> = (
   if (isFetching) {
     return <div className={styles.profilePage}><Preloader/></div>
   }
-  //toDo: add follow/unfollow in profile
+
   return (
     <div className={styles.profilePage}>
       <div className={styles.profileInfo}>
         <div className={styles.left}>
           <img className={styles.imageWrapper} src={profile.photos.large || userNoImage} alt='ProfileImage'/>
+          <div className={styles.underImage}>
           {isAuthProfile ? <input type={'file'} onChange={sendFile}/>
-          : <div>
+          :
             <button type={'button'}
                     className={`${styles.followButton} ${isFollowCurrent && styles.unfollow}`}
                     onClick={()=>{followProfile(isFollowCurrent, profile.userId as number)}}
                     disabled={isFollowFetching}
             >{isFollowCurrent ? 'unfollow':'follow'}</button>
-          </div>
           }
+          </div>
         </div>
         {editMode
           ? <ProfileForm onSubmit={setProfileData}
