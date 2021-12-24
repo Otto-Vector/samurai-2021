@@ -1,74 +1,83 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Users from "./Users";
 import {
-follow, getUsers, usersActions} from "../../redux/users-reducer";
+  follow, getUsers, usersActions
+} from "../../redux/users-reducer";
 import {connect} from "react-redux";
 import {compose} from "redux";
 
 import withAuthRedirect from "../hoc/withAuthRedirect";
 import {AppStateType} from "../../redux/redux-store";
+import {UsersFromSearchType} from "../../redux/types/types";
 
 
-type MapStateToPropsType = ReturnType<typeof mapStateToProps>
-//   {
-//     isFriendsFilter: boolean | null
-//     isFetching: boolean
-//     users: UsersFromSearchType[]
-//     isFetchingById: number[]
-//     totalUsersCount: number
-//     pageSize: number
-//     currentPage: number
-// }
+type MapStateToPropsType = {
+  isFriendsFilter: boolean | null
+  isFetching: boolean
+  users: UsersFromSearchType[]
+  isFetchingById: number[]
+  totalUsersCount: number
+  pageSize: number
+  currentPage: number
+}
 
 type DispatchToPropsType = {
   follow: (isFollow: boolean, userId: number) => void
-  changePage: (page : number) => void
+  changePage: (page: number) => void
   getUsers: (pageSize: number, currentPage: number, isFriendsFilter?: boolean | null) => void
   friendsOnlyToggle: (isFriendsFilter: boolean | null) => void
 }
 
 type PropsType = MapStateToPropsType & DispatchToPropsType
 
-class UsersContainer extends React.Component<PropsType> {
+const UsersContainer: React.FC<PropsType> = (
+  {
+    isFriendsFilter, isFetching, users, isFetchingById,
+    totalUsersCount, pageSize, currentPage,
+    //BLL
+    follow, changePage, getUsers, friendsOnlyToggle,
+  }) => {
 
-  componentDidMount() {
-    this.props.getUsers(this.props.pageSize, this.props.currentPage)
+  // toDo: add searchByName
+
+  useEffect(() => {
+    getUsers(pageSize, currentPage)
+  }, [])
+
+
+  const pageSelect = (page: number) => {
+    changePage(page)
+    getUsers(pageSize, page, isFriendsFilter)
   }
 
-
-  pageSelect = (page: number) => {
-    this.props.changePage(page)
-    this.props.getUsers(this.props.pageSize, page, this.props.isFriendsFilter)
-  }
-
-  friendsFilerToggle = () => {
-    this.props.changePage(1) // перемещаемся на первую страницу
-    const isFriendsFilter = this.props.isFriendsFilter ? null : true //принимает только null или true
-    this.props.friendsOnlyToggle(isFriendsFilter)
-    this.props.getUsers(this.props.pageSize, 1, isFriendsFilter)
+  const friendsFilerToggle = () => {
+    changePage(1) // перемещаемся на первую страницу
+    const isFriends = isFriendsFilter ? null : true //принимает только null, true или false(только не друзья
+    friendsOnlyToggle(isFriends)
+    getUsers(pageSize, 1, isFriends)
 
   }
 
-  render() {
-    return <>
-      <Users users={this.props.users}
-             totalUsersCount={this.props.totalUsersCount}
-             pageSize={this.props.pageSize}
-             currentPage={this.props.currentPage}
-             follow={this.props.follow}
-             pageSelect={this.pageSelect}
-             isFetchingById={this.props.isFetchingById}
-             isFriendsFilter={this.props.isFriendsFilter}
-             friendsFilerToggle={this.friendsFilerToggle}
-             isFetching={this.props.isFetching}
-      />
-    </>
-  }
+  return <>
+    <Users { ...{
+      users,
+      totalUsersCount,
+      pageSize,
+      currentPage,
+      isFetchingById,
+      isFriendsFilter,
+      isFetching,
+      follow,
+      pageSelect,
+      friendsFilerToggle,
+    } }
+    />
+  </>
 }
 
 /////////////////////////////////////////////////////
 
-let mapStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
   return {
     users: state.usersPage.users,
     pageSize: state.usersPage.pageSize,
@@ -80,10 +89,10 @@ let mapStateToProps = (state: AppStateType) => {
   }
 }
 
-const {changePage,friendsOnlyToggle} = usersActions
+const {changePage, friendsOnlyToggle} = usersActions
 
 export default compose<React.ComponentType>(
-  connect<MapStateToPropsType, DispatchToPropsType,{},AppStateType>(mapStateToProps, {
+  connect<MapStateToPropsType, DispatchToPropsType, {}, AppStateType>(mapStateToProps, {
     follow,
     changePage,
     getUsers,

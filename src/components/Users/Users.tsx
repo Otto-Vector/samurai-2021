@@ -6,40 +6,46 @@ import Pagination from "../common/Pagination/Pagination"
 import {UsersFromSearchType} from "../../redux/types/types";
 
 type PropsType = {
-    isFriendsFilter: boolean | null
-    isFetching: boolean
-    users: UsersFromSearchType[]
-    isFetchingById: number[]
-    totalUsersCount: number
-    pageSize: number
-    currentPage: number
-
-    pageSelect: (selectedPage: number) => void
-    friendsFilerToggle: () => void
-    follow: (followed: boolean, id: number) => void
+  isFriendsFilter: boolean | null
+  isFetching: boolean
+  users: UsersFromSearchType[]
+  isFetchingById: number[]
+  totalUsersCount: number
+  pageSize: number
+  currentPage: number
+}
+type ActionsType = {
+  pageSelect: (selectedPage: number) => void
+  friendsFilerToggle: () => void
+  follow: (followed: boolean, id: number) => void
 }
 
-export type UsersPropsType = PropsType
+export type UsersPropsType = PropsType & ActionsType
 
-const Users = (props : UsersPropsType) => {
+const Users: React.FC<UsersPropsType> = (
+  {
+    isFriendsFilter, isFetching, users,
+    isFetchingById, totalUsersCount, pageSize, currentPage,
+    pageSelect, friendsFilerToggle, follow,
+  }) => {
 
   return (
-    <div className={styles.users}>
-      <div className={styles.manipulationContainer}>
-        <Pagination totalUsersCount={props.totalUsersCount}
-                    pageSize={props.pageSize}
-                    currentPage={props.currentPage}
-                    pageSelect={props.pageSelect}
+    <div className={ styles.users }>
+      <div className={ styles.manipulationContainer }>
+        <Pagination { ...{
+          totalUsersCount,
+          pageSize,
+          currentPage,
+          pageSelect,
+        } }
         />
         <button
-          className={`${styles.searchFriendsButton} ${props.isFriendsFilter || styles.searchFriendsButtonPassive}`}
-          onClick={() => { props.friendsFilerToggle() }}
-        >{'Friends Only'}</button>
+          className={ `${ styles.searchFriendsButton } ${ isFriendsFilter || styles.searchFriendsButtonPassive }` }
+          onClick={ () => { friendsFilerToggle() } }
+        >{ 'Friends Only' }</button>
       </div>
-      {props.isFetching ? <Preloader/> :
-        props.users.map(u =>
-          <UserItem {...u} follow={props.follow} isFetchingById={props.isFetchingById} key={u.id}/>
-        )
+      { isFetching ? <Preloader/> :
+        users.map( (u) => <UserItem { ...{...u, follow, isFetchingById} } key={ u.id }/> )
       }
     </div>
   )

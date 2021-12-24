@@ -6,31 +6,33 @@ import {getFriendsHeader, getFriendsIsFetching, getAnyFriendsReselect} from "../
 
 import {AppStateType} from "../../redux/redux-store";
 import classes from "./sidebar.module.css";
+import {UsersFromSearchType} from "../../redux/types/types";
 
 
-type MapStatePropsType = ReturnType<typeof mapStateToProps>
+type MapStatePropsType = {
+  friends: UsersFromSearchType[]
+  header: string
+  isFetching: boolean
+}
 
 type DispatchPropsType = {
-  getResponseFriends: ()=> void
+  getResponseFriends: () => void
 }
 
 export type SidebarContainerType = MapStatePropsType & DispatchPropsType
 
 const Sidebar: React.FC<SidebarContainerType> = (
-  {friends,header, isFetching, getResponseFriends}) => {
-  return <div className={classes.sidebar}>
+  {friends, header, isFetching, getResponseFriends}) => {
+
+  return <div className={ classes.sidebar }>
     <Navbar/>
-    <div className={classes.delimiter}> </div>
-    <FriendsBar friends={friends}
-                header={header}
-                isFetching={isFetching}
-                getResponseFriends={getResponseFriends}
-    />
+    <div className={ classes.delimiter }> </div>
+    <FriendsBar { ...{ friends, header, isFetching, getResponseFriends } } />
   </div>
 }
 
 
-const mapStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     friends: getAnyFriendsReselect(state),
     header: getFriendsHeader(state),
@@ -39,6 +41,6 @@ const mapStateToProps = (state: AppStateType) => {
 }
 
 const SidebarContainer = connect<MapStatePropsType, DispatchPropsType, {}, AppStateType>(
-  mapStateToProps,{ getResponseFriends })(Sidebar)
+  mapStateToProps, {getResponseFriends})(Sidebar)
 
 export default SidebarContainer

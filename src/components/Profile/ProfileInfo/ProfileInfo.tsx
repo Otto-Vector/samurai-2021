@@ -28,7 +28,7 @@ const ProfileInfo: React.FC<OwnPropsType> = (
   if (isFetching) {
     return <div className={styles.profilePage}><Preloader/></div>
   }
-
+  //toDo: add follow/unfollow in profile
   return (
     <div className={styles.profilePage}>
       <div className={styles.profileInfo}>

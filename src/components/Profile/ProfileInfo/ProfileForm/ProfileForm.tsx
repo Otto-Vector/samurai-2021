@@ -16,31 +16,31 @@ type OwnProps = {
   onCancel: () => void
 }
 
-const ProfileForm: React.FC<OwnProps> = (props) => {
+const ProfileForm: React.FC<OwnProps> = ({initialValues, onSubmit, onCancel}) => {
 
-  if (props.initialValues === null) return null
+  if (initialValues === null) return null
 
-  let {contacts} = props.initialValues
+  const {contacts} = initialValues
 
-  let onSubmit = async (formData: ProfileType) => {
-    let error = await props.onSubmit(formData)
+  const onSubmit1 = async (formData: ProfileType) => {
+    const error = await onSubmit(formData)
     if (!error) {
-      props.onCancel()
+      onCancel()
       return {[FORM_ERROR]: null}
     }
     return errorParser(error as string[])
   }
 
-  let socialImageUrl = (key: string): string | undefined => {
-    let hasImage = socialsImageSource[key as keyof SocialsImageSourceType]
-    let hasHref = contacts[key as keyof ContactsType]
+  const socialImageUrl = (key: string): string | undefined => {
+    const hasImage = socialsImageSource[key as keyof SocialsImageSourceType]
+    const hasHref = contacts[key as keyof ContactsType]
     return hasImage ? hasImage[hasHref ? 'filled' : 'empty'] : undefined
   }
 
   return (
     <Form
-      onSubmit={ onSubmit }
-      initialValues={ props.initialValues }
+      onSubmit={ onSubmit1 }
+      initialValues={ initialValues }
       render={
         ({submitError, handleSubmit, form}) => (
           <form onSubmit={ handleSubmit }>
@@ -78,7 +78,8 @@ const ProfileForm: React.FC<OwnProps> = (props) => {
               />
             </div>
             <div><b>CONTACTS</b></div>
-            { Object.keys(contacts).map(key => <div key={ key } className={ styles.socialInput }>
+            { Object.keys(contacts).map(
+              (key) => <div key={ key } className={ styles.socialInput }>
               { socialsImageSource.hasOwnProperty(key) &&
               <img className={ styles.socialImage }
                    alt={ key } title={ key }
@@ -91,7 +92,7 @@ const ProfileForm: React.FC<OwnProps> = (props) => {
             <button className={ styles.button } type={ 'submit' }>Done</button>
             <button type={ 'button' }
                     className={ styles.button }
-                    onClick={ props.onCancel }>Cancel
+                    onClick={ onCancel }>Cancel
             </button>
             { submitError && <span className={ styles.onError }>{ submitError }</span> }
           </form>

@@ -9,14 +9,18 @@ import {
 import {AppStateType} from "../../redux/redux-store";
 import {LoginDataType} from "../../redux/types/types";
 
-type MapStatePropsType = ReturnType<typeof mapStateToProps>
+type MapStatePropsType = {
+  isAuth: boolean
+  authURL: string
+  captchaUrl: string | null
+}
 type DispatchPropsType = {
-  loginIn: (loginData: LoginDataType) => AuthThunkActionType<string[]|null> | Promise<string[]|null>
+  loginIn: (loginData: LoginDataType) => AuthThunkActionType<string[] | null> | Promise<string[] | null>
 }
 export type LoginContainerType = MapStatePropsType & DispatchPropsType
 
 
-const mapStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     isAuth: getIsAuthUser(state),
     authURL: getAuthURL(state),

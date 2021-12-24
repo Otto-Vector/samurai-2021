@@ -6,17 +6,16 @@ import withAuthRedirect from "../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {getDialogs, getDialogsMessages, getDialogsTextMessagePlaceholder} from "../../reselect/dialogs-reselectors";
 import {getAuthorizedUserDataId} from "../../reselect/auth-reselectors";
-import {MessagesType} from "../../redux/types/types";
+import {DialogsType, MessagesType} from "../../redux/types/types";
 import {AppStateType} from "../../redux/redux-store";
 
 
-type MapStatePropsType = ReturnType<typeof mapStateToProps>
-//   {
-//   authId: number | null
-//   dialogs: DialogsType[]
-//   messages: MessagesType[]
-//   textMessagePlaceholder: string
-// }
+type MapStatePropsType = {
+  authId: number | null
+  dialogs: DialogsType[]
+  messages: MessagesType[]
+  textMessagePlaceholder: string
+}
 
 type MapDispatchPropsType = {
   addMessage: (payload: MessagesType) => void
@@ -24,7 +23,7 @@ type MapDispatchPropsType = {
 
 export type DialogsContainerType = MapStatePropsType & MapDispatchPropsType
 
-const mapStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     authId: getAuthorizedUserDataId(state),
     dialogs: getDialogs(state),

@@ -21,14 +21,13 @@ import {
 import {ProfileType} from "../../redux/types/types";
 import {AppStateType} from "../../redux/redux-store";
 
-type MapStatePropsType = ReturnType<typeof mapStateToProps>
-// {
-//   isAuth: boolean
-//   authUserId: number | null
-//   profile: ProfileType | null
-//   isFetching: boolean
-//   isAuthProfile: boolean
-// }
+type MapStatePropsType = {
+  isAuth: boolean
+  authUserId: number | null
+  profile: ProfileType | null
+  isFetching: boolean
+  isAuthProfile: boolean
+}
 
 type MapDispatchType = {
   getProfile: (userId: number) => void
@@ -53,7 +52,7 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
     authUserId, profile, isAuthProfile, isFetching,
     // BLL
     setPhoto, setProfileData, setIsAuthProfile, getProfile, getStatus,
-    // whithRouter
+    // withRouter
     history, match: {params}
   }) => {
 
@@ -66,7 +65,7 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
   // по умолчанию, всегда берёт активный userID
   const updateProfile = (idFromRouter = userID) => {
 
-    let _userId = idFromRouter || +(authUserId || 0)
+    const _userId = idFromRouter || +(authUserId || 0)
 
     setIsAuthProfile(_userId === +(authUserId || 0))
     getProfile(_userId)
@@ -80,7 +79,7 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
     // создаём прослушку истории браузера
     const unlisten = history.listen(({pathname}) => {
       // преображаем id пользователя в число
-      let idFromRoute = +pathname.split('/').reverse()[0]
+      const idFromRoute = +pathname.split('/').reverse()[0]
       // изменяем значение id пользователя
       changeUserID(idFromRoute)
     });
@@ -90,19 +89,15 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
     }
   }, [userID]) // запускается при каждом изменении userID
 
-  // передаваемые переменные
-  const referenceProps = {
-    profile,
-    isAuthProfile,
-    isFetching,
-    setPhoto,
-    setProfileData
-  }
-  return (<Profile  { ...referenceProps }/>)
+
+  return (<Profile  { ...{
+    profile, isAuthProfile, isFetching,
+    setPhoto, setProfileData
+  } }/>)
 
 }
 
-const mapStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     isAuth: getIsAuthUser(state),
     authUserId: getAuthorizedUserDataId(state),
@@ -120,7 +115,7 @@ export default compose<React.ComponentType>(
     setIsAuthProfile,
     getStatus,
     setPhoto,
-    setProfileData
+    setProfileData,
   }),
   // withAuthRedirect,
   withRouter
