@@ -9,8 +9,12 @@ type OwnPropsType = {
   profile: ProfileType | null
   isAuthProfile: boolean
   isFetching: boolean
+  isFollowCurrent: boolean
+  isFollowFetching: boolean
+
   setPhoto: (userPhoto: File) => void
   setProfileData: (data: ProfileType) => ProfileThunkActionType<string[] | null> | Promise<string[] | null>
+  followProfile: (isFollow: boolean, userId: number) => void
 }
 
 const Profile: React.FC<OwnPropsType> = (props) => {

@@ -11,20 +11,25 @@ type OwnPropsType = {
   profile: ProfileType | null
   isAuthProfile: boolean
   isFetching: boolean
+  isFollowCurrent: boolean
+  isFollowFetching: boolean
+
   setPhoto: (userPhoto: File) => void
   setProfileData: (data: ProfileType) => ProfileThunkActionType<string[] | null> | Promise<string[] | null>
+  followProfile: (isFollow: boolean, userId: number) => void
 }
 
 
 const ProfileInfo: React.FC<OwnPropsType> = (
-  {profile, isAuthProfile, isFetching, setPhoto, setProfileData}) => {
+  {profile, isAuthProfile, isFetching, isFollowCurrent,isFollowFetching,
+    setPhoto, setProfileData, followProfile }) => {
 
   const [editMode, setEditMode] = useState(false)
 
   const sendFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) setPhoto(event.target.files[0])
   }
-
+  if (!profile) { return null}
   if (isFetching) {
     return <div className={styles.profilePage}><Preloader/></div>
   }
@@ -33,8 +38,16 @@ const ProfileInfo: React.FC<OwnPropsType> = (
     <div className={styles.profilePage}>
       <div className={styles.profileInfo}>
         <div className={styles.left}>
-          <img className={styles.imageWrapper} src={profile?.photos.large || userNoImage} alt='ProfileImage'/>
-          {isAuthProfile && <input type={'file'} onChange={sendFile}/>}
+          <img className={styles.imageWrapper} src={profile.photos.large || userNoImage} alt='ProfileImage'/>
+          {isAuthProfile ? <input type={'file'} onChange={sendFile}/>
+          : <div>
+            <button type={'button'}
+                    className={`${styles.followButton} ${isFollowCurrent && styles.unfollow}`}
+                    onClick={()=>{followProfile(isFollowCurrent, profile.userId as number)}}
+                    disabled={isFollowFetching}
+            >{isFollowCurrent ? 'unfollow':'follow'}</button>
+          </div>
+          }
         </div>
         {editMode
           ? <ProfileForm onSubmit={setProfileData}

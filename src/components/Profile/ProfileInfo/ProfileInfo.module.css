@@ -68,3 +68,25 @@
     align-self: flex-end;
     justify-self: flex-end;
 }
+
+
+.followButton {
+    height: 20px;
+    width: 70px;
+    border-radius: 3px;
+    background-color: aquamarine;
+    font-weight: bold;
+    padding: 3px;
+}
+
+.followButton::first-letter {
+    text-transform: uppercase;
+}
+
+.followButton:disabled {
+    opacity: .4;
+}
+
+.unfollow {
+    background-color: gray;
+}

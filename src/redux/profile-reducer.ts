@@ -4,6 +4,7 @@ import {PhotosType, PostType, ProfileType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, GetActionsTypes} from "./redux-store";
 import {profileAPI} from "../api/profile-api";
+import {usersApi} from "../api/users-api";
 
 
 let initialState = {
@@ -27,11 +28,12 @@ let initialState = {
       likesCount: 9
     }
   ] as PostType[],
-
   newPostTextPlaceholder: 'add new post here' as string | null,
   profile: null as ProfileType | null,
   isFetching: true,
   isAuthProfile: false,
+  isFollowCurrent: false,
+  isFollowFetching: false,
 
   profileStatusText: null as string | null,
   profileStatusFetching: true,
@@ -45,7 +47,7 @@ const profileReducer = (state = initialState, action: ActionsType): ProfileReduc
 
   switch (action.type) {
     case "profile-reducer/ADD-POST" : {
-      let newPost: PostType = {
+      const newPost: PostType = {
         id: action.id,
         imageURL: randomFaceImage(action.id), // пока добавляем рандомную фотку
         message: action.newPostText || 'empty',
@@ -92,7 +94,18 @@ const profileReducer = (state = initialState, action: ActionsType): ProfileReduc
         profileStatusFetching: action.profileStatusFetching
       }
     }
-
+    case "profile-reducer/FOLLOW-STATUS-IS": {
+      return {
+        ...state,
+        isFollowCurrent: action.isFollowCurrent
+      }
+    }
+    case "profile-reducer/TOGGLE-FOLLOW-FETCHING": {
+      return {
+        ...state,
+        isFollowFetching: action.isFollowFetching
+      }
+    }
     default : {
       return state
     }
@@ -103,40 +116,51 @@ let defaultUserId = 20116 //маленький костылёк для "крив
 
 /* ЭКШОНЫ ПРОФИЛЯ */
 export const profileActions = {
+  // добавить пост
   addPost: (id = defaultUserId, newPostText: string) => ({
     type: 'profile-reducer/ADD-POST',
     id,
     newPostText
   } as const),
-
+  // устанока загруженных данных профился в state
   setProfileState: (profile: ProfileType) => ({
     type: 'profile-reducer/SET-PROFILE-STATE',
     profile
   } as const),
-
+  // профиль авторизованного пользователя?
   setIsAuthProfile: (isAuthProfile: boolean) => ({
     type: 'profile-reducer/SET-IS-AUTH-PROFILE',
     isAuthProfile
   } as const),
-
+  // ожидание загрузки всего профиля
   toggleIsFetchingProfile: (isFetching: boolean) => ({
     type: 'profile-reducer/TOGGLE-FETCHING',
     isFetching
   } as const),
-
+  // установка URL фото в state
   setPhotoSuccess: (photos: PhotosType) => ({
     type: 'profile-reducer/SET_PHOTO_SUCCESS',
     photos
   } as const),
-
+  // установка значения статуса
   setStatusProfile: (profileStatusText: string | null) => ({
     type: 'profile-reducer/SET-STATUS-PROFILE',
     profileStatusText
   } as const),
-
+  // ожидание загрузки в статусе
   toggleStatusProfileFetching: (profileStatusFetching: boolean) => ({
     type: 'profile-reducer/TOGGLE-STATUS-FETCHING',
     profileStatusFetching
+  } as const),
+  // отображение кнопки follow/unfollow
+  followStatusIs: (isFollowCurrent: boolean) => ({
+    type: 'profile-reducer/FOLLOW-STATUS-IS',
+    isFollowCurrent
+  } as const),
+  // ожидание загрузки в кнопке follow/unfollow
+  toggleFollowFetching: (isFollowFetching: boolean) => ({
+    type: 'profile-reducer/TOGGLE-FOLLOW-FETCHING',
+    isFollowFetching
   } as const),
 }
 
@@ -149,8 +173,13 @@ export const getProfile = (userId: number): ProfileThunkActionType =>
   async (dispatch) => {
     try {
       dispatch(profileActions.toggleIsFetchingProfile(true))
+      dispatch(profileActions.followStatusIs(false))
+
       const response = await profileAPI.getProfile(userId)
       dispatch(profileActions.setProfileState(response))
+
+      // обработка значения по friends
+      dispatch(isFriendRequest(response.fullName))
 
     } catch (error) { //если ошибка, то хардкодим на свой акк
       const response = await profileAPI.getProfile(defaultUserId)
@@ -203,6 +232,29 @@ export const updateStatus = (status: string): ProfileThunkActionType =>
     if (response.resultCode === ResultCodesEnum.Success) {
       dispatch(profileActions.setStatusProfile(status))
     }
+  }
+
+// запрос данных пользователя о том подписаны ли вы на него
+export const isFriendRequest = (userName: string): ProfileThunkActionType =>
+  async (dispatch) => {
+    const response = await usersApi.getUserByName(userName)
+     if (response.error === null) {
+      dispatch(profileActions.followStatusIs(response.items[0].followed))
+    }
+  }
+
+// подписка или отписка от друзей через запрос API
+export const followProfile = (isFollow: boolean, userId: number): ProfileThunkActionType =>
+  async (dispatch) => {
+    dispatch(profileActions.toggleFollowFetching(true))
+
+    const response = await usersApi[!isFollow ? 'follow' : 'unfollow'](userId)
+
+    if (response.resultCode === ResultCodesEnum.Success) {
+      dispatch(profileActions.followStatusIs(!isFollow))
+    }
+
+    dispatch(profileActions.toggleFollowFetching(false))
   }
 
 export default profileReducer;

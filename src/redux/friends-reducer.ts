@@ -1,7 +1,7 @@
 import {UsersFromSearchType} from "./types/types"
 import {ThunkAction} from "redux-thunk"
 import { AppStateType, GetActionsTypes} from "./redux-store"
-import {UsersAPI} from "../api/users-api";
+import {usersApi} from "../api/users-api";
 
 const initialState = {
   friends: [] as UsersFromSearchType[],
@@ -56,7 +56,7 @@ export type FriendsReducerThunkActionType<R = void> = ThunkAction<Promise<R>, Ap
 export const getResponseFriends = (): FriendsReducerThunkActionType =>
   async (dispatch) => {
     dispatch(friendsActions.friendsResponseIsFetching(true))
-    const response = await UsersAPI.getUsers(100, 1, true)
+    const response = await usersApi.getUsers(100, 1, true)
     dispatch(friendsActions.addFriends(response.items))
     dispatch(friendsActions.friendsResponseIsFetching(false))
   }

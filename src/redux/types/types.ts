@@ -52,6 +52,7 @@ export type ContactsType = {
   mainLink: string
 }
 
+// объект, возвращаемый при запросе id пользователя
 export type ProfileType = {
   aboutMe: string | null,
   userId: number | undefined

@@ -7,10 +7,15 @@ export type ResponseUsersApiType = {
   totalCount: number
   error: string | null
 }
-export const UsersAPI = {
+export const usersApi = {
   // запрос одной страницы пользователей из сервера
-  getUsers(pageSize = 2, page = 1, isFriendsFilter: boolean | null) {
+  getUsers(pageSize = 10, page = 1, isFriendsFilter: boolean | null) {
     return instance.get<ResponseUsersApiType>(`users?count=${ pageSize }&page=${ page }&friend=${ isFriendsFilter }`)
+      .then(response => response.data)
+  },
+  // поиск ОДНОГО пользователя (для Profile)
+  getUserByName(userName: string) {
+    return instance.get<ResponseUsersApiType>(`users?count=${ 1 }&page=${ 1 }&friend=${ null }&term=${userName}`)
       .then(response => response.data)
   },
   // отписаться

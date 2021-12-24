@@ -10,10 +10,11 @@ import {
   setProfileData,
   getStatus,
   ProfileThunkActionType,
-  profileActions
+  profileActions, followProfile
 } from "../../redux/profile-reducer";
 import {getAuthorizedUserDataId, getIsAuthUser} from "../../reselect/auth-reselectors";
 import {
+  getIsFollowCurrent, getIsFollowFetching,
   getProfileData,
   getProfileIsAuth,
   getProfileIsFetching
@@ -27,6 +28,8 @@ type MapStatePropsType = {
   profile: ProfileType | null
   isFetching: boolean
   isAuthProfile: boolean
+  isFollowCurrent: boolean
+  isFollowFetching: boolean
 }
 
 type MapDispatchType = {
@@ -35,6 +38,7 @@ type MapDispatchType = {
   getStatus: (userId: number) => void
   setPhoto: (userPhoto: File) => void
   setProfileData: (data: ProfileType) => ProfileThunkActionType<string[] | null> | Promise<string[] | null>
+  followProfile: (isFollow: boolean, userId: number) => void
 }
 
 type OwnProps = {
@@ -50,8 +54,9 @@ type ProfileContainerType = MapStatePropsType & MapDispatchType & OwnProps & Rou
 const ProfileContainer: React.FC<ProfileContainerType> = (
   { // state переменные
     authUserId, profile, isAuthProfile, isFetching,
-    // BLL
-    setPhoto, setProfileData, setIsAuthProfile, getProfile, getStatus,
+    isFollowCurrent, isFollowFetching,
+    // BLL actions
+    setPhoto, setProfileData, setIsAuthProfile, getProfile, getStatus, followProfile,
     // withRouter
     history, match: {params}
   }) => {
@@ -70,12 +75,14 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
     setIsAuthProfile(_userId === +(authUserId || 0))
     getProfile(_userId)
     getStatus(_userId)
+
   }
 
   useEffect(() => {
     // console.log('params: ',params);
     // загружаем данные пользователя в UI
     updateProfile()
+
     // создаём прослушку истории браузера
     const unlisten = history.listen(({pathname}) => {
       // преображаем id пользователя в число
@@ -89,11 +96,15 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
     }
   }, [userID]) // запускается при каждом изменении userID
 
-
-  return (<Profile  { ...{
-    profile, isAuthProfile, isFetching,
-    setPhoto, setProfileData
-  } }/>)
+  return (<Profile profile={ profile }
+                   isAuthProfile={ isAuthProfile }
+                   isFetching={ isFetching }
+                   isFollowCurrent={ isFollowCurrent }
+                   setPhoto={ setPhoto }
+                   setProfileData={ setProfileData }
+                   followProfile={followProfile}
+                   isFollowFetching={isFollowFetching}
+  />)
 
 }
 
@@ -104,6 +115,8 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     profile: getProfileData(state),
     isFetching: getProfileIsFetching(state),
     isAuthProfile: getProfileIsAuth(state),
+    isFollowCurrent: getIsFollowCurrent(state),
+    isFollowFetching: getIsFollowFetching(state)
   }
 }
 
@@ -116,6 +129,7 @@ export default compose<React.ComponentType>(
     getStatus,
     setPhoto,
     setProfileData,
+    followProfile
   }),
   // withAuthRedirect,
   withRouter

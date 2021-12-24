@@ -2,7 +2,7 @@ import {ResultCodesEnum} from "../api/samurai-api";
 import {UsersFromSearchType} from "./types/types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, GetActionsTypes} from "./redux-store";
-import {UsersAPI} from "../api/users-api";
+import {usersApi} from "../api/users-api";
 
 
 const initialState = {
@@ -130,7 +130,7 @@ export const getUsers = (pageSize: number, page: number, isFriendsFilter = null 
 
     dispatch(usersActions.toggleIsFetching(true))
 
-    const response = await UsersAPI.getUsers(pageSize, page, isFriendsFilter)
+    const response = await usersApi.getUsers(pageSize, page, isFriendsFilter)
 
     dispatch(usersActions.setUsers(response.items))
 
@@ -144,7 +144,7 @@ export const follow = (isFollow: boolean, userId: number): UsersReducerThunkActi
   async (dispatch) => {
     dispatch(usersActions.isFetchingToggleId(true, userId))
 
-    const response = await UsersAPI[!isFollow ? 'follow' : 'unfollow'](userId)
+    const response = await usersApi[!isFollow ? 'follow' : 'unfollow'](userId)
 
     if (response.resultCode === ResultCodesEnum.Success) {
       dispatch(usersActions.followSuccessToggle(userId, !isFollow))

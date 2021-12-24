@@ -12,6 +12,8 @@ export const getAuthCaptchaUrl: AppStateReturned<AuthReducerStateType['captchaUr
 // export const getAuthErrorsFromApi: AppStateReturned<AuthReducerStateType['errorsFromApi']> = (state) => state.auth.errorsFromApi
 export const getAuthIsFetching: AppStateReturned<AuthReducerStateType['isFetching']> = (state) => state.auth.isFetching
 
+
+
 export const getAuthorizedUserDataId = createSelector( getAuthorizedUserData,
     (authorizedUserData: AuthDataType) : AuthDataType['id']=> {
   return authorizedUserData.id
