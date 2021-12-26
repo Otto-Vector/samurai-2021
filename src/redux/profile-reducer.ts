@@ -179,7 +179,7 @@ export const getProfile = ( userId: number ): ProfileThunkActionType =>
             dispatch( profileActions.setProfileState( response ) )
 
             // обработка значения по friends
-            dispatch( isFriendRequest( response.fullName ) )
+            dispatch( isFriendRequest( userId ) )
 
         } catch (error) { //если ошибка, то хардкодим на свой акк
             const response = await profileAPI.getProfile( defaultUserId )
@@ -236,22 +236,20 @@ export const updateStatus = ( status: string ): ProfileThunkActionType =>
         }
     }
 
+
 // запрос данных пользователя о том подписаны ли вы на него
-export const isFriendRequest = ( userName: string ): ProfileThunkActionType =>
-    async ( dispatch, getState ) => {
-        const response = await usersApi.getUserByName( userName )
-        if (response.error === null) {
-            const userId = getState().profilePage.profile?.userId
-            const findUser = response.items.filter( ( user ) => user.id === userId )
-            if (findUser.length === 1) {
-                dispatch( profileActions.followStatusIs( findUser[0].followed ) )
-            } else {
-                alert( 'пользователь с таким именем не найден' )
-            }
+export const isFriendRequest = (id: number): ProfileThunkActionType =>
+    async (dispatch) => {
+
+    const response = await usersApi.isFriend(id)
+
+        if (typeof response === 'boolean') {
+            dispatch( profileActions.followStatusIs( response ) )
         } else {
-            alert( 'запрос isFrend? вернулся с ошибкой' )
+            alert(response.message)
         }
     }
+
 
 // подписка или отписка от друзей через запрос API
 export const followProfile = ( isFollow: boolean, userId: number ): ProfileThunkActionType =>
