@@ -14,8 +14,9 @@ export const usersApi = {
       .then(response => response.data)
   },
   // поиск ОДНОГО пользователя (для Profile)
+  // toDo: запрашивать всех пользователей и сравнивать id
   getUserByName(userName: string) {
-    return instance.get<ResponseUsersApiType>(`users?count=${ 1 }&page=${ 1 }&friend=${ null }&term=${userName}`)
+    return instance.get<ResponseUsersApiType>(`users?count=${ 100 }&page=${ 1 }&friend=${ null }&term=${userName}`)
       .then(response => response.data)
   },
   // отписаться

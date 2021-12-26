@@ -23,7 +23,7 @@ const UserItem = ( { id, photos, isFetchingById, followed, follow, name, status 
                     <button disabled={ isFetchingById.includes( id ) }
                             className={ styles.followButton + ' ' + styles[followed ? 'unfollow' : 'follow'] }
                             onClick={ () => {
-                                follow( id, followed )
+                                follow( id, !followed )
                             } }
                     >{ followed ? 'unfollow' : 'follow' }</button>
                 </div>

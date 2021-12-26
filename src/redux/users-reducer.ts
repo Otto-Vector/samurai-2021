@@ -109,7 +109,7 @@ export const usersActions = {
         isFetching
     } as const ),
     // ожидание отклика API при нажании follow/unfollow
-    isFetchingToggleId: ( isFetching: boolean, userId: number ) => ( {
+    isFetchingFollowed: ( isFetching: boolean, userId: number ) => ( {
         type: 'users-reducer/TOGGLE-IS-FETCHING-BY-ID',
         isFetching,
         userId
@@ -142,16 +142,16 @@ export const getUsers = ( pageSize: number, page: number, isFriendsFilter = null
 // подписка или отписка от друзей через запрос API
 export const follow = ( userId: number, isFollow: boolean ): UsersReducerThunkActionType =>
     async ( dispatch ) => {
-        dispatch( usersActions.isFetchingToggleId( true, userId ) )
+        dispatch( usersActions.isFetchingFollowed( true, userId ) )
 
-        // const response = await usersApi[!isFollow ? 'follow' : 'unfollow']( userId )
-        const response = await usersApi.follow( userId )
+        const response = await usersApi[isFollow ? 'follow' : 'unfollow']( userId )
+        // const response = await usersApi.follow( userId )
 
         if (response.resultCode === ResultCodesEnum.Success) {
-            dispatch( usersActions.followSuccessToggle( userId, !isFollow ) )
+            dispatch( usersActions.followSuccessToggle( userId, isFollow ) )
         }
 
-        dispatch( usersActions.isFetchingToggleId( false, userId ) )
+        dispatch( usersActions.isFetchingFollowed( false, userId ) )
 
     }
 
