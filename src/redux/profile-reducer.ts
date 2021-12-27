@@ -1,10 +1,10 @@
-import {randomFaceImage} from '../api/randomFace'
-import {ResultCodesEnum} from '../api/samurai-api'
-import {PhotosType, PostType, ProfileType} from './types/types'
-import {ThunkAction} from 'redux-thunk'
-import {AppStateType, GetActionsTypes} from './redux-store'
-import {profileAPI} from '../api/profile-api'
-import {usersApi} from '../api/users-api'
+import { randomFaceImage } from '../api/randomFace'
+import { ResultCodesEnum } from '../api/samurai-api'
+import { PhotosType, PostType, ProfileType } from './types/types'
+import { ThunkAction } from 'redux-thunk'
+import { AppStateType, GetActionsTypes } from './redux-store'
+import { profileAPI } from '../api/profile-api'
+import { usersApi } from '../api/users-api'
 
 
 let initialState = {
@@ -13,20 +13,20 @@ let initialState = {
             id: 1,
             imageURL: randomFaceImage(),
             message: 'Hi, how are you?',
-            likesCount: 12
+            likesCount: 12,
         },
         {
             id: 2,
             imageURL: randomFaceImage(),
             message: 'It\'s my first post',
-            likesCount: 11
+            likesCount: 11,
         },
         {
             id: 3,
             imageURL: randomFaceImage(),
             message: 'It\'s my SECOND post',
-            likesCount: 9
-        }
+            likesCount: 9,
+        },
     ] as PostType[],
     newPostTextPlaceholder: 'add new post here' as string | null,
     profile: null as ProfileType | null,
@@ -51,7 +51,7 @@ const profileReducer = ( state = initialState, action: ActionsType ): ProfileRed
                 id: action.postId,
                 imageURL: randomFaceImage( action.postId ), // пока добавляем рандомную фотку
                 message: action.newPostText || 'empty',
-                likesCount: 0
+                likesCount: 0,
             }
             return {
                 ...state,
@@ -59,58 +59,58 @@ const profileReducer = ( state = initialState, action: ActionsType ): ProfileRed
             }
         }
         case 'profile-reducer/DELETE-POST': {
-            const posts = state.posts.filter((post) => post.id !== action.postId)
+            const posts = state.posts.filter( ( post ) => post.id !== action.postId )
             return {
                 ...state,
-                posts
+                posts,
             }
         }
         case 'profile-reducer/SET-PROFILE-STATE' : {
             return {
                 ...state,
-                profile: action.profile
+                profile: action.profile,
             }
         }
         case 'profile-reducer/TOGGLE-FETCHING' : {
             return {
                 ...state,
-                isFetching: action.isFetching
+                isFetching: action.isFetching,
             }
         }
         case 'profile-reducer/SET-IS-AUTH-PROFILE' : {
             return {
                 ...state,
-                isAuthProfile: action.isAuthProfile
+                isAuthProfile: action.isAuthProfile,
             }
         }
         case 'profile-reducer/SET_PHOTO_SUCCESS' : {
             return {
                 ...state,
-                profile: { ...state.profile, photos: action.photos } as ProfileType
+                profile: { ...state.profile, photos: action.photos } as ProfileType,
             }
         }
         case  'profile-reducer/SET-STATUS-PROFILE' : {
             return {
                 ...state,
-                profileStatusText: action.profileStatusText
+                profileStatusText: action.profileStatusText,
             }
         }
         case 'profile-reducer/TOGGLE-STATUS-FETCHING' : {
             return {
                 ...state,
-                profileStatusFetching: action.profileStatusFetching
+                profileStatusFetching: action.profileStatusFetching,
             }
         }
         case 'profile-reducer/FOLLOW-STATUS-IS': {
             return {
                 ...state,
-                isFollowCurrent: action.isFollowCurrent
+                isFollowCurrent: action.isFollowCurrent,
             }
         }
         case 'profile-reducer/TOGGLE-FOLLOW-FETCHING': {
             return {
                 ...state,
-                isFollowFetching: action.isFollowFetching
+                isFollowFetching: action.isFollowFetching,
             }
         }
         default : {
@@ -124,56 +124,56 @@ let defaultUserId = 20116 //маленький костылёк для "крив
 /* ЭКШОНЫ ПРОФИЛЯ */
 export const profileActions = {
     // добавить пост
-    addPost: ( postId = defaultUserId, newPostText: string ) => ( {
+    addPost: ( postId = defaultUserId, newPostText: string ) => ({
         type: 'profile-reducer/ADD-POST',
         postId,
-        newPostText
-    } as const ),
+        newPostText,
+    } as const),
     // удалить пост
-    deletePost: ( postId: number) => ( {
+    deletePost: ( postId: number ) => ({
         type: 'profile-reducer/DELETE-POST',
         postId,
-    } as const ),
+    } as const),
     // устанока загруженных данных профился в state
-    setProfileState: ( profile: ProfileType ) => ( {
+    setProfileState: ( profile: ProfileType ) => ({
         type: 'profile-reducer/SET-PROFILE-STATE',
-        profile
-    } as const ),
+        profile,
+    } as const),
     // профиль авторизованного пользователя?
-    setIsAuthProfile: ( isAuthProfile: boolean ) => ( {
+    setIsAuthProfile: ( isAuthProfile: boolean ) => ({
         type: 'profile-reducer/SET-IS-AUTH-PROFILE',
-        isAuthProfile
-    } as const ),
+        isAuthProfile,
+    } as const),
     // ожидание загрузки всего профиля
-    toggleIsFetchingProfile: ( isFetching: boolean ) => ( {
+    toggleIsFetchingProfile: ( isFetching: boolean ) => ({
         type: 'profile-reducer/TOGGLE-FETCHING',
-        isFetching
-    } as const ),
+        isFetching,
+    } as const),
     // установка URL фото в state
-    setPhotoSuccess: ( photos: PhotosType ) => ( {
+    setPhotoSuccess: ( photos: PhotosType ) => ({
         type: 'profile-reducer/SET_PHOTO_SUCCESS',
-        photos
-    } as const ),
+        photos,
+    } as const),
     // установка значения статуса
-    setStatusProfile: ( profileStatusText: string | null ) => ( {
+    setStatusProfile: ( profileStatusText: string | null ) => ({
         type: 'profile-reducer/SET-STATUS-PROFILE',
-        profileStatusText
-    } as const ),
+        profileStatusText,
+    } as const),
     // ожидание загрузки в статусе
-    toggleStatusProfileFetching: ( profileStatusFetching: boolean ) => ( {
+    toggleStatusProfileFetching: ( profileStatusFetching: boolean ) => ({
         type: 'profile-reducer/TOGGLE-STATUS-FETCHING',
-        profileStatusFetching
-    } as const ),
+        profileStatusFetching,
+    } as const),
     // отображение кнопки follow/unfollow
-    followStatusIs: ( isFollowCurrent: boolean ) => ( {
+    followStatusIs: ( isFollowCurrent: boolean ) => ({
         type: 'profile-reducer/FOLLOW-STATUS-IS',
-        isFollowCurrent
-    } as const ),
+        isFollowCurrent,
+    } as const),
     // ожидание загрузки в кнопке follow/unfollow
-    toggleFollowFetching: ( isFollowFetching: boolean ) => ( {
+    toggleFollowFetching: ( isFollowFetching: boolean ) => ({
         type: 'profile-reducer/TOGGLE-FOLLOW-FETCHING',
-        isFollowFetching
-    } as const ),
+        isFollowFetching,
+    } as const),
 }
 
 /* САНКИ ПРОФИЛЯ*/
@@ -250,15 +250,15 @@ export const updateStatus = ( status: string ): ProfileThunkActionType =>
 
 
 // запрос данных пользователя о том подписаны ли вы на него
-export const isFriendRequest = (id: number): ProfileThunkActionType =>
-    async (dispatch) => {
+export const isFriendRequest = ( id: number ): ProfileThunkActionType =>
+    async ( dispatch ) => {
 
-    const response = await usersApi.isFriend(id)
+        const response = await usersApi.isFriend( id )
 
         if (typeof response === 'boolean') {
             dispatch( profileActions.followStatusIs( response ) )
         } else {
-            alert(response.message)
+            alert( response.message )
         }
     }
 
