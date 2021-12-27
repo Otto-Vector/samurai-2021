@@ -31,7 +31,7 @@ let state: ProfileReducerStateType = {
 
     profileStatusText: null as string | null,
     profileStatusFetching: true,
-    profileStatusPlaceholder: 'input status here' as string | null,
+    profileStatusPlaceholder: 'input status here' as string | undefined,
 }
 
 test( 'new post should be incremented', () => {

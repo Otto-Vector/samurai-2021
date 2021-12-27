@@ -37,7 +37,7 @@ let initialState = {
 
     profileStatusText: null as string | null,
     profileStatusFetching: true,
-    profileStatusPlaceholder: 'input status here' as string | null,
+    profileStatusPlaceholder: 'input status here' as string | undefined
 }
 
 export type ProfileReducerStateType = typeof initialState
@@ -237,12 +237,12 @@ export const getStatus = ( userId = defaultUserId ): ProfileThunkActionType =>
     }
 
 // изменение данных статуса пользователя в API и в React
-export const updateStatus = ( status: string ): ProfileThunkActionType =>
+export const updateStatus = ( userStatus: string ): ProfileThunkActionType =>
     async ( dispatch ) => {
-        const response = await profileAPI.setStatus( status )
+        const response = await profileAPI.setStatus( userStatus )
 
         if (response.resultCode === ResultCodesEnum.Success) {
-            dispatch( profileActions.setStatusProfile( status ) )
+            dispatch( profileActions.setStatusProfile( userStatus ) )
         } else {
             alert( 'запрос Статуса вернулся с ошибкой' )
         }
