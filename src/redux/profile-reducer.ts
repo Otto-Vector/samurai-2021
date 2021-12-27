@@ -48,14 +48,21 @@ const profileReducer = ( state = initialState, action: ActionsType ): ProfileRed
     switch (action.type) {
         case 'profile-reducer/ADD-POST' : {
             const newPost: PostType = {
-                id: action.id,
-                imageURL: randomFaceImage( action.id ), // пока добавляем рандомную фотку
+                id: action.postId,
+                imageURL: randomFaceImage( action.postId ), // пока добавляем рандомную фотку
                 message: action.newPostText || 'empty',
                 likesCount: 0
             }
             return {
                 ...state,
                 posts: [ newPost, ...state.posts ],
+            }
+        }
+        case 'profile-reducer/DELETE-POST': {
+            const posts = state.posts.filter((post) => post.id !== action.postId)
+            return {
+                ...state,
+                posts
             }
         }
         case 'profile-reducer/SET-PROFILE-STATE' : {
@@ -117,10 +124,15 @@ let defaultUserId = 20116 //маленький костылёк для "крив
 /* ЭКШОНЫ ПРОФИЛЯ */
 export const profileActions = {
     // добавить пост
-    addPost: ( id = defaultUserId, newPostText: string ) => ( {
+    addPost: ( postId = defaultUserId, newPostText: string ) => ( {
         type: 'profile-reducer/ADD-POST',
-        id,
+        postId,
         newPostText
+    } as const ),
+    // удалить пост
+    deletePost: ( postId: number) => ( {
+        type: 'profile-reducer/DELETE-POST',
+        postId,
     } as const ),
     // устанока загруженных данных профился в state
     setProfileState: ( profile: ProfileType ) => ( {
