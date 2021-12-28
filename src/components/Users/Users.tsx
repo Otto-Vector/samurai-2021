@@ -3,7 +3,8 @@ import styles from './Users.module.css'
 import Preloader from '../common/Preloader/Preloader'
 import UserItem from './UserItem/UserItem'
 import Pagination from '../common/Pagination/Pagination'
-import {UsersFromSearchType} from '../../redux/types/types'
+import { UsersFromSearchType } from '../../redux/types/types'
+import { UserSearchForm } from './UsersSearchForm'
 
 type PropsType = {
     isFriendsFilter: boolean | null
@@ -32,13 +33,14 @@ const Users: React.FC<UsersPropsType> = (
     return (
         <div className={ styles.users }>
             <div className={ styles.manipulationContainer }>
-                <Pagination { ...{
-                    totalUsersCount,
-                    pageSize,
-                    currentPage,
-                    pageSelect,
-                } }
+
+                <Pagination
+                    totalUsersCount={ totalUsersCount }
+                    pageSize={ pageSize }
+                    currentPage={ currentPage }
+                    pageSelect={ pageSelect }
                 />
+                <UserSearchForm/>
                 <button
                     className={ `${ styles.searchFriendsButton } ${ isFriendsFilter || styles.searchFriendsButtonPassive }` }
                     onClick={ () => {

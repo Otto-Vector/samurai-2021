@@ -1,14 +1,15 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import Users from './Users'
 import {
-    follow, getUsers, usersActions
+    follow, getUsers, usersActions,
 } from '../../redux/users-reducer'
-import {connect} from 'react-redux'
-import {compose} from 'redux'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 import withAuthRedirect from '../hoc/withAuthRedirect'
-import {AppStateType} from '../../redux/redux-store'
-import {UsersFromSearchType} from '../../redux/types/types'
+import { AppStateType } from '../../redux/redux-store'
+import { UsersFromSearchType } from '../../redux/types/types'
+import { getUsersType } from '../../api/users-api'
 
 
 type MapStateToPropsType = {
@@ -24,7 +25,7 @@ type MapStateToPropsType = {
 type DispatchToPropsType = {
     follow: ( userId: number, isFollow: boolean ) => void
     changePage: ( page: number ) => void
-    getUsers: ( pageSize: number, currentPage: number, isFriendsFilter?: boolean | null ) => void
+    getUsers: ( getUsersOption: getUsersType ) => void
     friendsOnlyToggle: ( isFriendsFilter: boolean | null ) => void
 }
 
@@ -38,23 +39,23 @@ const UsersContainer: React.FC<PropsType> = (
         follow, changePage, getUsers, friendsOnlyToggle,
     } ) => {
 
-    // toDo: add searchByName
 
     useEffect( () => {
-        getUsers( pageSize, currentPage )
+        getUsers( { pageSize, page: currentPage } )
+        return friendsOnlyToggle( null )
     }, [] )
 
 
     const pageSelect = ( page: number ) => {
         changePage( page )
-        getUsers( pageSize, page, isFriendsFilter )
+        getUsers( { pageSize, page, isFriendsFilter } )
     }
 
     const friendsFilerToggle = () => {
         changePage( 1 ) // перемещаемся на первую страницу
         const isFriends = isFriendsFilter ? null : true //принимает только null, true или false(только не друзья
         friendsOnlyToggle( isFriends )
-        getUsers( pageSize, 1, isFriends )
+        getUsers( { pageSize, page: 1, isFriendsFilter: isFriends } )
 
     }
 
@@ -85,7 +86,7 @@ const mapStateToProps = ( state: AppStateType ): MapStateToPropsType => {
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
         isFetchingById: state.usersPage.isFetchingById,
-        isFriendsFilter: state.usersPage.isFriendsFilter
+        isFriendsFilter: state.usersPage.isFriendsFilter,
     }
 }
 
@@ -96,7 +97,7 @@ export default compose<React.ComponentType>(
         follow,
         changePage,
         getUsers,
-        friendsOnlyToggle
+        friendsOnlyToggle,
     } ),
-    withAuthRedirect
+    withAuthRedirect,
 )( UsersContainer )

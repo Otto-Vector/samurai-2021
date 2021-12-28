@@ -1,5 +1,5 @@
-import {UsersFromSearchType} from '../redux/types/types'
-import {instance, ResponseApiType} from './samurai-api'
+import { UsersFromSearchType } from '../redux/types/types'
+import { instance, ResponseApiType } from './samurai-api'
 
 // этот тип отличается от других стандартных и подходит только для Users
 export type ResponseUsersApiType = {
@@ -7,18 +7,28 @@ export type ResponseUsersApiType = {
     totalCount: number
     error: string | null
 }
+
+export type getUsersType = {
+    pageSize: number
+    page: number
+    isFriendsFilter?: boolean | null
+    userName?: string
+}
+
+
 export const usersApi = {
     // запрос одной страницы пользователей из сервера
-    getUsers( pageSize = 10, page = 1, isFriendsFilter: boolean | null ) {
-        return instance.get<ResponseUsersApiType>( `users?count=${ pageSize }&page=${ page }&friend=${ isFriendsFilter }` )
+    getUsers( { pageSize, page, isFriendsFilter, userName }: getUsersType) {
+        const friend = `&friend=${ isFriendsFilter ?? null }`
+        const term = userName ? `&term=${ userName }` : ''
+        return instance.get<ResponseUsersApiType>( `users?count=${ pageSize }&page=${ page }${ friend }${ term }` )
             .then( response => response.data )
     },
-    // поиск ОДНОГО пользователя (для Profile)
-    // toDo: запрашивать всех пользователей и сравнивать id
-    getUserByName( userName: string ) {
-        return instance.get<ResponseUsersApiType>( `users?count=${ 100 }&page=${ 1 }&friend=${ null }&term=${ userName }` )
-            .then( response => response.data )
-    },
+    // // поиск пользователей по имени
+    // getUsersByName( { pageSize, page, isFriendsFilter, userName }: getUsersTermType ) {
+    //     return instance.get<ResponseUsersApiType>( `users?count=${ pageSize }&page=${ page }&friend=${ isFriendsFilter }&term=${ userName }` )
+    //         .then( response => response.data )
+    // },
     // отписаться
     unfollow( id: number ) {
         return instance.delete<ResponseApiType>( `follow/${ id }` )

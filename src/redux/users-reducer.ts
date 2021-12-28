@@ -2,7 +2,7 @@ import {ResultCodesEnum} from '../api/samurai-api'
 import {UsersFromSearchType} from './types/types'
 import {ThunkAction} from 'redux-thunk'
 import {AppStateType, GetActionsTypes} from './redux-store'
-import {usersApi} from '../api/users-api'
+import { getUsersType, usersApi } from '../api/users-api'
 
 
 const initialState = {
@@ -125,12 +125,12 @@ export const usersActions = {
 
 export type UsersReducerThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
 // запрос на API и запись в стейт значений поиска пользователей
-export const getUsers = ( pageSize: number, page: number, isFriendsFilter = null as boolean | null ): UsersReducerThunkActionType =>
+export const getUsers = ( {pageSize, page, isFriendsFilter = null, userName = undefined }: getUsersType): UsersReducerThunkActionType =>
     async ( dispatch ) => {
 
         dispatch( usersActions.toggleIsFetching( true ) )
 
-        const response = await usersApi.getUsers( pageSize, page, isFriendsFilter )
+        const response = await usersApi.getUsers( {pageSize, page, isFriendsFilter, userName} )
 
         dispatch( usersActions.setUsers( response.items ) )
 
