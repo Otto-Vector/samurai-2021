@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import Profile from './Profile'
 import {
@@ -41,15 +40,10 @@ type MapDispatchType = {
     followProfile: ( isFollow: boolean, userId: number ) => void
 }
 
-type OwnProps = {
-    // unlisten: any
-}
+type OwnProps = {}
 
-type RouteProps = {
-    userId?: string
-}
 
-type ProfileContainerType = MapStatePropsType & MapDispatchType & OwnProps & RouteComponentProps<RouteProps>
+export type ProfileContainerType = MapStatePropsType & MapDispatchType & OwnProps
 
 const ProfileContainer: React.FC<ProfileContainerType> = (
     { // state переменные
@@ -57,16 +51,16 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
         isFollowCurrent, isFollowFetching,
         // BLL actions
         setPhoto, setProfileData, setIsAuthProfile, getProfile, getStatus, followProfile,
-        // withRouter
-        history, match: { params },
     } ) => {
+    // вытаскиваем значение роутера
+    const { userId } = useParams<{ userId: string }>()
 
     // присваиваем первое значение из роутера
+    const [ userID, changeUserID ] = useState( +(userId || 0) )
+
     // и меняем пользователя внутри компоненты, пока она живёт
-    const [ userID, changeUserID ] = useState( +(params.userId || 0) )
+    const history = useHistory()
 
-
-    // const hist_ory = useHistory()
     // по умолчанию, всегда берёт активный userID
     const updateProfile = ( idFromRouter = userID ) => {
 
@@ -75,11 +69,9 @@ const ProfileContainer: React.FC<ProfileContainerType> = (
         setIsAuthProfile( _userId === +(authUserId || 0) )
         getProfile( _userId )
         getStatus( _userId )
-
     }
 
     useEffect( () => {
-        // console.log('params: ',params);
         // загружаем данные пользователя в UI
         updateProfile()
 
@@ -120,17 +112,15 @@ const mapStateToProps = ( state: AppStateType ): MapStatePropsType => {
     }
 }
 
+// вытащили метод для красоты
 const { setIsAuthProfile } = profileActions
 
-export default compose<React.ComponentType>(
-    connect<MapStatePropsType, MapDispatchType, OwnProps, AppStateType>( mapStateToProps, {
-        getProfile,
-        setIsAuthProfile,
-        getStatus,
-        setPhoto,
-        setProfileData,
-        followProfile,
-    } ),
-    // withAuthRedirect,
-    withRouter,
-)( ProfileContainer )
+export default connect<MapStatePropsType, MapDispatchType, OwnProps, AppStateType>( mapStateToProps, {
+    getProfile,
+    setIsAuthProfile,
+    getStatus,
+    setPhoto,
+    setProfileData,
+    followProfile,
+} )( ProfileContainer )
+

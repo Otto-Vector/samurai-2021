@@ -60,18 +60,17 @@ const UsersContainer: React.FC<PropsType> = (
     }
 
     return <>
-        <Users { ...{
-            users,
-            totalUsersCount,
-            pageSize,
-            currentPage,
-            isFetchingById,
-            isFriendsFilter,
-            isFetching,
-            follow,
-            pageSelect,
-            friendsFilerToggle,
-        } }
+        <Users
+            users={ users }
+            totalUsersCount={ totalUsersCount }
+            pageSize={ pageSize }
+            currentPage={ currentPage }
+            isFetchingById={ isFetchingById }
+            isFriendsFilter={ isFriendsFilter }
+            isFetching={ isFetching }
+            follow={ follow }
+            pageSelect={ pageSelect }
+            friendsFilerToggle={ friendsFilerToggle }
         />
     </>
 }
