@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Users from './Users'
 import {
-    follow, getUsers, usersActions,
+    follow, getUsers, usersActions, UsersFilter,
 } from '../../redux/users-reducer'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -13,15 +13,13 @@ import { getUsersType } from '../../api/users-api'
 import {
     getCurrentPage,
     getIsFetching, getIsFetchingById,
-    getIsFriendsFilter,
-    getPageSize, getTotalUsersCount, getUserNameFilter,
+    getPageSize, getTotalUsersCount, getUsersFilter, getUsersFilterReselect,
     getUsersState,
 } from '../../reselect/users-reselector'
 
 
 type MapStateToPropsType = {
-    isFriendsFilter: boolean | null
-    userNameFilter: string | undefined
+    usersFilter: UsersFilter
     isFetching: boolean
     users: UsersFromSearchType[]
     isFetchingById: number[]
@@ -33,41 +31,31 @@ type MapStateToPropsType = {
 type DispatchToPropsType = {
     follow: ( userId: number, isFollow: boolean ) => void
     changePage: ( page: number ) => void
+    searchUsersFilter: ( payload: UsersFilter ) => void
     getUsers: ( getUsersOption: getUsersType ) => void
-    friendsOnlyToggle: ( isFriendsFilter: boolean | null ) => void
-    searchUsersFilter: ( userNameFilter: string | undefined ) => void
 }
 
 type PropsType = MapStateToPropsType & DispatchToPropsType
 
 const UsersContainer: React.FC<PropsType> = (
     {
-        isFriendsFilter, isFetching, users, isFetchingById,
+        isFetching, users, isFetchingById, usersFilter,
         totalUsersCount, pageSize, currentPage,
         //BLL
-        follow, changePage, getUsers, friendsOnlyToggle, userNameFilter, searchUsersFilter,
+        follow, changePage, getUsers, searchUsersFilter,
     } ) => {
 
-
     useEffect( () => {
-        getUsers( { pageSize, page: currentPage, userName: userNameFilter, isFriendsFilter } )
-        // return friendsOnlyToggle( null )
-    }, [ pageSize, currentPage, userNameFilter, isFriendsFilter ] )
-
+        getUsers( { pageSize, page: currentPage, ...usersFilter } )
+    }, [ pageSize, currentPage, usersFilter ] )
 
     const pageSelect = ( page: number ) => {
         changePage( page )
     }
 
-    const friendsFilerToggle = () => {
+    const onTermChanged = ( values: UsersFilter ) => {
         changePage( 1 ) // перемещаемся на первую страницу
-        const isFriends = isFriendsFilter ? null : true // принимает только null, true или false(только не друзья)
-        friendsOnlyToggle( isFriends )
-    }
-
-    const onTermChanged = ( term: string | undefined ) => {
-        changePage( 1 ) // перемещаемся на первую страницу
-        searchUsersFilter( term )
+        searchUsersFilter( values )
     }
 
     return <>
@@ -77,13 +65,11 @@ const UsersContainer: React.FC<PropsType> = (
             pageSize={ pageSize }
             currentPage={ currentPage }
             isFetchingById={ isFetchingById }
-            isFriendsFilter={ isFriendsFilter }
             isFetching={ isFetching }
             follow={ follow }
             pageSelect={ pageSelect }
-            friendsFilerToggle={ friendsFilerToggle }
             onTermChanged={ onTermChanged }
-            userNameFilter={ userNameFilter }
+            usersFilter={ usersFilter }
         />
     </>
 }
@@ -98,19 +84,17 @@ const mapStateToProps = ( state: AppStateType ): MapStateToPropsType => {
         currentPage: getCurrentPage( state ),
         isFetching: getIsFetching( state ),
         isFetchingById: getIsFetchingById( state ),
-        isFriendsFilter: getIsFriendsFilter( state ),
-        userNameFilter: getUserNameFilter( state ),
+        usersFilter: getUsersFilterReselect( state ),
     }
 }
 
-const { changePage, friendsOnlyToggle, searchUsersFilter } = usersActions
+const { changePage, searchUsersFilter } = usersActions
 
 export default compose<React.ComponentType>(
     connect<MapStateToPropsType, DispatchToPropsType, {}, AppStateType>( mapStateToProps, {
         follow,
         changePage,
         getUsers,
-        friendsOnlyToggle,
         searchUsersFilter,
     } ),
     withAuthRedirect,

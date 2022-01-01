@@ -5,11 +5,11 @@ import UserItem from './UserItem/UserItem'
 import Pagination from '../common/Pagination/Pagination'
 import { UsersFromSearchType } from '../../redux/types/types'
 import { UserSearchForm } from './UsersSearchForm'
-import { getUsersType } from '../../api/users-api'
+import { UsersFilter } from '../../redux/users-reducer'
+
 
 type PropsType = {
-    isFriendsFilter: boolean | null
-    userNameFilter: string | undefined
+    usersFilter: UsersFilter
     isFetching: boolean
     users: UsersFromSearchType[]
     isFetchingById: number[]
@@ -19,18 +19,19 @@ type PropsType = {
 }
 type ActionsType = {
     pageSelect: ( selectedPage: number ) => void
-    friendsFilerToggle: () => void
     follow: ( userId: number, isFollow: boolean ) => void
-    onTermChanged: ( term: string | undefined ) => void
+    onTermChanged: ( values: UsersFilter ) => void
 }
-
 export type UsersPropsType = PropsType & ActionsType
 
 const Users: React.FC<UsersPropsType> = (
     {
-        isFriendsFilter, isFetching, users,
-        isFetchingById, totalUsersCount, pageSize, currentPage,
-        pageSelect, friendsFilerToggle, follow, onTermChanged, userNameFilter,
+        //
+        usersFilter, isFetching, isFetchingById,
+        users,
+        totalUsersCount, pageSize, currentPage,
+        // BLL
+        pageSelect, follow, onTermChanged,
     } ) => {
 
 
@@ -46,14 +47,9 @@ const Users: React.FC<UsersPropsType> = (
                 />
                 <UserSearchForm
                     onTermChanged={ onTermChanged }
-                    userNameFilter={ userNameFilter }
+                    usersFilter={ usersFilter }
+                    isFetching={isFetching}
                 />
-                <button
-                    className={ `${ styles.searchFriendsButton } ${ isFriendsFilter || styles.searchFriendsButtonPassive }` }
-                    onClick={ () => {
-                        friendsFilerToggle()
-                    } }
-                >{ 'Friends Only' }</button>
             </div>
             { isFetching ? <Preloader/> :
                 users.map( ( u ) => <UserItem { ...{ ...u, follow, isFetchingById } } key={ u.id }/> )
@@ -62,5 +58,6 @@ const Users: React.FC<UsersPropsType> = (
     )
 }
 
+const MemoizedUsers = React.memo(Users)
 
-export default Users
+export default MemoizedUsers

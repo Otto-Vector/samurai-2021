@@ -1,38 +1,42 @@
 import React from 'react'
 import styles from './Users.module.css'
 import { Field, Form, Formik } from 'formik'
+import { UsersFilter } from '../../redux/users-reducer'
 
 type UsersSearchPropsType = {
-    userNameFilter: string | undefined
-    onTermChanged: ( term: string | undefined ) => void
+    usersFilter: UsersFilter
+    isFetching: boolean
+    onTermChanged: ( values: UsersFilter ) => void
 }
 
-type UserSearchObjectType = {
-    term: string | undefined
-}
 
-export const UserSearchForm: React.FC<UsersSearchPropsType> = ( { onTermChanged, userNameFilter } ) => {
+export const UserSearchForm: React.FC<UsersSearchPropsType> = (
+    { onTermChanged, usersFilter, isFetching } ) => {
 
-    const submit = async ( values: UserSearchObjectType, { setSubmitting }: { setSubmitting: ( isSubmitting: boolean ) => void } ) => {
+    const submit = async ( values: UsersFilter, { setSubmitting }: { setSubmitting: ( isSubmitting: boolean ) => void } ) => {
 
-            await onTermChanged( values.term )
-            setSubmitting( false )
-
+        onTermChanged( values )
+        setSubmitting( true )
     }
 
     return <div className={ styles.searchFriendsField }>
         <Formik
-            initialValues={ { term: userNameFilter } }
+            initialValues={ usersFilter }
 
             onSubmit={ submit }
         >
-            { ( { isSubmitting } ) => (
+            { ( { dirty, handleReset } ) => (
                 <Form>
-                    <Field type="text" name="term"/>
-
-                    <button type="submit" disabled={ isSubmitting }>
+                    <Field type="text" name={ 'userNameFilter' }/>
+                    <Field name={ 'isFriendsFilter' } as={ 'select' }>
+                        <option value='null'>All</option>
+                        <option value='true'>Only Friends</option>
+                        <option value='false'>Only unfollowed</option>
+                    </Field>
+                    <button type='submit' disabled={ isFetching }>
                         Find
                     </button>
+                    <button type='reset' disabled={ !dirty } onClick={ handleReset }> -X-</button>
                 </Form>
             ) }
         </Formik>

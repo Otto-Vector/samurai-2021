@@ -10,13 +10,16 @@ const initialState = {
     pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
-    isFriendsFilter: null as boolean | null, // итого три состояния null - все, true - только друзья, false - все кроме друзей
-    userNameFilter: '' as string | undefined,
+    usersFilter: {
+        isFriendsFilter: null as boolean | null, // итого три состояния null - все, true - только друзья, false - все кроме друзей
+        userNameFilter: '' as string | undefined,
+    },
     isFetching: true,
     isFetchingById: [] as number[],
 }
 
 export type UsersReducerStateType = typeof initialState
+export type UsersFilter = typeof initialState.usersFilter
 
 type ActionsType = GetActionsTypes<typeof usersActions>
 
@@ -59,12 +62,6 @@ const usersReducer = ( state = initialState, action: ActionsType ): UsersReducer
             }
         }
 
-        case 'users-reducer/TOGGLE-FRIENDS-ONLY': {
-            return {
-                ...state,
-                isFriendsFilter: action.isFriendsFilter,
-            }
-        }
         case 'users-reducer/TOGGLE-IS-FETCHING-BY-ID': {
             return {
                 ...state,
@@ -73,10 +70,10 @@ const usersReducer = ( state = initialState, action: ActionsType ): UsersReducer
                     : state.isFetchingById.filter( id => action.userId !== id ),
             }
         }
-        case 'users-reducer/SEARCH-USER-FILTER': {
+        case 'users-reducer/SEARCH-USERS-FILTER': {
             return {
                 ...state,
-                userNameFilter: action.userNameFilter,
+                usersFilter: { ...action.payload },
             }
         }
         default: {
@@ -120,15 +117,10 @@ export const usersActions = {
         isFetching,
         userId,
     } as const),
-    // поиск только среди друзей
-    friendsOnlyToggle: ( isFriendsFilter: boolean | null ) => ({
-        type: 'users-reducer/TOGGLE-FRIENDS-ONLY',
-        isFriendsFilter,
-    } as const),
-    // поиск по фильтру (имени
-    searchUsersFilter: ( userNameFilter: string| undefined ) => ({
-        type: 'users-reducer/SEARCH-USER-FILTER',
-        userNameFilter,
+    // поиск по фильтру (имя, выборка друзей)
+    searchUsersFilter: ( payload: UsersFilter ) => ({
+        type: 'users-reducer/SEARCH-USERS-FILTER',
+        payload,
     } as const),
 }
 
@@ -136,13 +128,12 @@ export const usersActions = {
 
 export type UsersReducerThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
 // запрос на API и запись в стейт значений поиска пользователей
-export const getUsers = ( { pageSize, page, isFriendsFilter = null, userName = undefined }: getUsersType ): UsersReducerThunkActionType =>
+export const getUsers = ( { pageSize, page, isFriendsFilter = null, userNameFilter = undefined }: getUsersType ): UsersReducerThunkActionType =>
     async ( dispatch ) => {
 
         dispatch( usersActions.toggleIsFetching( true ) )
-            //dispatch( usersActions.searchUsersFilter(userName))
 
-        const response = await usersApi.getUsers( { pageSize, page, isFriendsFilter, userName } )
+        const response = await usersApi.getUsers( { pageSize, page, isFriendsFilter, userNameFilter } )
 
         dispatch( usersActions.setUsers( response.items ) )
 
