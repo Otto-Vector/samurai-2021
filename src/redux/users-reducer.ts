@@ -140,7 +140,7 @@ export const getUsers = ( { pageSize, page, isFriendsFilter = null, userName = u
     async ( dispatch ) => {
 
         dispatch( usersActions.toggleIsFetching( true ) )
-        dispatch( usersActions.searchUsersFilter(userName))
+            //dispatch( usersActions.searchUsersFilter(userName))
 
         const response = await usersApi.getUsers( { pageSize, page, isFriendsFilter, userName } )
 

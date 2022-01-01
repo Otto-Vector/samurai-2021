@@ -21,7 +21,7 @@ type ActionsType = {
     pageSelect: ( selectedPage: number ) => void
     friendsFilerToggle: () => void
     follow: ( userId: number, isFollow: boolean ) => void
-    getUsers: ( getUsersOption: getUsersType ) => void
+    onTermChanged: ( term: string | undefined ) => void
 }
 
 export type UsersPropsType = PropsType & ActionsType
@@ -30,8 +30,9 @@ const Users: React.FC<UsersPropsType> = (
     {
         isFriendsFilter, isFetching, users,
         isFetchingById, totalUsersCount, pageSize, currentPage,
-        pageSelect, friendsFilerToggle, follow, getUsers, userNameFilter,
+        pageSelect, friendsFilerToggle, follow, onTermChanged, userNameFilter,
     } ) => {
+
 
     return (
         <div className={ styles.users }>
@@ -44,8 +45,7 @@ const Users: React.FC<UsersPropsType> = (
                     pageSelect={ pageSelect }
                 />
                 <UserSearchForm
-                    getUsers={ getUsers }
-                    isFriendsFilter={ isFriendsFilter }
+                    onTermChanged={ onTermChanged }
                     userNameFilter={ userNameFilter }
                 />
                 <button

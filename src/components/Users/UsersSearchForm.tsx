@@ -1,23 +1,21 @@
 import React from 'react'
 import styles from './Users.module.css'
 import { Field, Form, Formik } from 'formik'
-import { getUsersType } from '../../api/users-api'
 
 type UsersSearchPropsType = {
-    isFriendsFilter: boolean | null
     userNameFilter: string | undefined
-    getUsers: ( getUsersOption: getUsersType ) => void
+    onTermChanged: ( term: string | undefined ) => void
 }
 
 type UserSearchObjectType = {
     term: string | undefined
 }
 
-export const UserSearchForm: React.FC<UsersSearchPropsType> = ( { getUsers, userNameFilter, isFriendsFilter } ) => {
+export const UserSearchForm: React.FC<UsersSearchPropsType> = ( { onTermChanged, userNameFilter } ) => {
 
     const submit = async ( values: UserSearchObjectType, { setSubmitting }: { setSubmitting: ( isSubmitting: boolean ) => void } ) => {
 
-            await getUsers( {page: 1, userName: values.term, pageSize: 4, isFriendsFilter} )
+            await onTermChanged( values.term )
             setSubmitting( false )
 
     }

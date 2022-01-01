@@ -35,6 +35,7 @@ type DispatchToPropsType = {
     changePage: ( page: number ) => void
     getUsers: ( getUsersOption: getUsersType ) => void
     friendsOnlyToggle: ( isFriendsFilter: boolean | null ) => void
+    searchUsersFilter: ( userNameFilter: string | undefined ) => void
 }
 
 type PropsType = MapStateToPropsType & DispatchToPropsType
@@ -44,26 +45,29 @@ const UsersContainer: React.FC<PropsType> = (
         isFriendsFilter, isFetching, users, isFetchingById,
         totalUsersCount, pageSize, currentPage,
         //BLL
-        follow, changePage, getUsers, friendsOnlyToggle, userNameFilter,
+        follow, changePage, getUsers, friendsOnlyToggle, userNameFilter, searchUsersFilter,
     } ) => {
 
 
     useEffect( () => {
         getUsers( { pageSize, page: currentPage, userName: userNameFilter, isFriendsFilter } )
         // return friendsOnlyToggle( null )
-    }, [ pageSize, currentPage, userNameFilter ] )
+    }, [ pageSize, currentPage, userNameFilter, isFriendsFilter ] )
 
 
     const pageSelect = ( page: number ) => {
         changePage( page )
-        getUsers( { pageSize, page, isFriendsFilter, userName: userNameFilter } )
     }
 
     const friendsFilerToggle = () => {
         changePage( 1 ) // перемещаемся на первую страницу
         const isFriends = isFriendsFilter ? null : true // принимает только null, true или false(только не друзья)
         friendsOnlyToggle( isFriends )
-        getUsers( { pageSize, page: 1, isFriendsFilter: isFriends, userName: userNameFilter } )
+    }
+
+    const onTermChanged = ( term: string | undefined ) => {
+        changePage( 1 ) // перемещаемся на первую страницу
+        searchUsersFilter( term )
     }
 
     return <>
@@ -78,7 +82,7 @@ const UsersContainer: React.FC<PropsType> = (
             follow={ follow }
             pageSelect={ pageSelect }
             friendsFilerToggle={ friendsFilerToggle }
-            getUsers={ getUsers }
+            onTermChanged={ onTermChanged }
             userNameFilter={ userNameFilter }
         />
     </>
@@ -88,18 +92,18 @@ const UsersContainer: React.FC<PropsType> = (
 
 const mapStateToProps = ( state: AppStateType ): MapStateToPropsType => {
     return {
-        users: getUsersState(state),
-        pageSize: getPageSize(state),
-        totalUsersCount: getTotalUsersCount(state),
-        currentPage: getCurrentPage(state),
-        isFetching: getIsFetching(state),
-        isFetchingById: getIsFetchingById(state),
-        isFriendsFilter: getIsFriendsFilter(state),
-        userNameFilter: getUserNameFilter(state),
+        users: getUsersState( state ),
+        pageSize: getPageSize( state ),
+        totalUsersCount: getTotalUsersCount( state ),
+        currentPage: getCurrentPage( state ),
+        isFetching: getIsFetching( state ),
+        isFetchingById: getIsFetchingById( state ),
+        isFriendsFilter: getIsFriendsFilter( state ),
+        userNameFilter: getUserNameFilter( state ),
     }
 }
 
-const { changePage, friendsOnlyToggle } = usersActions
+const { changePage, friendsOnlyToggle, searchUsersFilter } = usersActions
 
 export default compose<React.ComponentType>(
     connect<MapStateToPropsType, DispatchToPropsType, {}, AppStateType>( mapStateToProps, {
@@ -107,6 +111,7 @@ export default compose<React.ComponentType>(
         changePage,
         getUsers,
         friendsOnlyToggle,
+        searchUsersFilter,
     } ),
     withAuthRedirect,
 )( UsersContainer )
