@@ -5,9 +5,11 @@ import UserItem from './UserItem/UserItem'
 import Pagination from '../common/Pagination/Pagination'
 import { UsersFromSearchType } from '../../redux/types/types'
 import { UserSearchForm } from './UsersSearchForm'
+import { getUsersType } from '../../api/users-api'
 
 type PropsType = {
     isFriendsFilter: boolean | null
+    userNameFilter: string | undefined
     isFetching: boolean
     users: UsersFromSearchType[]
     isFetchingById: number[]
@@ -19,6 +21,7 @@ type ActionsType = {
     pageSelect: ( selectedPage: number ) => void
     friendsFilerToggle: () => void
     follow: ( userId: number, isFollow: boolean ) => void
+    getUsers: ( getUsersOption: getUsersType ) => void
 }
 
 export type UsersPropsType = PropsType & ActionsType
@@ -27,7 +30,7 @@ const Users: React.FC<UsersPropsType> = (
     {
         isFriendsFilter, isFetching, users,
         isFetchingById, totalUsersCount, pageSize, currentPage,
-        pageSelect, friendsFilerToggle, follow,
+        pageSelect, friendsFilerToggle, follow, getUsers, userNameFilter,
     } ) => {
 
     return (
@@ -40,7 +43,11 @@ const Users: React.FC<UsersPropsType> = (
                     currentPage={ currentPage }
                     pageSelect={ pageSelect }
                 />
-                <UserSearchForm/>
+                <UserSearchForm
+                    getUsers={ getUsers }
+                    isFriendsFilter={ isFriendsFilter }
+                    userNameFilter={ userNameFilter }
+                />
                 <button
                     className={ `${ styles.searchFriendsButton } ${ isFriendsFilter || styles.searchFriendsButtonPassive }` }
                     onClick={ () => {

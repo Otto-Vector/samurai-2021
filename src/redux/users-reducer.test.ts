@@ -31,6 +31,7 @@ beforeEach(()=>{
     totalUsersCount: 0,
     currentPage: 1,
     isFriendsFilter: null,
+       userNameFilter: '',
     isFetching: true,
     isFetchingById: []
 }

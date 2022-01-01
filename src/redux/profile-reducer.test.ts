@@ -1,7 +1,7 @@
-import profileReducer, { profileActions, ProfileReducerStateType } from './profile-reducer'
+import profileReducer, { profileActions, UsersReducerStateType } from './profile-reducer'
 import { PostType, ProfileType } from './types/types'
 
-let state: ProfileReducerStateType = {
+let state: UsersReducerStateType = {
     posts: [
         {
             id: 1,

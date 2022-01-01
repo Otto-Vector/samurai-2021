@@ -1,7 +1,7 @@
-import {ResultCodesEnum} from '../api/samurai-api'
-import {UsersFromSearchType} from './types/types'
-import {ThunkAction} from 'redux-thunk'
-import {AppStateType, GetActionsTypes} from './redux-store'
+import { ResultCodesEnum } from '../api/samurai-api'
+import { UsersFromSearchType } from './types/types'
+import { ThunkAction } from 'redux-thunk'
+import { AppStateType, GetActionsTypes } from './redux-store'
 import { getUsersType, usersApi } from '../api/users-api'
 
 
@@ -10,10 +10,10 @@ const initialState = {
     pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
-    isFriendsFilter: null as boolean | null, // здесь используется именно null в запросах api, чтобы не фильтровать друзей
-    // итого три состояния null - все, true - только друзья, false - все кроме друзей
+    isFriendsFilter: null as boolean | null, // итого три состояния null - все, true - только друзья, false - все кроме друзей
+    userNameFilter: '' as string | undefined,
     isFetching: true,
-    isFetchingById: [] as number[]
+    isFetchingById: [] as number[],
 }
 
 export type UsersReducerStateType = typeof initialState
@@ -31,38 +31,38 @@ const usersReducer = ( state = initialState, action: ActionsType ): UsersReducer
                         return { ...u, followed: action.isFollow }
                     }
                     return u
-                } )
+                } ),
             }
         }
         case 'users-reducer/SET-USERS': {
             return {
                 ...state,
-                users: action.users
+                users: action.users,
             }
         }
         case 'users-reducer/CHANGE-PAGE': {
             return {
                 ...state,
-                currentPage: action.page
+                currentPage: action.page,
             }
         }
         case 'users-reducer/SET-TOTAL-USERS-COUNT': {
             return {
                 ...state,
-                totalUsersCount: action.totalUsersCount
+                totalUsersCount: action.totalUsersCount,
             }
         }
         case 'users-reducer/TOGGLE-IS-FETCHING': {
             return {
                 ...state,
-                isFetching: action.isFetching
+                isFetching: action.isFetching,
             }
         }
 
         case 'users-reducer/TOGGLE-FRIENDS-ONLY': {
             return {
                 ...state,
-                isFriendsFilter: action.isFriendsFilter
+                isFriendsFilter: action.isFriendsFilter,
             }
         }
         case 'users-reducer/TOGGLE-IS-FETCHING-BY-ID': {
@@ -70,7 +70,13 @@ const usersReducer = ( state = initialState, action: ActionsType ): UsersReducer
                 ...state,
                 isFetchingById: action.isFetching
                     ? [ ...state.isFetchingById, action.userId ]
-                    : state.isFetchingById.filter( id => action.userId !== id )
+                    : state.isFetchingById.filter( id => action.userId !== id ),
+            }
+        }
+        case 'users-reducer/SEARCH-USER-FILTER': {
+            return {
+                ...state,
+                userNameFilter: action.userNameFilter,
             }
         }
         default: {
@@ -84,53 +90,59 @@ const usersReducer = ( state = initialState, action: ActionsType ): UsersReducer
 
 export const usersActions = {
     // добавление|удаление пользователя в список друзей
-    followSuccessToggle: ( userId: number, isFollow: boolean ) => ( {
+    followSuccessToggle: ( userId: number, isFollow: boolean ) => ({
         type: 'users-reducer/FOLLOW-TOGGLE',
         userId,
-        isFollow
-    } as const ),
+        isFollow,
+    } as const),
     // установка значения в карточки пользователей одной страницы
-    setUsers: ( users: UsersFromSearchType[] ) => ( {
+    setUsers: ( users: UsersFromSearchType[] ) => ({
         type: 'users-reducer/SET-USERS',
-        users
-    } as const ),
+        users,
+    } as const),
     // установке значения активной страницы
     // возвращаемого из API поиска
-    changePage: ( page: number ) => ( { type: 'users-reducer/CHANGE-PAGE', page } as const ),
+    changePage: ( page: number ) => ({ type: 'users-reducer/CHANGE-PAGE', page } as const),
     // записывает общее количество найденных пользователей
     // (для подсчёта в пагинаторе)
-    setTotalUsersCount: ( totalUsersCount: number ) => ( {
+    setTotalUsersCount: ( totalUsersCount: number ) => ({
         type: 'users-reducer/SET-TOTAL-USERS-COUNT',
-        totalUsersCount
-    } as const ),
+        totalUsersCount,
+    } as const),
     // ожидание отклика API на запрос поиска пользователей
-    toggleIsFetching: ( isFetching: boolean ) => ( {
+    toggleIsFetching: ( isFetching: boolean ) => ({
         type: 'users-reducer/TOGGLE-IS-FETCHING',
-        isFetching
-    } as const ),
+        isFetching,
+    } as const),
     // ожидание отклика API при нажании follow/unfollow
-    isFetchingFollowed: ( isFetching: boolean, userId: number ) => ( {
+    isFetchingFollowed: ( isFetching: boolean, userId: number ) => ({
         type: 'users-reducer/TOGGLE-IS-FETCHING-BY-ID',
         isFetching,
-        userId
-    } as const ),
+        userId,
+    } as const),
     // поиск только среди друзей
-    friendsOnlyToggle: ( isFriendsFilter: boolean | null ) => ( {
+    friendsOnlyToggle: ( isFriendsFilter: boolean | null ) => ({
         type: 'users-reducer/TOGGLE-FRIENDS-ONLY',
-        isFriendsFilter
-    } as const ),
+        isFriendsFilter,
+    } as const),
+    // поиск по фильтру (имени
+    searchUsersFilter: ( userNameFilter: string| undefined ) => ({
+        type: 'users-reducer/SEARCH-USER-FILTER',
+        userNameFilter,
+    } as const),
 }
 
 /* САНКИ */
 
 export type UsersReducerThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
 // запрос на API и запись в стейт значений поиска пользователей
-export const getUsers = ( {pageSize, page, isFriendsFilter = null, userName = undefined }: getUsersType): UsersReducerThunkActionType =>
+export const getUsers = ( { pageSize, page, isFriendsFilter = null, userName = undefined }: getUsersType ): UsersReducerThunkActionType =>
     async ( dispatch ) => {
 
         dispatch( usersActions.toggleIsFetching( true ) )
+        dispatch( usersActions.searchUsersFilter(userName))
 
-        const response = await usersApi.getUsers( {pageSize, page, isFriendsFilter, userName} )
+        const response = await usersApi.getUsers( { pageSize, page, isFriendsFilter, userName } )
 
         dispatch( usersActions.setUsers( response.items ) )
 
@@ -145,7 +157,6 @@ export const follow = ( userId: number, isFollow: boolean ): UsersReducerThunkAc
         dispatch( usersActions.isFetchingFollowed( true, userId ) )
 
         const response = await usersApi[isFollow ? 'follow' : 'unfollow']( userId )
-        // const response = await usersApi.follow( userId )
 
         if (response.resultCode === ResultCodesEnum.Success) {
             dispatch( usersActions.followSuccessToggle( userId, isFollow ) )

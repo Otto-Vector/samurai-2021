@@ -40,10 +40,10 @@ let initialState = {
     profileStatusPlaceholder: 'input status here' as string | undefined
 }
 
-export type ProfileReducerStateType = typeof initialState
+export type UsersReducerStateType = typeof initialState
 type ActionsType = GetActionsTypes<typeof profileActions>
 
-const profileReducer = ( state = initialState, action: ActionsType ): ProfileReducerStateType => {
+const profileReducer = ( state = initialState, action: ActionsType ): UsersReducerStateType => {
 
     switch (action.type) {
         case 'profile-reducer/ADD-POST' : {
