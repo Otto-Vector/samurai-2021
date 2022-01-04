@@ -34,16 +34,16 @@ let initialState = {
     isAuthProfile: false,
     isFollowCurrent: false,
     isFollowFetching: false,
-
+    errorsFromApi: [] as string[] | null,
     profileStatusText: null as string | null,
     profileStatusFetching: true,
-    profileStatusPlaceholder: 'input status here' as string | undefined
+    profileStatusPlaceholder: 'input status here' as string | undefined,
 }
 
-export type UsersReducerStateType = typeof initialState
+export type ProfileReducerStateType = typeof initialState
 type ActionsType = GetActionsTypes<typeof profileActions>
 
-const profileReducer = ( state = initialState, action: ActionsType ): UsersReducerStateType => {
+const profileReducer = ( state = initialState, action: ActionsType ): ProfileReducerStateType => {
 
     switch (action.type) {
         case 'profile-reducer/ADD-POST' : {
@@ -113,6 +113,12 @@ const profileReducer = ( state = initialState, action: ActionsType ): UsersReduc
                 isFollowFetching: action.isFollowFetching,
             }
         }
+        case 'profile-reducer/SET-ERROR-FROM-API': {
+            return {
+                ...state,
+                errorsFromApi: action.error,
+            }
+        }
         default : {
             return state
         }
@@ -134,10 +140,15 @@ export const profileActions = {
         type: 'profile-reducer/DELETE-POST',
         postId,
     } as const),
-    // устанока загруженных данных профился в state
+    // устанока загруженных данных профиля в state
     setProfileState: ( profile: ProfileType ) => ({
         type: 'profile-reducer/SET-PROFILE-STATE',
         profile,
+    } as const),
+    // фиксация ошибок из запроса
+    setErrorFromAPI: ( error: string[] | null ) => ({
+        type: 'profile-reducer/SET-ERROR-FROM-API',
+        error,
     } as const),
     // профиль авторизованного пользователя?
     setIsAuthProfile: ( isAuthProfile: boolean ) => ({
@@ -216,8 +227,10 @@ export const setProfileData = ( data: ProfileType ): ProfileThunkActionType<stri
         const response = await profileAPI.setProfileData( data )
         if (response.resultCode === ResultCodesEnum.Success) {
             dispatch( getProfile( data.userId || defaultUserId ) )
+            dispatch(profileActions.setErrorFromAPI(null))
             return null
         } else {
+            dispatch(profileActions.setErrorFromAPI(response.messages))
             return response.messages
         }
     }

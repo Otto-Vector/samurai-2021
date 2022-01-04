@@ -37,6 +37,7 @@ type MapDispatchType = {
     getStatus: ( userId: number ) => void
     setPhoto: ( userPhoto: File ) => void
     setProfileData: ( data: ProfileType ) => ProfileThunkActionType<string[] | null> | Promise<string[] | null>
+    // setProfileData: ( data: ProfileType ) => void
     followProfile: ( isFollow: boolean, userId: number ) => void
 }
 

@@ -1,7 +1,7 @@
-import profileReducer, { profileActions, UsersReducerStateType } from './profile-reducer'
+import profileReducer, { profileActions, ProfileReducerStateType } from './profile-reducer'
 import { PostType, ProfileType } from './types/types'
 
-let state: UsersReducerStateType = {
+let state: ProfileReducerStateType = {
     posts: [
         {
             id: 1,
@@ -28,7 +28,7 @@ let state: UsersReducerStateType = {
     isAuthProfile: false,
     isFollowCurrent: false,
     isFollowFetching: false,
-
+    errorsFromApi: [],
     profileStatusText: null as string | null,
     profileStatusFetching: true,
     profileStatusPlaceholder: 'input status here' as string | undefined,

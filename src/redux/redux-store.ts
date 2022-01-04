@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, compose, createStore} from 'redux'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import thunkMiddleWare from 'redux-thunk'
 
 import profileReducer from './profile-reducer'
