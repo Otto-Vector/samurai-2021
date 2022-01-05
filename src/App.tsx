@@ -6,11 +6,10 @@ import {
     Redirect,
     Switch,
     Route,
-    withRouter,
 } from 'react-router-dom'
 import {
     connect,
-    Provider,
+    Provider, useDispatch, useSelector,
 } from 'react-redux'
 import { initializedAll } from './redux/app-reducer'
 import { compose } from 'redux'
@@ -25,19 +24,13 @@ const ProfileContainer = React.lazy( () => import('./components/Profile/ProfileC
 const LoginContainer = React.lazy( () => import('./components/Login/LoginContainer') )
 
 
-type MapStateToPropsType = {
-    initialazed: boolean
-}
+const AppFunc: React.FC = () => {
 
-type MapDispatchToPropsType = {
-    initializedAll: () => void
-}
-
-const AppFunc: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (
-    { initializedAll, initialazed } ) => {
+    const initialazed = useSelector( ( state: AppStateType ) => state.app.initialazed )
+    const dispatch = useDispatch()
 
     useEffect( () => {
-        if (!initialazed) initializedAll()
+        if (!initialazed) dispatch( initializedAll() )
     }, [ initialazed, initializedAll ] )
 
     if (!initialazed) return <Preloader/>
@@ -63,22 +56,11 @@ const AppFunc: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (
     )
 }
 
-let mapStateToProps = ( state: AppStateType ): MapStateToPropsType => {
-    return {
-        initialazed: state.app.initialazed,
-    }
-}
-
-const App = compose<React.ComponentType>(
-    withRouter,
-    connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>( mapStateToProps, { initializedAll } ),
-)( AppFunc )
-
 
 const AppContainer: React.FC = () => {
     return <BrowserRouter>
         <Provider store={ store }>
-            <App/>
+            <AppFunc/>
         </Provider>
     </BrowserRouter>
 }

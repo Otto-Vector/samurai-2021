@@ -117,7 +117,7 @@ export const usersActions = {
         isFetching,
         userId,
     } as const),
-    // поиск по фильтру (имя, выборка друзей)
+    // запись в стейт текущего фильтра (имя, выборка друзей)
     searchUsersFilter: ( payload: UsersFilter ) => ({
         type: 'users-reducer/SEARCH-USERS-FILTER',
         payload,

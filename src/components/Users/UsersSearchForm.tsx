@@ -1,7 +1,8 @@
 import React from 'react'
 import styles from './Users.module.css'
-import { Field, Form, Formik } from 'formik'
 import { UsersFilter } from '../../redux/users-reducer'
+import { Input } from '../common/FormType/FormType'
+import { Field, Form } from 'react-final-form'
 
 type UsersSearchPropsType = {
     usersFilter: UsersFilter
@@ -13,32 +14,49 @@ type UsersSearchPropsType = {
 export const UserSearchForm: React.FC<UsersSearchPropsType> = (
     { onTermChanged, usersFilter, isFetching } ) => {
 
-    const submit = async ( values: UsersFilter, { setSubmitting }: { setSubmitting: ( isSubmitting: boolean ) => void } ) => {
+    const resetClear: UsersFilter = { userNameFilter: '', isFriendsFilter: null }
 
-        onTermChanged( values )
-        setSubmitting( true )
+    const submit = async ( values: UsersFilter ) => {
+        await onTermChanged( values )
     }
 
     return <div className={ styles.searchFriendsField }>
-        <Formik
-            initialValues={ usersFilter }
-
+        <Form
             onSubmit={ submit }
-        >
-            { ( { dirty, handleReset } ) => (
-                <Form>
-                    <Field type="text" name={ 'userNameFilter' }/>
-                    <Field name={ 'isFriendsFilter' } as={ 'select' }>
-                        <option value='null'>All</option>
-                        <option value='true'>Only Friends</option>
-                        <option value='false'>Only unfollowed</option>
-                    </Field>
-                    <button type='submit' disabled={ isFetching }>
-                        Find
-                    </button>
-                    <button type='reset' disabled={ !dirty } onClick={ handleReset }> -X-</button>
-                </Form>
-            ) }
-        </Formik>
+            initialValues={ usersFilter }
+            render={
+                ( { submitError, handleSubmit, form, submitting, dirty } ) => (
+                    <form onSubmit={ handleSubmit }>
+                        <div className={ styles.input }>
+                            <Field name={ 'userNameFilter' }
+                                   placeholder={ 'userName' }
+                                   resetFieldBy={ form }
+                                   component={ Input }
+                            />
+                        </div>
+                        <div>
+                            <span className={ styles.select }>
+                                <Field name={ 'isFriendsFilter' } component={ 'select' }>
+                                    <option value='null'>All</option>
+                                    <option value='true'>Only Friends</option>
+                                    <option value='false'>Only unfollowed</option>
+                                </Field>
+                            </span>
+                            <button className={ styles.button }
+                                    type={ 'submit' }
+                                    disabled={ submitting }>Done
+                            </button>
+                            <button type={ 'reset' }
+                                    className={ styles.button }
+                                    disabled={ !dirty || submitting }
+                                    onClick={ () => {
+                                        form.reset( resetClear )
+                                    } }> X
+                            </button>
+                        </div>
+                        { submitError && <span className={ styles.onError }>{ submitError }</span> }
+                    </form>
+                )
+            }/>
     </div>
 }

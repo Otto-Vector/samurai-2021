@@ -3,37 +3,46 @@ import styles from './Users.module.css'
 import Preloader from '../common/Preloader/Preloader'
 import UserItem from './UserItem/UserItem'
 import Pagination from '../common/Pagination/Pagination'
-import { UsersFromSearchType } from '../../redux/types/types'
 import { UserSearchForm } from './UsersSearchForm'
-import { UsersFilter } from '../../redux/users-reducer'
+import { follow, UsersFilter } from '../../redux/users-reducer'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+    getTotalUsersCount,
+    getUsersIsFetching, getUsersIsFetchingById,
+    getUsersState,
+} from '../../reselect/users-reselector'
 
 
 type PropsType = {
     usersFilter: UsersFilter
-    isFetching: boolean
-    users: UsersFromSearchType[]
-    isFetchingById: number[]
-    totalUsersCount: number
-    pageSize: number
     currentPage: number
+    pageSize: number
 }
+
 type ActionsType = {
     pageSelect: ( selectedPage: number ) => void
-    follow: ( userId: number, isFollow: boolean ) => void
     onTermChanged: ( values: UsersFilter ) => void
 }
 export type UsersPropsType = PropsType & ActionsType
 
 const Users: React.FC<UsersPropsType> = (
     {
-        //
-        usersFilter, isFetching, isFetchingById,
-        users,
-        totalUsersCount, pageSize, currentPage,
-        // BLL
-        pageSelect, follow, onTermChanged,
+        currentPage, usersFilter, pageSelect, pageSize, onTermChanged,
     } ) => {
 
+    const dispatch = useDispatch()
+
+    // для пагинатора
+    const totalUsersCount = useSelector( getTotalUsersCount )
+
+    // для Users
+    const users = useSelector( getUsersState )
+    const isFetching = useSelector( getUsersIsFetching )
+    const isFetchingById = useSelector( getUsersIsFetchingById )
+
+    const followUser = ( userId: number, isFollow: boolean ) => {
+        dispatch( follow( userId, isFollow ) )
+    }
 
     return (
         <div className={ styles.users }>
@@ -48,16 +57,16 @@ const Users: React.FC<UsersPropsType> = (
                 <UserSearchForm
                     onTermChanged={ onTermChanged }
                     usersFilter={ usersFilter }
-                    isFetching={isFetching}
+                    isFetching={ isFetching }
                 />
             </div>
             { isFetching ? <Preloader/> :
-                users.map( ( u ) => <UserItem { ...{ ...u, follow, isFetchingById } } key={ u.id }/> )
+                users.map( ( u ) => <UserItem { ...{ ...u, followUser, isFetchingById } } key={ u.id }/> )
             }
         </div>
     )
 }
 
-const MemoizedUsers = React.memo(Users)
+const MemoizedUsers = React.memo( Users )
 
 export default MemoizedUsers

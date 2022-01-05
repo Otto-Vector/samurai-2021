@@ -1,17 +1,17 @@
 import React from 'react'
 import styles from './UserItem.module.css'
 import userNoImage from '../../../assets/images/userNoImage.png'
-import {NavLink} from 'react-router-dom'
-import {UsersFromSearchType} from '../../../redux/types/types'
+import { NavLink } from 'react-router-dom'
+import { UsersFromSearchType } from '../../../redux/types/types'
 
 type PropsType = {
     isFetchingById: number[]
-    follow: ( userId: number, isFollow: boolean ) => void
+    followUser: ( userId: number, isFollow: boolean ) => void
 }
 
 export type UserItemType = UsersFromSearchType & PropsType
 
-const UserItem = ( { id, photos, isFetchingById, followed, follow, name, status }: UserItemType ) => {
+const UserItem = ( { id, photos, isFetchingById, followed, followUser, name, status }: UserItemType ) => {
 
     return (
         <div className={ styles.user }>
@@ -23,7 +23,7 @@ const UserItem = ( { id, photos, isFetchingById, followed, follow, name, status 
                     <button disabled={ isFetchingById.includes( id ) }
                             className={ styles.followButton + ' ' + styles[followed ? 'unfollow' : 'follow'] }
                             onClick={ () => {
-                                follow( id, !followed )
+                                followUser( id, !followed )
                             } }
                     >{ followed ? 'unfollow' : 'follow' }</button>
                 </div>
@@ -38,7 +38,7 @@ const UserItem = ( { id, photos, isFetchingById, followed, follow, name, status 
                     <div>{ 'u.location.city' }</div>
                 </div>
             </div>
-        </div> )
+        </div>)
 }
 
 export default UserItem

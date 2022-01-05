@@ -11,10 +11,10 @@ export const getNewPostTextPlaceholder: ProfileSelector<'newPostTextPlaceholder'
 export const getProfileData: ProfileSelector<'profile'> = ( state ) => state.profilePage.profile
 export const getProfileIsFetching: ProfileSelector<'isFetching'> = ( state ) => state.profilePage.isFetching
 export const getProfileIsAuth: ProfileSelector<'isAuthProfile'> = ( state ) => state.profilePage.isAuthProfile
-export const getIsFollowCurrent: ProfileSelector<'isFollowCurrent'> = ( state ) => state.profilePage.isFollowCurrent
-export const getIsFollowFetching: ProfileSelector<'isFollowFetching'> = ( state ) => state.profilePage.isFollowFetching
-export const getError: ProfileSelector<'errorsFromApi'> = state => state.profilePage.errorsFromApi
+export const getProfileIsFollowCurrent: ProfileSelector<'isFollowCurrent'> = ( state ) => state.profilePage.isFollowCurrent
+export const getProfileIsFollowFetching: ProfileSelector<'isFollowFetching'> = ( state ) => state.profilePage.isFollowFetching
+export const getProfileError: ProfileSelector<'errorsFromApi'> = state => state.profilePage.errorsFromApi
 
-export const getErrorFromApi = createSelector( getError,
+export const getErrorFromApi = createSelector( getProfileError,
     ( error: ReturnType<ProfileSelector<'errorsFromApi'>> ) => !error ? null : errorParser( error ),
 )

@@ -26,4 +26,13 @@
     background-color: gray;
 }
 
+.input {
+    width: 100%;
+    background-color: lightblue;
+    border-radius: 5px;
+}
 
+.button {
+    padding: 5px;
+    margin: 5px;
+}

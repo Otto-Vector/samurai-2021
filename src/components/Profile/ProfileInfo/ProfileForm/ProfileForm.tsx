@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styles from './ProfileForm.module.css'
 
 import { Input, TextArea } from '../../../common/FormType/FormType'
@@ -7,35 +7,34 @@ import { composeValidators, required } from '../../../../utils/validators'
 import { FORM_ERROR } from 'final-form'
 import { socialsImageSource, SocialsImageSourceType } from '../../../common/Socials/SocialsImageSource'
 import { ContactsType, ProfileType } from '../../../../redux/types/types'
-import { ProfileThunkActionType } from '../../../../redux/profile-reducer'
+import { setProfileData } from '../../../../redux/profile-reducer'
 import { errorParser } from '../../../../utils/utils'
+import { useDispatch } from 'react-redux'
 
 
 type OwnProps = {
     initialValues: ProfileType | null
-    onSubmit: ( data: ProfileType ) => ProfileThunkActionType<string[] | null> | Promise<string[] | null>
-    // onSubmit: ( data: ProfileType ) => void
     onCancel: () => void
 }
 
-const ProfileForm: React.FC<OwnProps> = ( { initialValues, onSubmit, onCancel } ) => {
+export const ProfileForm: React.FC<OwnProps> = ( { initialValues, onCancel } ) => {
 
-    // const error = useSelector( getErrorFromApi )
-
+    const dispatch = useDispatch()
 
     if (initialValues === null) return null
 
     const { contacts } = initialValues
 
-    const onSubmit1 = async ( formData: ProfileType ) => {
-        const error = await onSubmit( formData )
+    const onSubmit = async ( formData: ProfileType ) => {
+        // toDo: добавить полям 'https://' автоматически и не показывать его
+        // toDo: сделать валидацию локальной
+        // @ts-ignore
+        const error: string[] | null = await dispatch( setProfileData( formData ) )
         if (!error) {
             onCancel()
             return { [FORM_ERROR]: null }
         }
-        let errors = errorParser( error as string[] )
-        console.log(errors)
-        return errorParser( error as string[] )
+        return errorParser( error )
         // return error
     }
 
@@ -47,7 +46,7 @@ const ProfileForm: React.FC<OwnProps> = ( { initialValues, onSubmit, onCancel } 
 
     return (
         <Form
-            onSubmit={ onSubmit1 }
+            onSubmit={ onSubmit }
             initialValues={ initialValues }
             render={
                 ( { submitError, handleSubmit, form, submitting } ) => (
@@ -113,4 +112,3 @@ const ProfileForm: React.FC<OwnProps> = ( { initialValues, onSubmit, onCancel } 
     )
 }
 
-export default ProfileForm
