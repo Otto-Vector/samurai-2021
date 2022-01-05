@@ -1,19 +1,19 @@
-import {randomDifferentIntegersArrayCreator} from "../utils/utils";
-import {createSelector} from "reselect";
-import {AppStateType} from "../redux/redux-store";
-import {FriendsReducerStateType} from "../redux/friends-reducer";
+import { randomDifferentIntegersArrayCreator } from '../utils/utils'
+import { createSelector } from 'reselect'
+import { AppStateType } from '../redux/redux-store'
+import { FriendsReducerStateType } from '../redux/friends-reducer'
 
-type AppStateReturned<T> = (state: AppStateType) => T
+type FriendsReselector<T extends keyof Y, Y = FriendsReducerStateType> = ( state: AppStateType ) => Y[T]
 
-export const getFriendsHeader: AppStateReturned<FriendsReducerStateType['header']> = (state) => state.sidebar.header
-export const getFriendsIsFetching: AppStateReturned<FriendsReducerStateType['isFetching']> = (state) => state.sidebar.isFetching
+export const getFriendsHeader: FriendsReselector<'header'> = ( state ) => state.sidebar.header
+export const getFriendsIsFetching: FriendsReselector<'isFetching'> = ( state ) => state.sidebar.isFetching
 
-const getFriends: AppStateReturned<FriendsReducerStateType['friends']> = (state) => state.sidebar.friends
-const getFriendsToShow: AppStateReturned<FriendsReducerStateType['friendsToShow']> = (state) => state.sidebar.friendsToShow
+const getFriends: FriendsReselector<'friends'> = ( state ) => state.sidebar.friends
+const getFriendsToShow: FriendsReselector<'friendsToShow'> = ( state ) => state.sidebar.friendsToShow
 
-export const getAnyFriendsReselect = createSelector(getFriends, getFriendsToShow, (friends, friendsToShow) => {
-  let maxFriends = friends.length
-  let toShow = Math.min(maxFriends, friendsToShow)
+export const getAnyFriendsReselect = createSelector( getFriends, getFriendsToShow, ( friends, friendsToShow ) => {
+    const maxFriends = friends.length
+    const toShow = Math.min( maxFriends, friendsToShow )
 
-  return randomDifferentIntegersArrayCreator(maxFriends)(toShow).map(index => friends[index])
-})
+    return randomDifferentIntegersArrayCreator( maxFriends )( toShow ).map( index => friends[index] )
+} )

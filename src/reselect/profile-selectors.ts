@@ -3,7 +3,7 @@ import { createSelector } from 'reselect'
 import { AppStateType } from '../redux/redux-store'
 import { ProfileReducerStateType } from '../redux/profile-reducer'
 
-type ProfileSelector<T extends keyof ProfileReducerStateType> = ( state: AppStateType ) => ProfileReducerStateType[T]
+type ProfileSelector<T extends keyof Y, Y = ProfileReducerStateType> = ( state: AppStateType ) => Y[T]
 
 export const getPosts: ProfileSelector<'posts'> = ( state ) => state.profilePage.posts
 export const getNewPostTextPlaceholder: ProfileSelector<'newPostTextPlaceholder'> = ( state ) => state.profilePage.newPostTextPlaceholder

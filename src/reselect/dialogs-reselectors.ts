@@ -1,9 +1,8 @@
-import {AppStateType} from "../redux/redux-store";
-import {DialogsReducerStateType} from "../redux/dialogs-reducer";
-import {DialogsType, MessagesType} from "../redux/types/types";
+import { AppStateType } from '../redux/redux-store'
+import { DialogsReducerStateType } from '../redux/dialogs-reducer'
 
-type AppStateReturned<T> = (state: AppStateType) => T
+type DialogsReselector<T extends keyof Y, Y = DialogsReducerStateType> = ( state: AppStateType ) => Y[T]
 
-export const getDialogs: AppStateReturned<DialogsType[]> = state => state.dialogsPage.dialogs
-export const getDialogsMessages: AppStateReturned<MessagesType[]> = state => state.dialogsPage.messages
-export const getDialogsTextMessagePlaceholder: AppStateReturned<DialogsReducerStateType['textMessagePlaceholder']> = state => state.dialogsPage.textMessagePlaceholder
+export const getDialogs: DialogsReselector<'dialogs'> = state => state.dialogsPage.dialogs
+export const getDialogsMessages: DialogsReselector<'messages'> = state => state.dialogsPage.messages
+export const getDialogsTextMessagePlaceholder: DialogsReselector<'textMessagePlaceholder'> = state => state.dialogsPage.textMessagePlaceholder
