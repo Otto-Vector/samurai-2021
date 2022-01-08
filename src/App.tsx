@@ -13,7 +13,7 @@ import {
 import { initializedAll } from './redux/app-reducer'
 
 import Preloader from './components/common/Preloader/Preloader'
-import HeaderContainer from './components/Header/HeaderContainer'
+import { Header } from './components/Header/Header'
 import { SidebarContainer } from './components/Sidebar/SidebarContainer'
 
 const DialogsContainer = React.lazy( () => import('./components/Dialogs/DialogsContainer') )
@@ -35,7 +35,7 @@ const AppFunc: React.FC = () => {
 
     return (
         <div className='app-wrapper'>
-            <HeaderContainer/>
+            <Header/>
             <SidebarContainer/>
             <div className='app-wrapper-content'>
                 <Suspense fallback={ <Preloader/> }>

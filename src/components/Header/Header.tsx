@@ -1,29 +1,36 @@
-import React from 'react';
-import styles from './Header.module.css';
+import React from 'react'
+import styles from './Header.module.css'
 import logoSamurai from '../../assets/images/LogoSamurai_sm.png'
-import {NavLink} from "react-router-dom";
-import {HeaderContainerType} from "./HeaderContainer";
+import { NavLink } from 'react-router-dom'
+import { loginOut } from '../../redux/auth-reducer'
+import { getAuthorizedUserData, getIsAuthUser } from '../../reselect/auth-reselectors'
+import { useDispatch, useSelector } from 'react-redux'
 
 
-const Header: React.FC<HeaderContainerType> =  (
-  {isAuth, data: {id, login}, loginOut}) => {
+export const Header: React.FC = () => {
 
-  return <header className={styles.header}>
-    <img alt='logo' src={logoSamurai}/>
-    {
-      isAuth ?
-        (<span className={styles.login}>
-          <NavLink to={"/profile/" + id}>{login}</NavLink>
-          <div>
-          <button className={styles.logoutButton} onClick={loginOut}>Logout</button>
-            </div>
-        </span>)
-        :
-        <NavLink activeClassName={styles.loginButton} to={"/login"} className={styles.login}>{'login'}</NavLink>
+    const dispatch = useDispatch()
+    const isAuth = useSelector( getIsAuthUser )
+    const { id, login } = useSelector( getAuthorizedUserData )
+
+    const logout = () => {
+        dispatch( loginOut() )
     }
-  </header>
+
+    return <header className={ styles.header }>
+        <img alt='logo' src={ logoSamurai }/>
+        { isAuth
+            ? <div className={ styles.login }>
+                <NavLink to={ '/profile/' + id }>{ login }</NavLink>
+                <div>
+                    <button className={ styles.logoutButton }
+                            onClick={ logout }
+                    >{ 'Logout' }</button>
+                </div>
+            </div>
+            : <NavLink to={ '/login' }
+                       className={ styles.loginButton }
+            >{ 'login' }</NavLink>
+        }
+    </header>
 }
-
-const memoizedHeader = React.memo(Header)
-
-export default memoizedHeader;
