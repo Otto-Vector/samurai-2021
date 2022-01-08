@@ -1,5 +1,5 @@
-import Navbar from './Navbar/Navbar'
-import FriendsBar from './FriendBar/FriendsBar'
+import { Navbar } from './Navbar/Navbar'
+import FriendsBar from './FriendsBar/FriendsBar'
 import { useDispatch, useSelector } from 'react-redux'
 import { getResponseFriends } from '../../redux/friends-reducer'
 import { getFriendsHeader, getFriendsIsFetching, getAnyFriendsReselect } from '../../reselect/friends-selectors'
