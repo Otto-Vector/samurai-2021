@@ -8,15 +8,13 @@ import {
     Route,
 } from 'react-router-dom'
 import {
-    connect,
     Provider, useDispatch, useSelector,
 } from 'react-redux'
 import { initializedAll } from './redux/app-reducer'
-import { compose } from 'redux'
 
 import Preloader from './components/common/Preloader/Preloader'
 import HeaderContainer from './components/Header/HeaderContainer'
-import SidebarContainer from './components/Sidebar/SidebarContainer'
+import { SidebarContainer } from './components/Sidebar/SidebarContainer'
 
 const DialogsContainer = React.lazy( () => import('./components/Dialogs/DialogsContainer') )
 const UsersContainer = React.lazy( () => import('./components/Users/UsersContainer') )
@@ -31,7 +29,7 @@ const AppFunc: React.FC = () => {
 
     useEffect( () => {
         if (!initialazed) dispatch( initializedAll() )
-    }, [ initialazed, initializedAll ] )
+    }, [ initialazed ] )
 
     if (!initialazed) return <Preloader/>
 
