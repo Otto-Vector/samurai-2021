@@ -3,46 +3,81 @@ import Users from './Users'
 import {
     getUsers,
     usersActions,
-    UsersFilter,
+    UsersFilterType,
 } from '../../redux/users-reducer'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 
 import withAuthRedirect from '../hoc/withAuthRedirect'
 
 import {
-    getUsersCurrentPage,
-    getUsersPageSize, getUsersFilter,
+    getUsersFilterReselect,
 } from '../../reselect/users-reselector'
+import * as queryString from 'querystring'
 
 
 const UsersContainer: React.FC = () => {
 
-    const usersFilter = useSelector( getUsersFilter )
-    const pageSize = useSelector( getUsersPageSize )
-    const currentPage = useSelector( getUsersCurrentPage )
+    const usersFilter = useSelector( getUsersFilterReselect )
 
     const dispatch = useDispatch()
+    const history = useHistory()
+
 
     useEffect( () => {
-        dispatch( getUsers( { pageSize, page: currentPage, ...usersFilter } ) )
+        const {
+            page = usersFilter.currentPage,
+            term = usersFilter.userName,
+            friend = usersFilter.isFriends,
+        } = queryString.parse( history.location.search.slice( 1 ) )
 
+        dispatch( usersActions.setUsersFilter( {
+            ...usersFilter,
+            currentPage: Number( page ),
+            userName: term as string,
+            isFriends: friend as boolean | null,
+        } ) )
+    }, [] )
 
-    }, [ pageSize, currentPage, usersFilter ] )
+    // записываем запрос в history
+    // toDo: исправить (запрос отправляется два раза, один раз по дефолту, второй раз из history)
+    useEffect( () => {
+        dispatch( getUsers( usersFilter ) )
+        // создаём объект для query,
+        const query = Object.fromEntries( Object
+            .entries( {
+                page: usersFilter.currentPage,
+                term: usersFilter.userName,
+                friend: usersFilter.isFriends,
+            } )
+            // чистим дефолтные значения
+            .filter( n => n[1] !== null )
+            .filter( n => n[1] !== 1 )
+            .filter( n => n[1] !== '' ),
+        )
+        // закидываем в history
+        history.push( {
+            pathname: '/users',
+            search: queryString.stringify( query ),
+        } )
+    }, [ usersFilter ] )
 
-    const pageSelect = ( page: number ) => {
-        dispatch( usersActions.changePage( page ) )
+    const pageSelect = ( currentPage: number ) => {
+        dispatch( usersActions.setUsersFilter( { ...usersFilter, currentPage } ) )
     }
     // запрос от формы
-    const onTermChanged = ( values: UsersFilter ) => {
-        dispatch( usersActions.changePage( 1 ) ) // перемещаемся на первую страницу
-        dispatch( usersActions.searchUsersFilter( values ) )
+    const onTermChanged = ( { isFriends, userName }: UsersFilterType ) => {
+        dispatch( usersActions.setUsersFilter( {
+            pageSize: usersFilter.pageSize,
+            currentPage: 1,
+            isFriends,
+            userName,
+        } ) )
     }
 
     return <>
         <Users
-            currentPage={ currentPage }
-            pageSize={ pageSize }
             pageSelect={ pageSelect }
             onTermChanged={ onTermChanged }
             usersFilter={ usersFilter }

@@ -1,22 +1,27 @@
 import React from 'react'
 import styles from './Users.module.css'
-import { UsersFilter } from '../../redux/users-reducer'
+import { UsersFilterType } from '../../redux/users-reducer'
 import { Input } from '../common/FormType/FormType'
 import { Field, Form } from 'react-final-form'
 
 type UsersSearchPropsType = {
-    usersFilter: UsersFilter
+    usersFilter: UsersFilterType
     isFetching: boolean
-    onTermChanged: ( values: UsersFilter ) => void
+    onTermChanged: ( values: UsersFilterType ) => void
 }
 
 
 export const UserSearchForm: React.FC<UsersSearchPropsType> = (
     { onTermChanged, usersFilter, isFetching } ) => {
 
-    const resetClear: UsersFilter = { userNameFilter: '', isFriendsFilter: null }
+    const resetClear: UsersFilterType = {
+        userName: '',
+        isFriends: null,
+        pageSize: usersFilter.pageSize,
+        currentPage: usersFilter.currentPage
+    }
 
-    const submit = async ( values: UsersFilter ) => {
+    const submit = async ( values: UsersFilterType ) => {
         await onTermChanged( values )
     }
 
@@ -28,7 +33,7 @@ export const UserSearchForm: React.FC<UsersSearchPropsType> = (
                 ( { submitError, handleSubmit, form, submitting, dirty } ) => (
                     <form onSubmit={ handleSubmit }>
                         <div className={ styles.input }>
-                            <Field name={ 'userNameFilter' }
+                            <Field name={ 'userName' }
                                    placeholder={ 'userName' }
                                    resetFieldBy={ form }
                                    component={ Input }
@@ -36,7 +41,7 @@ export const UserSearchForm: React.FC<UsersSearchPropsType> = (
                         </div>
                         <div>
                             <span className={ styles.select }>
-                                <Field name={ 'isFriendsFilter' } component={ 'select' }>
+                                <Field name={ 'isFriends' } component={ 'select' }>
                                     <option value='null'>All</option>
                                     <option value='true'>Only Friends</option>
                                     <option value='false'>Only unfollowed</option>
@@ -44,7 +49,7 @@ export const UserSearchForm: React.FC<UsersSearchPropsType> = (
                             </span>
                             <button className={ styles.button }
                                     type={ 'submit' }
-                                    disabled={ submitting }>Done
+                                    disabled={ submitting || isFetching }>Done
                             </button>
                             <button type={ 'reset' }
                                     className={ styles.button }

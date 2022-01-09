@@ -14,7 +14,7 @@ export const SidebarContainer: React.FC = () => {
     const isFetching = useSelector( getFriendsIsFetching )
 
     const getFriendsList = () => {
-        dispatch( getResponseFriends )
+        dispatch( getResponseFriends() )
     }
 
     return <div className={ classes.sidebar }>

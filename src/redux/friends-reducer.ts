@@ -56,7 +56,7 @@ export type FriendsReducerThunkActionType<R = void> = ThunkAction<Promise<R>, Ap
 export const getResponseFriends = (): FriendsReducerThunkActionType =>
     async ( dispatch ) => {
         dispatch( friendsActions.friendsResponseIsFetching( true ) )
-        const response = await usersApi.getUsers( { pageSize: 100, page: 1, isFriendsFilter: true } )
+        const response = await usersApi.getUsers( { pageSize: 100, currentPage: 1, isFriends: true, userName: undefined} )
         dispatch( friendsActions.addFriends( response.items ) )
         dispatch( friendsActions.friendsResponseIsFetching( false ) )
     }

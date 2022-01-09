@@ -1,5 +1,7 @@
 import { UsersFromSearchType } from '../redux/types/types'
 import { instance, ResponseApiType } from './samurai-api'
+import { UsersFilterType } from '../redux/users-reducer'
+import * as queryString from 'querystring'
 
 // этот тип отличается от других стандартных и подходит только для Users
 export type ResponseUsersApiType = {
@@ -8,20 +10,20 @@ export type ResponseUsersApiType = {
     error: string | null
 }
 
-export type getUsersType = {
-    pageSize: number
-    page: number
-    isFriendsFilter?: boolean | null
-    userNameFilter?: string
-}
-
-
 export const usersApi = {
     // запрос одной страницы пользователей из сервера
-    getUsers( { pageSize, page, isFriendsFilter, userNameFilter }: getUsersType) {
-        const friend = `&friend=${ isFriendsFilter ?? null }`
-        const term = userNameFilter ? `&term=${ userNameFilter }` : ''
-        return instance.get<ResponseUsersApiType>( `users?count=${ pageSize }&page=${ page }${ friend }${ term }` )
+    getUsers( { pageSize, currentPage, isFriends, userName }: UsersFilterType ) {
+        console.log('isFriends: ',isFriends)
+        console.log('isFriends: ',isFriends ?? null)
+        // создаём объект для query,
+        const query = Object.fromEntries( Object
+            .entries( { term: userName, friend: isFriends ?? 'null', page: currentPage, count: pageSize } )
+            // чистим пустые значения
+            .filter( n => n[1] !== '' )
+            .filter( n => n[1] !== undefined )
+        )
+
+        return instance.get<ResponseUsersApiType>( `users?${ queryString.stringify( query ) }` )
             .then( response => response.data )
     },
 

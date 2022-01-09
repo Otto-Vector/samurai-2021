@@ -4,7 +4,7 @@ import Preloader from '../common/Preloader/Preloader'
 import UserItem from './UserItem/UserItem'
 import Pagination from '../common/Pagination/Pagination'
 import { UserSearchForm } from './UsersSearchForm'
-import { follow, UsersFilter } from '../../redux/users-reducer'
+import { follow, UsersFilterType } from '../../redux/users-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     getTotalUsersCount,
@@ -14,20 +14,18 @@ import {
 
 
 type PropsType = {
-    usersFilter: UsersFilter
-    currentPage: number
-    pageSize: number
+    usersFilter: UsersFilterType
 }
 
 type ActionsType = {
     pageSelect: ( selectedPage: number ) => void
-    onTermChanged: ( values: UsersFilter ) => void
+    onTermChanged: ( values: UsersFilterType ) => void
 }
 export type UsersPropsType = PropsType & ActionsType
 
 const Users: React.FC<UsersPropsType> = (
     {
-        currentPage, usersFilter, pageSelect, pageSize, onTermChanged,
+        usersFilter, pageSelect, onTermChanged,
     } ) => {
 
     const dispatch = useDispatch()
@@ -50,8 +48,8 @@ const Users: React.FC<UsersPropsType> = (
 
                 <Pagination
                     totalUsersCount={ totalUsersCount }
-                    pageSize={ pageSize }
-                    currentPage={ currentPage }
+                    pageSize={ usersFilter.pageSize }
+                    currentPage={ usersFilter.currentPage }
                     pageSelect={ pageSelect }
                 />
                 <UserSearchForm

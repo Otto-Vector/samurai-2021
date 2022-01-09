@@ -2,24 +2,24 @@ import { ResultCodesEnum } from '../api/samurai-api'
 import { UsersFromSearchType } from './types/types'
 import { ThunkAction } from 'redux-thunk'
 import { AppStateType, GetActionsTypes } from './redux-store'
-import { getUsersType, usersApi } from '../api/users-api'
+import { usersApi } from '../api/users-api'
 
 
 const initialState = {
     users: [] as UsersFromSearchType[],
-    pageSize: 5,
     totalUsersCount: 0,
-    currentPage: 1,
     usersFilter: {
-        isFriendsFilter: null as boolean | null, // итого три состояния null - все, true - только друзья, false - все кроме друзей
-        userNameFilter: '' as string | undefined,
+        pageSize: 5,
+        currentPage: 1,
+        isFriends: null as boolean | null, // итого три состояния null - все, true - только друзья, false - все кроме друзей
+        userName: '' as string | undefined,
     },
     isFetching: true,
     isFetchingById: [] as number[],
 }
 
 export type UsersReducerStateType = typeof initialState
-export type UsersFilter = typeof initialState.usersFilter
+export type UsersFilterType = typeof initialState.usersFilter
 
 type ActionsType = GetActionsTypes<typeof usersActions>
 
@@ -43,12 +43,6 @@ const usersReducer = ( state = initialState, action: ActionsType ): UsersReducer
                 users: action.users,
             }
         }
-        case 'users-reducer/CHANGE-PAGE': {
-            return {
-                ...state,
-                currentPage: action.page,
-            }
-        }
         case 'users-reducer/SET-TOTAL-USERS-COUNT': {
             return {
                 ...state,
@@ -70,7 +64,7 @@ const usersReducer = ( state = initialState, action: ActionsType ): UsersReducer
                     : state.isFetchingById.filter( id => action.userId !== id ),
             }
         }
-        case 'users-reducer/SEARCH-USERS-FILTER': {
+        case 'users-reducer/SET-USERS-FILTER': {
             return {
                 ...state,
                 usersFilter: { ...action.payload },
@@ -97,9 +91,6 @@ export const usersActions = {
         type: 'users-reducer/SET-USERS',
         users,
     } as const),
-    // установке значения активной страницы
-    // возвращаемого из API поиска
-    changePage: ( page: number ) => ({ type: 'users-reducer/CHANGE-PAGE', page } as const),
     // записывает общее количество найденных пользователей
     // (для подсчёта в пагинаторе)
     setTotalUsersCount: ( totalUsersCount: number ) => ({
@@ -118,8 +109,8 @@ export const usersActions = {
         userId,
     } as const),
     // запись в стейт текущего фильтра (имя, выборка друзей)
-    searchUsersFilter: ( payload: UsersFilter ) => ({
-        type: 'users-reducer/SEARCH-USERS-FILTER',
+    setUsersFilter: ( payload: UsersFilterType ) => ({
+        type: 'users-reducer/SET-USERS-FILTER',
         payload,
     } as const),
 }
@@ -128,12 +119,12 @@ export const usersActions = {
 
 export type UsersReducerThunkActionType<R = void> = ThunkAction<Promise<R>, AppStateType, unknown, ActionsType>
 // запрос на API и запись в стейт значений поиска пользователей
-export const getUsers = ( { pageSize, page, isFriendsFilter = null, userNameFilter = undefined }: getUsersType ): UsersReducerThunkActionType =>
+export const getUsers = ( { pageSize, currentPage, isFriends = null, userName = undefined }: UsersFilterType ): UsersReducerThunkActionType =>
     async ( dispatch ) => {
 
         dispatch( usersActions.toggleIsFetching( true ) )
 
-        const response = await usersApi.getUsers( { pageSize, page, isFriendsFilter, userNameFilter } )
+        const response = await usersApi.getUsers( { pageSize, currentPage, isFriends, userName } )
 
         dispatch( usersActions.setUsers( response.items ) )
 
