@@ -16,7 +16,7 @@ import Preloader from './components/common/Preloader/Preloader'
 import { Header } from './components/Header/Header'
 import { SidebarContainer } from './components/Sidebar/SidebarContainer'
 
-const DialogsContainer = React.lazy( () => import('./components/Dialogs/DialogsContainer') )
+const Dialogs = React.lazy( () => import('./components/Dialogs/Dialogs') )
 const UsersContainer = React.lazy( () => import('./components/Users/UsersContainer') )
 const ProfileContainer = React.lazy( () => import('./components/Profile/ProfileContainer') )
 const LoginContainer = React.lazy( () => import('./components/Login/LoginContainer') )
@@ -41,7 +41,7 @@ const AppFunc: React.FC = () => {
                 <Suspense fallback={ <Preloader/> }>
                     <Switch>
                         <Route exact path='/' render={ () => <Redirect to={ '/profile' }/> }/>
-                        <Route path='/dialogs' render={ () => <DialogsContainer/> }/>
+                        <Route path='/dialogs' render={ () => <Dialogs/> }/>
                         <Route path='/profile/:userId?' render={ () => <ProfileContainer/> }/>
                         <Route path='/users' render={ () => <UsersContainer/> }/>
                         <Route path='/login' render={ () => <LoginContainer/> }/>
