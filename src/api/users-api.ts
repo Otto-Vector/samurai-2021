@@ -13,8 +13,7 @@ export type ResponseUsersApiType = {
 export const usersApi = {
     // запрос одной страницы пользователей из сервера
     getUsers( { pageSize, currentPage, isFriends, userName }: UsersFilterType ) {
-        console.log('isFriends: ',isFriends)
-        console.log('isFriends: ',isFriends ?? null)
+
         // создаём объект для query,
         const query = Object.fromEntries( Object
             .entries( { term: userName, friend: isFriends ?? 'null', page: currentPage, count: pageSize } )

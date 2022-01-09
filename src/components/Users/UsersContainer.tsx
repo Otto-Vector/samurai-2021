@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Users from './Users'
 import {
     getUsers,
@@ -19,11 +19,11 @@ import * as queryString from 'querystring'
 
 const UsersContainer: React.FC = () => {
 
-    const usersFilter = useSelector( getUsersFilterReselect )
-
     const dispatch = useDispatch()
     const history = useHistory()
+    const usersFilter = useSelector( getUsersFilterReselect )
 
+    let [ isFirstRender, updRenders ] = useState( true )
 
     useEffect( () => {
         const {
@@ -38,12 +38,14 @@ const UsersContainer: React.FC = () => {
             userName: term as string,
             isFriends: friend as boolean | null,
         } ) )
+        updRenders( !isFirstRender )
     }, [] )
 
     // записываем запрос в history
-    // toDo: исправить (запрос отправляется два раза, один раз по дефолту, второй раз из history)
     useEffect( () => {
-        dispatch( getUsers( usersFilter ) )
+        // скипаем первый рендер, где присваевается значение из history
+        if (!isFirstRender) {
+            dispatch( getUsers( usersFilter ) )
         // создаём объект для query,
         const query = Object.fromEntries( Object
             .entries( {
@@ -61,6 +63,7 @@ const UsersContainer: React.FC = () => {
             pathname: '/users',
             search: queryString.stringify( query ),
         } )
+        }
     }, [ usersFilter ] )
 
     const pageSelect = ( currentPage: number ) => {

@@ -14,7 +14,7 @@ type UsersSearchPropsType = {
 export const UserSearchForm: React.FC<UsersSearchPropsType> = (
     { onTermChanged, usersFilter, isFetching } ) => {
 
-    const resetClear: UsersFilterType = {
+    const resetValue: UsersFilterType = {
         userName: '',
         isFriends: null,
         pageSize: usersFilter.pageSize,
@@ -30,7 +30,7 @@ export const UserSearchForm: React.FC<UsersSearchPropsType> = (
             onSubmit={ submit }
             initialValues={ usersFilter }
             render={
-                ( { submitError, handleSubmit, form, submitting, dirty } ) => (
+                ( { submitError, handleSubmit, form, submitting } ) => (
                     <form onSubmit={ handleSubmit }>
                         <div className={ styles.input }>
                             <Field name={ 'userName' }
@@ -53,9 +53,9 @@ export const UserSearchForm: React.FC<UsersSearchPropsType> = (
                             </button>
                             <button type={ 'reset' }
                                     className={ styles.button }
-                                    disabled={ !dirty || submitting }
+                                    disabled={ submitting }
                                     onClick={ () => {
-                                        form.reset( resetClear )
+                                        form.reset( resetValue )
                                     } }> X
                             </button>
                         </div>
