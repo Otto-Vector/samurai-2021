@@ -58,11 +58,12 @@ const Users: React.FC<UsersPropsType> = (
                     isFetching={ isFetching }
                 />
             </div>
-            { isFetching ? <Preloader/> :
-                users.map( ( u ) => <UserItem { ...{ ...u, followUser, isFetchingById } } key={ u.id }/> )
+            { isFetching
+                ? <Preloader/>
+                : users.map( ( u ) =>
+                    <UserItem { ...{ ...u, followUser, isFetchingById } } key={ u.id }/> )
             }
-            { (users.length === 0) &&
-                <div>NO USERS FOUND, CHANGE REQUEST</div>
+            { (users.length === 0) && <div className={styles.notFound}>NO USERS FOUND, CHANGE REQUEST</div>
             }
         </div>
     )

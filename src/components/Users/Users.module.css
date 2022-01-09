@@ -3,6 +3,13 @@
     padding: 10px;
 }
 
+.notFound {
+    color: red;
+    font-weight: bold;
+    background-color: #517cbd;
+    padding: 10px;
+}
+
 .manipulationContainer {
     width: 100%;
     display: flex;
