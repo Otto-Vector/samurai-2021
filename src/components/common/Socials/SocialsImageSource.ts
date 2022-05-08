@@ -27,7 +27,6 @@ enum SocialsHasImage {
   youtube,
 }
 
-
 export type SocialsImageSourceType = Record<keyof typeof SocialsHasImage, EmptyFilledType>
 
 export const socialsImageSource: SocialsImageSourceType = {

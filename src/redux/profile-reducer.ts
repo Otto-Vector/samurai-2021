@@ -227,10 +227,10 @@ export const setProfileData = ( data: ProfileType ): ProfileThunkActionType<stri
         const response = await profileAPI.setProfileData( data )
         if (response.resultCode === ResultCodesEnum.Success) {
             dispatch( getProfile( data.userId || defaultUserId ) )
-            dispatch(profileActions.setErrorFromAPI(null))
+            dispatch( profileActions.setErrorFromAPI( null ) )
             return null
         } else {
-            dispatch(profileActions.setErrorFromAPI(response.messages))
+            dispatch( profileActions.setErrorFromAPI( response.messages ) )
             return response.messages
         }
     }
